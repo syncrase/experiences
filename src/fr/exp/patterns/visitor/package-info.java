@@ -9,3 +9,13 @@
  *
  */
 package fr.exp.patterns.visitor;
+/*
+ * http://c2.com/cgi/wiki?VisitorPattern
+ * https://en.wikibooks.org/wiki/Computer_Science_Design_Patterns/Visitor
+ * https://fr.wikipedia.org/wiki/Visiteur_(patron_de_conception)
+ * comportemental
+ * 
+ * The point of visitor is to extend a bunch of elements with a new operation without changing their implementation nor the caller's 
+ * implementation.
+ * manière de séparer un algorithme d'une structure de données
+ */

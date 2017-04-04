@@ -11,6 +11,9 @@ package fr.exp.patterns.factory;
  * see :
  * https://en.wikibooks.org/wiki/Computer_Science_Design_Patterns/Factory_method
  * https://en.wikibooks.org/wiki/Computer_Science_Design_Patterns/
+ * 
+ * https://fr.wikipedia.org/wiki/Fabrique_(patron_de_conception)
+ * https://fr.wikipedia.org/wiki/Fabrique_abstraite
  * Abstract_Factory (nice diagram)
  * 
  * The factory pattern is a design pattern used to promote encapsulation of data
