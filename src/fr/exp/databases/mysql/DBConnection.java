@@ -5,19 +5,20 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Map;
 
 public class DBConnection {
 
 	private static Connection connection = null;
-	private static Statement statement = null;
-	private static Map<String, Statement> statementsPool = null;
+	private static Statement currentStatement = null;
+	private static Map<String, Statement> statementsPool = new HashMap<String, Statement>();
 
 	/**
 	 * 
 	 * @return
 	 */
-	public static Connection getConnection() {
+	private static Connection getConnection() {
 		if (connection == null) {
 			// This will load the MySQL driver, each DB has its own driver
 			try {
@@ -42,7 +43,7 @@ public class DBConnection {
 		return connection;
 	}
 
-	public static void closeConnection() {
+	private static void closeConnection() {
 		try {
 			if (connection != null) {
 				connection.close();
@@ -53,11 +54,12 @@ public class DBConnection {
 		}
 	}
 
-	public static void closeStatement() {
+	public static void closeCurrentStatement() {
 		try {
-			if (statement != null) {
-				statement.close();
-				statement = null;
+			if (currentStatement != null) {
+				statementsPool.remove(currentStatement);
+				currentStatement.close();
+				currentStatement = null;
 			}
 		} catch (Exception e) {
 			// TODO Logger: Unable to close the database
@@ -65,8 +67,8 @@ public class DBConnection {
 	}
 
 	public static void close() {
-		DBConnection.closeStatement();
-		DBConnection.closeConnection();
+		DBConnection.closeCurrentStatement();
+
 		for (Statement statement : statementsPool.values()) {
 			try {
 				statement.close();
@@ -74,36 +76,60 @@ public class DBConnection {
 				e.printStackTrace();
 			}
 		}
+		statementsPool = new HashMap<String, Statement>();
+		DBConnection.closeConnection();
 	}
 
+	
 	public static Statement getCurrentStatement() {
-		if (statement == null) {
+		if (currentStatement == null) {
 			try {
-				statement = DBConnection.getNewStatement();
+				currentStatement = DBConnection.getUnnamedStatement();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		return statement;
+		return currentStatement;
 	}
 
 	public static Statement getStatement(String statementName) {
 		Statement statementTEMP = statementsPool.get(statementName);
 		if (statementTEMP == null) {
 			try {
-				statement = DBConnection.getNewStatement();
-				statementsPool.put(statementName, statement);
+				currentStatement = DBConnection.getNewStatement(statementName);
+				// statement = DBConnection.getUnnamedStatement();
+				// statementsPool.put(statementName, statement);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		} else {
-			statement = statementTEMP;
+			currentStatement = statementTEMP;
 		}
-		return statement;
+		return currentStatement;
 	}
 
-	private static Statement getNewStatement() throws SQLException {
-		return DBConnection.getConnection().createStatement();
+	private static Statement getNewStatement(String statementName) throws SQLException {
+
+		return DBConnection.addStatement(statementName, DBConnection.getConnection().createStatement());
+	}
+
+	@Deprecated
+	private static Statement getUnnamedStatement() throws SQLException {
+
+		return DBConnection.addUnnamedStatement(DBConnection.getConnection().createStatement());
+	}
+
+	private static Statement addStatement(String name, Statement createStatement) {
+		statementsPool.put(name, createStatement);
+		return createStatement;
+	}
+
+	@Deprecated
+	private static Statement addUnnamedStatement(Statement createStatement) {
+		// DBConnection.addStatement(createStatement.toString(),
+		// createStatement);
+		// statementsPool.put(createStatement.toString(), createStatement);
+		return DBConnection.addStatement(createStatement.toString(), createStatement);
 	}
 
 	public static ResultSet executeQuery(String query) throws SQLException {
