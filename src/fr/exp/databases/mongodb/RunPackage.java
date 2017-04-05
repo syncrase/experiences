@@ -1,4 +1,4 @@
-package fr.exp.datastore;
+package fr.exp.databases.mongodb;
 
 public class RunPackage {
 

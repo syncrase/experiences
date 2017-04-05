@@ -5,4 +5,4 @@
  * @author I310911
  *
  */
-package fr.exp.datastore;
+package fr.exp.databases.mongodb;
