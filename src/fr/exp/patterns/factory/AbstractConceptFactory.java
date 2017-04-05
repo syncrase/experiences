@@ -2,18 +2,21 @@ package fr.exp.patterns.factory;
 
 public abstract class AbstractConceptFactory {
 
-	public static AbstractConceptFactory getAbstactConcept(int i) {
+	/*
+	 * Dans un pattern factory : Les constructeurs utilisés sont soient des
+	 * constructeurs privés soient des classes internes privées
+	 */
+	public static AbstractConceptFactory getAbstactConcept() {
 		// Decide which type to instanciate
-		if (i == 1)
-			return new ConcreteConcept1();
-		return new ConcreteConcept2();
+		return new ConcreteConcept1();
+		// return new ConcreteConcept2();
 	}
 
 	public abstract boolean is();
 
 	public abstract String toString();
 
-	private double sum(double d1, double d2) {
+	public double sum(double d1, double d2) {
 		return d1 + d2;
 	}
 

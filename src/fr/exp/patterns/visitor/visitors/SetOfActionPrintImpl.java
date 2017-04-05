@@ -1,30 +1,31 @@
 package fr.exp.patterns.visitor.visitors;
 
-import fr.exp.patterns.visitor.elements.Element1;
-import fr.exp.patterns.visitor.elements.Element2;
-import fr.exp.patterns.visitor.elements.Element3;
-import fr.exp.patterns.visitor.elements.Element4;
+import fr.exp.patterns.visitor.visitedelements.AbstractElement;
+import fr.exp.patterns.visitor.visitedelements.extended.Element;
+import fr.exp.patterns.visitor.visitedelements.extended.ElementContainer;
+import fr.exp.patterns.visitor.visitedelements.extended.TheMostSimpleElement;
 
 public class SetOfActionPrintImpl implements ISetOfAction {
 
 	@Override
-	public void performOn(Element1 el) {
-		System.out.println("Print " + el.getName());
+	public void performOn(TheMostSimpleElement el) {
+		System.out.print(el.getName());
 	}
 
 	@Override
-	public void performOn(Element2 el) {
-		System.out.println("Print " + el.getName());
+	public void performOn(Element el) {
+		System.out.print(el.getName());
 	}
 
 	@Override
-	public void performOn(Element3 el) {
-		System.out.println("Print " + el.getName());
+	public void performOn(ElementContainer el) {
+		System.out.print(el.getName());
 	}
 
 	@Override
-	public void performOn(Element4 el) {
-		System.out.println("Print " + el.getName());
+	public void performOn(AbstractElement aEl) {
+		System.out.print(aEl.getName());
+
 	}
 
 }

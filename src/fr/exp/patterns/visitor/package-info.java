@@ -18,4 +18,7 @@ package fr.exp.patterns.visitor;
  * The point of visitor is to extend a bunch of elements with a new operation without changing their implementation nor the caller's 
  * implementation.
  * manière de séparer un algorithme d'une structure de données
+ * 
+ * Ce design pattern se base sur la surcharge des méthodes du set d'actions. Fonction de l'élement reçu, le traitement n'est pas le même
+ * Possibilité de coder quelque chose propre à l'instance
  */

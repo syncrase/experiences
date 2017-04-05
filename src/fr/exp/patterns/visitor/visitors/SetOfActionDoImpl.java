@@ -1,30 +1,38 @@
 package fr.exp.patterns.visitor.visitors;
 
-import fr.exp.patterns.visitor.elements.Element1;
-import fr.exp.patterns.visitor.elements.Element2;
-import fr.exp.patterns.visitor.elements.Element3;
-import fr.exp.patterns.visitor.elements.Element4;
+import fr.exp.patterns.visitor.visitedelements.AbstractElement;
+import fr.exp.patterns.visitor.visitedelements.extended.Element;
+import fr.exp.patterns.visitor.visitedelements.extended.ElementContainer;
+import fr.exp.patterns.visitor.visitedelements.extended.TheMostSimpleElement;
 
 public class SetOfActionDoImpl implements ISetOfAction {
 
 	@Override
-	public void performOn(Element1 el) {
+	public void performOn(TheMostSimpleElement el) {
+		// CSV
 		System.out.println("Do " + el.getName());
 	}
 
 	@Override
-	public void performOn(Element2 el) {
+	public void performOn(Element el) {
+		// XLS
 		System.out.println("Do " + el.getName());
 	}
 
 	@Override
-	public void performOn(Element3 el) {
+	public void performOn(ElementContainer el) {
+		// PDF
 		System.out.println("Do " + el.getName());
 	}
 
 	@Override
-	public void performOn(Element4 el) {
-		System.out.println("Do " + el.getName());
+	public void performOn(AbstractElement aEl) {
+		try {
+			throw new Exception("PerformOn depuis la classe abstraite");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
