@@ -1,4 +1,4 @@
-package fr.exp.datastore;
+package fr.exp.databases.mongodb;
 
 import static com.mongodb.client.model.Filters.gt;
 import static java.util.Arrays.asList;
@@ -34,6 +34,12 @@ public class MongoDBTest {
 	MongoDatabase testDB;
 
 	public MongoDBTest() {
+		
+		// A LIRE  https://www.mongodb.com/blog/post/getting-started-with-mongodb-and-java-part-i
+		// https://mongodb.github.io/mongo-java-driver/3.4/driver/getting-started/quick-start/
+		// http://www.mkyong.com/mongodb/java-mongodb-hello-world-example/
+		
+		
 		// To directly connect to a single MongoDB server
 		// (this will not auto-discover the primary even if it's a member of a
 		// replica set)
@@ -49,7 +55,7 @@ public class MongoDBTest {
 		// remove();
 		// aggregate();
 		// indexes();
-//		insertDocument2();
+		// insertDocument2();
 		// insertDocument3();
 		find("insertTest");
 		closeMongoDBConnection();
@@ -77,7 +83,7 @@ public class MongoDBTest {
 																	.append("grade", "B").append("score", 17)))
 											.append("name", "Vella").append("restaurant_id", "41704620");
 
-			testDB.getCollection("restaurants").insertOne(doc);
+			testDB.getCollection("insertTest").insertOne(doc);
 
 		} catch (Exception e) {
 			System.err.println("Error connecting to MongoDB Client.");
@@ -88,7 +94,6 @@ public class MongoDBTest {
 
 	private final void insertDocument2() {
 		try {
-			
 
 			Document documentDetail = new Document();
 			documentDetail.put("records", 99);
@@ -111,15 +116,15 @@ public class MongoDBTest {
 	private final void insertDocument3() {
 		try {
 			Map<String, Object> documentMap = new HashMap<String, Object>();
-			documentMap.put("database", "mkyongDB");
-			documentMap.put("table", "hosting");
+			documentMap.put("databaseazerty", "mkyongDBdfd");
+			documentMap.put("tableaqs", "hostingefd");
 
 			Map<String, Object> documentMapDetail = new HashMap<String, Object>();
-			documentMapDetail.put("records", 99);
-			documentMapDetail.put("index", "vps_index1");
-			documentMapDetail.put("active", "true");
+			documentMapDetail.put("recordssd", 99);
+			documentMapDetail.put("indexsd", "vps_index1dd");
+			documentMapDetail.put("activesz", "trueds");
 
-			documentMap.put("detail", documentMapDetail);
+			documentMap.put("detaildcv", documentMapDetail);
 
 			testDB.getCollection("insertTest").insertOne(new Document(documentMap));
 
@@ -161,9 +166,8 @@ public class MongoDBTest {
 			// MongoClientURI("mongodb://localhost:27017,localhost:27018,localhost:27019");
 			// MongoClient mongoClient = new MongoClient(connectionString);
 		} catch (Exception e) {
-			// System.err.println("Error in terminating connection");
-			// Logger.getLogger(Mongo.class.getName()).log(Level.SEVERE, null,
-			// e);
+			System.err.println("Error in terminating connection");
+			Logger.getLogger(Mongo.class.getName()).log(Level.SEVERE, null, e);
 		}
 	}
 
