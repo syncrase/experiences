@@ -11,7 +11,6 @@ import java.util.Map;
 public class DBConnection {
 
 	private static Connection connection = null;
-	private static Statement currentStatement = null;
 	private static Map<String, Statement> statementsPool = new HashMap<String, Statement>();
 
 	/**
@@ -56,10 +55,9 @@ public class DBConnection {
 
 	public static void closeCurrentStatement() {
 		try {
-			if (currentStatement != null) {
-				statementsPool.remove(currentStatement);
-				currentStatement.close();
-				currentStatement = null;
+			if (statementsPool.get("current") != null) {
+				statementsPool.get("current").close();
+				statementsPool.remove("current");
 			}
 		} catch (Exception e) {
 			// TODO Logger: Unable to close the database
@@ -67,8 +65,6 @@ public class DBConnection {
 	}
 
 	public static void close() {
-		DBConnection.closeCurrentStatement();
-
 		for (Statement statement : statementsPool.values()) {
 			try {
 				statement.close();
@@ -80,25 +76,20 @@ public class DBConnection {
 		DBConnection.closeConnection();
 	}
 
-	
 	public static Statement getCurrentStatement() {
-		if (currentStatement == null) {
-			try {
-				currentStatement = DBConnection.getUnnamedStatement();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		Statement currentStatement = null;
+		if (statementsPool.get("current") == null) {
+			currentStatement = DBConnection.getStatement("current");
 		}
 		return currentStatement;
 	}
 
 	public static Statement getStatement(String statementName) {
 		Statement statementTEMP = statementsPool.get(statementName);
+		Statement currentStatement = null;
 		if (statementTEMP == null) {
 			try {
 				currentStatement = DBConnection.getNewStatement(statementName);
-				// statement = DBConnection.getUnnamedStatement();
-				// statementsPool.put(statementName, statement);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -109,27 +100,12 @@ public class DBConnection {
 	}
 
 	private static Statement getNewStatement(String statementName) throws SQLException {
-
 		return DBConnection.addStatement(statementName, DBConnection.getConnection().createStatement());
-	}
-
-	@Deprecated
-	private static Statement getUnnamedStatement() throws SQLException {
-
-		return DBConnection.addUnnamedStatement(DBConnection.getConnection().createStatement());
 	}
 
 	private static Statement addStatement(String name, Statement createStatement) {
 		statementsPool.put(name, createStatement);
 		return createStatement;
-	}
-
-	@Deprecated
-	private static Statement addUnnamedStatement(Statement createStatement) {
-		// DBConnection.addStatement(createStatement.toString(),
-		// createStatement);
-		// statementsPool.put(createStatement.toString(), createStatement);
-		return DBConnection.addStatement(createStatement.toString(), createStatement);
 	}
 
 	public static ResultSet executeQuery(String query) throws SQLException {
