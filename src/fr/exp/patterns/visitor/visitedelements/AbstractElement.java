@@ -52,11 +52,15 @@ public abstract class AbstractElement implements IElement {
 			// for (IElement element : this.childElements) {
 			// element.performSetOfAction(setOfAction);
 			// }
-			
-			//TODO: heap space issue!?
-			for (int i = 0; i++ < this.childElements.size(); this.childElements.get(i)
-					.performSetOfAction(setOfAction)) {
 
+			// WARNING!!! TRICKY FOR LOOP
+			for (int i = 0; i < this.childElements.size(); this.childElements.get(i).performSetOfAction(
+					setOfAction), i++, /*
+										 * Tout le temps sauf quand c'est au
+										 * début
+										 */System.out.print(i < this.childElements.size() ? ", " : "")) {
+				// Tout le temps sauf quand c'est au début
+				// System.out.print(i != 0 ? ", " : "");
 			}
 			System.out.print("}");
 		}

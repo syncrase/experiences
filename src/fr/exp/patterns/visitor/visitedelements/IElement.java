@@ -18,10 +18,14 @@ public interface IElement {
 													// accept().
 
 	/**
-	 * Un Element à nécessaire une liste contenant tout ses parents
+	 * Un Element peut posséder une liste contenant tout ses parents
 	 * @param childs
 	 */
 	void resetChildren(ArrayList<IElement> childs);
 
+	/**
+	 * Ajoute un Element à la fin de la liste
+	 * @param element
+	 */
 	void addChild(IElement element);
 }

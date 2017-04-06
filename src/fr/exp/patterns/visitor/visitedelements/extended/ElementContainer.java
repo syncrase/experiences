@@ -12,9 +12,6 @@ public class ElementContainer extends AbstractElement {
 		super();
 		this.name = name;
 
-		// Create new Array of elements
-
-//		this.childElements = ;
 		this.resetChildren(new ArrayList<IElement>());
 		
 		this.addChild(new Element("Albert"));
@@ -34,18 +31,4 @@ public class ElementContainer extends AbstractElement {
 
 	}
 
-//	@Override
-//	public void performSetOfAction(ISetOfAction setOfAction) {
-//		setOfAction.performOn(this);
-//		System.out.print("{");
-//		
-//		
-//		// Appel du code commun à tous les IElement
-//		for (IElement element : this.childElements) {
-//			element.performSetOfAction(setOfAction);
-//		}
-//		// This signature must appears in the ISetOfAction.java
-//		System.out.print("}");
-//
-//	}
 }
