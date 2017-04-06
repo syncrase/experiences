@@ -9,6 +9,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
+		System.out.println("[run] " + Main.class);
 		// All Elements are created in this one.
 		// The Element4 object contains a list of Element that implements
 		// IElement (performSetOfAction() method)
