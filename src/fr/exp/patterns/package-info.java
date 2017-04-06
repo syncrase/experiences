@@ -17,4 +17,6 @@ package fr.exp.patterns;
  * !!! Very good website !!! Must be seen
  * https://sourcemaking.com/design_patterns
  * 
+ * http://design-patterns.fr/design-patterns
+ * 
  */
