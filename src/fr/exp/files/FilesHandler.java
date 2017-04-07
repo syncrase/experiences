@@ -32,9 +32,9 @@ public class FilesHandler {
 			for (String line : Files.readAllLines(Paths.get(filePath))) {
 				if(line.contains("FOLDED")){
 					// get the related name
-//					line.
+//					line.substring(beginIndex, endIndex)
 					name = "";
-					pearlTreesContent = new PearltreesModel(name);
+//					pearlTreesContent = new PearltreesModel(name);
 				}
 //				fileContent += line + "\n";
 			}

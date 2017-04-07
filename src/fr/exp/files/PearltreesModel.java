@@ -1,5 +1,6 @@
 package fr.exp.files;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -13,8 +14,8 @@ public class PearltreesModel {
 		super();
 	}
 
-	public PearltreesModel(String name) {
-		this.name = name;
+	public PearltreesModel(File pearlTreesExportToHtml) {
+
 	}
 
 	public String getName() {
@@ -41,4 +42,7 @@ public class PearltreesModel {
 		this.folderList = folderList;
 	}
 
+	public String toString() {
+		return name + " contains " + urlList.size() + " urls and " + folderList.size() + " folders\n";
+	}
 }
