@@ -5,11 +5,24 @@ import java.util.ArrayList;
 
 public class PearltreesModel {
 
+	private String name;
 	private ArrayList<URL> urlList;
 	private ArrayList<PearltreesModel> folderList;
 
 	public PearltreesModel() {
 		super();
+	}
+
+	public PearltreesModel(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public ArrayList<URL> getUrlList() {
