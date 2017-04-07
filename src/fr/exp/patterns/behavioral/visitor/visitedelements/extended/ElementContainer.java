@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import fr.exp.patterns.behavioral.visitor.visitedelements.AbstractElement;
 import fr.exp.patterns.behavioral.visitor.visitedelements.IElement;
-import fr.exp.patterns.behavioral.visitor.visitors.ISetOfAction;
 
 public class ElementContainer extends AbstractElement {
 
