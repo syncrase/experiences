@@ -55,7 +55,7 @@ public class Test1 {
 	/**
 	 * https://www.javacodegeeks.com/2015/09/concurrency-best-practices.html
 	 */
-	public void runThread(int i) {
+	public void runThread(final int i) {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

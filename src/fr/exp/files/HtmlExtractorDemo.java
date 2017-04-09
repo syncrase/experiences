@@ -12,8 +12,6 @@ public class HtmlExtractorDemo {
 
 	public static void main(String[] args) {
 
-		String filePath = "files/pearltrees_export-25-12-2016.html";
-
 		// obtient un objet représentant mon fichier html
 		// String fileContent = FilesHandler.getHtmlFileContent(filePath);
 		// System.out.println(fileContent != "" ? fileContent : "Unable to get
@@ -34,60 +32,21 @@ public class HtmlExtractorDemo {
 		 * 
 		 * 
 		 */
+		// HtmlExtractorDemo.test3();
+		PearltreesHandler pearltreesHandler = new PearltreesHandler();
+		PearltreesModel pearlTreesModel = pearltreesHandler
+				.pearltreesTreeExtractor("files/pearltrees_export-25-12-2016.html");
+		 System.out.println(pearlTreesModel.toString());
+		// System.out.println(pearlTreesModel.toString_listOfPaths(""));
+//		System.out.println(pearlTreesModel.toString_asATree(0));
 
-		/*
-		 *************************************************************************************************
-		 */
-		File input = new File(filePath);
-		try {
-
-			Document doc = Jsoup.parse(input, "UTF-8");
-			Elements allElements = doc.getAllElements();
-			print("\nLines: %d", allElements.size());
-			Element src;
-			PearltreesHtmlExtractor extractor = new PearltreesHtmlExtractor();
-			String outerHTML = "";
-			boolean lookForContent = false;
-
-			for (int i = 0; i < allElements.size(); i++) {
-				src = allElements.get(i);
-//				if (outerHTML.equals("")) {
-				/*
-				 * J'ai récupéré la dernière ligne de tout le dernier contenu. Tant que je ne suis pas arrivé à cette ligne, je ne touche à rien
-				 */
-					if (src.tagName().equals("h3") && !lookForContent) {
-						extractor.setName(src.ownText());
-						lookForContent = true;
-						// print(" ************* %s **************",
-						// src.ownText());
-						// print("cssSelector: %s", src.cssSelector());
-					}
-					if (src.tagName().equals("dl") && lookForContent) {
-						outerHTML = src.outerHtml();
-						String[] tab = outerHTML.split("\n");
-						int a = tab.length;
-
-						extractor.setWholeContent(outerHTML);
-						lookForContent = false;
-						outerHTML = tab[tab.length - 1];
-						// Je récupère la dernière ligne du html et tant que je
-						// ne
-						// l'ai pas croisé je ne suis pas à la recherche d'un H3
-
-						// Dès que j'ai pris la liste je m'arrête car la liste
-						// contient déjà déjà tous les éléments simples ainsi
-						// que
-						// les listes internes
-						// break;
-					}
-//				}
-			}
-			PearltreesModel pearlTrees = extractor.perform();
-			System.out.println(pearlTrees.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		// Sauvegarde du réultat en base de données
+		// Structure de dossier -> le tag complexe de chaque url doit être son
+		// path dans la struture de dossiers
+		// 1- Afficher toutes les urls avec son tag complexe
+		// 2- Enregistrer toutes les url dans la base de données
+		// 3- Récupérer les objets dans la BDD ? GetTags()? GetUrls()?
+		// GetUrlTaggedWith(Tag tag)? GetUrlTaggedWith(Tag[] tags)?
 	}
 
 	private static void print(String msg, Object... args) {
