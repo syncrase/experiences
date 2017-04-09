@@ -1,13 +1,5 @@
 package fr.exp.files;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 public class HtmlExtractorDemo {
 
 	public static void main(String[] args) {
@@ -36,9 +28,9 @@ public class HtmlExtractorDemo {
 		PearltreesHandler pearltreesHandler = new PearltreesHandler();
 		PearltreesModel pearlTreesModel = pearltreesHandler
 				.pearltreesTreeExtractor("files/pearltrees_export-25-12-2016.html");
-		 System.out.println(pearlTreesModel.toString());
+		System.out.println(pearlTreesModel.toString());
 		// System.out.println(pearlTreesModel.toString_listOfPaths(""));
-//		System.out.println(pearlTreesModel.toString_asATree(0));
+		// System.out.println(pearlTreesModel.toString_asATree(0));
 
 		// Sauvegarde du réultat en base de données
 		// Structure de dossier -> le tag complexe de chaque url doit être son
@@ -47,6 +39,14 @@ public class HtmlExtractorDemo {
 		// 2- Enregistrer toutes les url dans la base de données
 		// 3- Récupérer les objets dans la BDD ? GetTags()? GetUrls()?
 		// GetUrlTaggedWith(Tag tag)? GetUrlTaggedWith(Tag[] tags)?
+		// 4- Exporter les données de l'objet vers un fichier html d'export
+		// formaté à la manière de pearltrees
+
+		// fichier <-> java objet <-> base données
+		// => 4 interactions à coder. Code pour générer le java en tout ou
+		// partie?
+		// Sachant que la base de données peut-être mongodb, neo4j, ... et
+		// fichier! ==>> Bosser sur le pattern adéquat! (builder, factory?)
 	}
 
 	private static void print(String msg, Object... args) {
