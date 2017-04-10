@@ -42,7 +42,7 @@ public class HtmlExtractorDemo {
 		// 4- Exporter les données de l'objet vers un fichier html d'export
 		// formaté à la manière de pearltrees
 
-		// fichier <-> java objet <-> base données
+		// fichier pearltrees <-> java objet <-> base données
 		// => 4 interactions à coder. Code pour générer le java en tout ou
 		// partie?
 		// Sachant que la base de données peut-être mongodb, neo4j, ... et
