@@ -25,18 +25,17 @@ public class HtmlExtractorDemo {
 		 * 
 		 */
 		// HtmlExtractorDemo.test3();
-		PearltreesHandler pearltreesHandler = new PearltreesHandler("files/pearltrees_export-25-12-2016.html");
+		PearltreesFacade pearltreesFacade = new PearltreesFacade("files/pearltrees_export-25-12-2016.html");
 
-		// PearltreesModel pearlTreesModel =
-		// pearltreesHandler.getPearlTreesModel();
-		// System.out.println(pearlTreesModel.toString());
-		// System.out.println(pearltreesHandler.getFoldedTags());
-		// System.out.println(pearltreesHandler.getTreeWithoutLeafs());
-		// System.out.println(pearltreesHandler.getTree());
-
+//		PearltreesFolder pearlTreesModel = pearltreesFacade.getPearlTreesModel();
+//		 System.out.println(pearltreesFacade.toString());
+//		 System.out.println(pearltreesFacade.getFoldedTags());
+//		 System.out.println(pearltreesFacade.getTreeWithoutLeafs());
+//		 System.out.println(pearltreesFacade.getTree());
+		 System.out.println(pearltreesFacade.getHtml());
 		// TODO
 		//
-		// pearltreesHandler.writeHtmlFile("files/pearltrees_export.html");
+//		pearltreesHandler.writeHtmlFile("files/my_pearltrees_export.html");
 		// pearltreesHandler.saveInDataBase();
 
 		// Sauvegarde du résultat en base de données

@@ -26,7 +26,7 @@ public class FilesHandler {
 
 	public static String getPearlTreesExportContent(String filePath) {
 		String fileContent = "";
-		PearltreesModel pearlTreesContent;
+		PearltreesFolder pearlTreesContent;
 		String name;
 		try {
 			for (String line : Files.readAllLines(Paths.get(filePath))) {
