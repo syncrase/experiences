@@ -9,14 +9,19 @@ import org.jsoup.select.Elements;
 
 public class PearltreesHandler {
 
-	/**
-	 * Based on a file path, this method compute the file to extract the needed
-	 * data
-	 */
-	public PearltreesModel pearltreesTreeExtractor(String filePath) {
+	private PearltreesModel pearlTreesModel;
 
-		PearltreesModel pearlTreesModel = new PearltreesModel();
-		// String filePath = "files/pearltrees_export-25-12-2016.html";
+	public PearltreesHandler(String filePath) {
+		this.pearlTreesModel = new PearltreesModel();
+		extractData(filePath);
+	}
+
+	/**
+	 * Extrait les données avec jsoup
+	 * 
+	 * @param filePath
+	 */
+	private void extractData(String filePath) {
 		File input = new File(filePath);
 		Document doc;
 		try {
@@ -24,13 +29,33 @@ public class PearltreesHandler {
 			Elements allElements = doc.getAllElements();
 			pearlTreesModel.setWholeContent(allElements);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return pearlTreesModel;
-
 	}
 
-	
-	
+	/**
+	 * Based on a file path, this method compute the file to extract the needed
+	 * data
+	 */
+	public PearltreesModel getPearlTreesModel() {
+		return pearlTreesModel;
+	}
+
+	public File getHtmlFile() {
+		try {
+			throw new Exception("getHtmlFile isn't yet implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public void saveInDataBase() {
+		try {
+			throw new Exception("saveInDataBase isn't yet implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }

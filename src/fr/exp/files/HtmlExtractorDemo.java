@@ -1,5 +1,7 @@
 package fr.exp.files;
 
+import java.io.File;
+
 public class HtmlExtractorDemo {
 
 	public static void main(String[] args) {
@@ -25,14 +27,18 @@ public class HtmlExtractorDemo {
 		 * 
 		 */
 		// HtmlExtractorDemo.test3();
-		PearltreesHandler pearltreesHandler = new PearltreesHandler();
-		PearltreesModel pearlTreesModel = pearltreesHandler
-				.pearltreesTreeExtractor("files/pearltrees_export-25-12-2016.html");
+		PearltreesHandler pearltreesHandler = new PearltreesHandler("files/pearltrees_export-25-12-2016.html");
+		PearltreesModel pearlTreesModel = pearltreesHandler.getPearlTreesModel();
 		System.out.println(pearlTreesModel.toString());
 		// System.out.println(pearlTreesModel.toString_listOfPaths(""));
 		// System.out.println(pearlTreesModel.toString_asATree(0));
 
-		// Sauvegarde du réultat en base de données
+		// TODO
+		//
+		// File input = pearltreesHandler.getHtmlFile();
+		// pearltreesHandler.saveInDataBase();
+
+		// Sauvegarde du résultat en base de données
 		// Structure de dossier -> le tag complexe de chaque url doit être son
 		// path dans la struture de dossiers
 		// 1- Afficher toutes les urls avec son tag complexe
@@ -49,15 +55,15 @@ public class HtmlExtractorDemo {
 		// fichier! ==>> Bosser sur le pattern adéquat! (builder, factory?)
 	}
 
-	private static void print(String msg, Object... args) {
-		System.out.println(String.format(msg, args));
-	}
-
-	private static String trim(String s, int width) {
-		if (s.length() > width)
-			return s.substring(0, width - 1) + ".";
-		else
-			return s;
-	}
+	// private static void print(String msg, Object... args) {
+	// System.out.println(String.format(msg, args));
+	// }
+	//
+	// private static String trim(String s, int width) {
+	// if (s.length() > width)
+	// return s.substring(0, width - 1) + ".";
+	// else
+	// return s;
+	// }
 
 }

@@ -1,4 +1,4 @@
-package fr.exp.files;
+package fr.exp.files.dbmodels;
 
 public class Url {
 

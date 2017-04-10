@@ -1,4 +1,4 @@
-package fr.exp.files;
+package fr.exp.files.dbmodels;
 
 import java.util.ArrayList;
 
