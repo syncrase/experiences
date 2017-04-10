@@ -13,6 +13,11 @@ public class PearltreesModel {
 	private ArrayList<URL> urlList;
 	private ArrayList<PearltreesModel> folderList;
 
+	// private String tab = ""; -> le mieux est d'utiliser une map<int, String>
+	// pour garder les tab associées à la profondeur et de n'instancier qu'une
+	// fois une certaine tabulation pour ne pas recomposer à chaque ligne la
+	// String de tab
+
 	public PearltreesModel() {
 		super();
 		this.name = "ROOT_FOLDER";
@@ -73,8 +78,6 @@ public class PearltreesModel {
 
 		if (this.folderList.size() != 0) {
 			path += name + "/";
-			// returnedString += returnedString.equals("") ? "" : "\n";
-
 			returnedString += "\n";
 			for (PearltreesModel model : this.folderList) {
 				returnedString += path + model.toString_listOfPaths(path);
@@ -87,27 +90,37 @@ public class PearltreesModel {
 		return returnedString;
 	}
 
-	public String toString_asATree(int depth) {
+	public String toString_asATree(int depth, boolean addComposite, boolean addLeaf) {
 		String returnedString = "";
 		String tab = "";
-		for (int i = 0; i < depth; i++) {
-			tab += "\t";
-		}
+		tab = getTabulation(depth);
 		if (this.folderList.size() != 0) {
-			// path += name + "/";
-			// returnedString += returnedString.equals("") ? "" : "\n";
-			returnedString += tab + name + "/" + "\n";
-			for (PearltreesModel model : this.folderList) {
-				returnedString += model.toString_asATree(depth + 1);// tab +
-				// returnedString += "\n";
+			if (addComposite) {
+				returnedString += tab + name + "/" + "\n";
 			}
-			// returnedString += "\n";
+			for (PearltreesModel model : this.folderList) {
+				returnedString += model.toString_asATree(depth + 1, addComposite, addLeaf);// tab
+			}
 		} else {
 			returnedString += tab + name + "/";
 			returnedString += "\n";
 		}
 
+		if (addLeaf && this.urlList.size() != 0) {
+			tab = getTabulation(depth + 1);
+			for (URL url : this.urlList) {
+				returnedString += tab + url.toString() + "\n";
+			}
+		}
 		return returnedString;
+	}
+
+	private String getTabulation(int depth) {
+		String tab = "";
+		for (int i = 0; i < depth; i++) {
+			tab += "\t";
+		}
+		return tab;
 	}
 
 	/**
@@ -115,7 +128,7 @@ public class PearltreesModel {
 	 * 
 	 * @param allElements
 	 */
-	public void setWholeContent(Elements allElements) {
+	public void buildObject(Elements allElements) {
 		PearltreesModel pearlTreesModel = new PearltreesModel();
 		boolean lookForFolderContent = false;
 		Element src;
@@ -143,7 +156,7 @@ public class PearltreesModel {
 				// If I am here it's because I've found an h3 tag and I'm
 				// waiting for the whole content
 				if (src.tagName().equals("dl")) {
-					pearlTreesModel.setWholeContent(src.getAllElements());
+					pearlTreesModel.buildObject(src.getAllElements());
 					lookForFolderContent = false;
 					// Go after all the previous computed 'wholeContent'
 					i += src.getAllElements().size();
@@ -152,4 +165,31 @@ public class PearltreesModel {
 		}
 	}
 
+	public String toString_asAnHtml() {
+		String returnedString = "";
+		String tab = "";
+		// for (int i = 0; i < 4; i++) {
+		// tab += "\t";
+		// }
+
+		/*
+		 * Algorithme à implémenter
+		 * 
+		 */
+		if (this.folderList.size() != 0) {
+			// path += name + "/";
+			// returnedString += returnedString.equals("") ? "" : "\n";
+			returnedString += tab + name + "/" + "\n";
+			for (PearltreesModel model : this.folderList) {
+
+				// returnedString += "\n";
+			}
+			// returnedString += "\n";
+		} else {
+			returnedString += tab + name + "/";
+			returnedString += "\n";
+		}
+
+		return returnedString;
+	}
 }

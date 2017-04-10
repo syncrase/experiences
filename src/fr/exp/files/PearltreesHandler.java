@@ -13,7 +13,7 @@ public class PearltreesHandler {
 
 	public PearltreesHandler(String filePath) {
 		this.pearlTreesModel = new PearltreesModel();
-		extractData(filePath);
+		updateData(filePath);
 	}
 
 	/**
@@ -21,13 +21,13 @@ public class PearltreesHandler {
 	 * 
 	 * @param filePath
 	 */
-	private void extractData(String filePath) {
+	private void updateData(String filePath) {
 		File input = new File(filePath);
 		Document doc;
 		try {
 			doc = Jsoup.parse(input, "UTF-8");
 			Elements allElements = doc.getAllElements();
-			pearlTreesModel.setWholeContent(allElements);
+			pearlTreesModel.buildObject(allElements);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -41,16 +41,34 @@ public class PearltreesHandler {
 		return pearlTreesModel;
 	}
 
-	public File getHtmlFile() {
+	public void saveInDataBase() {
 		try {
-			throw new Exception("getHtmlFile isn't yet implemented");
+			// Ajout dans la base de données de chaque url associées à son tag
+			// composé
+			throw new Exception("saveInDataBase isn't yet implemented");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
 	}
 
-	public void saveInDataBase() {
+	/**
+	 * @param string
+	 * 
+	 */
+	public void writeHtmlFile(String filePath) {
+		// File input = new File(filePath);
+		// if (!input.exists()) {
+		// try {
+		// input.createNewFile();
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
+		// }
+		// input.
+
+		String html = generateHtml();
+		// HERE, write this content to a file in the file system
+		// How to?
 		try {
 			throw new Exception("saveInDataBase isn't yet implemented");
 		} catch (Exception e) {
@@ -58,4 +76,19 @@ public class PearltreesHandler {
 		}
 	}
 
+	private String generateHtml() {
+		return "";
+	}
+
+	public String getTreeWithoutLeafs() {
+		return pearlTreesModel.toString_asATree(0, true, false);
+	}
+
+	public String getTree() {
+		return pearlTreesModel.toString_asATree(0, true, true);
+	}
+
+	public String getFoldedTags() {
+		return pearlTreesModel.toString_listOfPaths("");
+	}
 }

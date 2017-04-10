@@ -1,7 +1,5 @@
 package fr.exp.files;
 
-import java.io.File;
-
 public class HtmlExtractorDemo {
 
 	public static void main(String[] args) {
@@ -28,14 +26,17 @@ public class HtmlExtractorDemo {
 		 */
 		// HtmlExtractorDemo.test3();
 		PearltreesHandler pearltreesHandler = new PearltreesHandler("files/pearltrees_export-25-12-2016.html");
-		PearltreesModel pearlTreesModel = pearltreesHandler.getPearlTreesModel();
-		System.out.println(pearlTreesModel.toString());
-		// System.out.println(pearlTreesModel.toString_listOfPaths(""));
-		// System.out.println(pearlTreesModel.toString_asATree(0));
+
+		// PearltreesModel pearlTreesModel =
+		// pearltreesHandler.getPearlTreesModel();
+		// System.out.println(pearlTreesModel.toString());
+		// System.out.println(pearltreesHandler.getFoldedTags());
+		// System.out.println(pearltreesHandler.getTreeWithoutLeafs());
+		// System.out.println(pearltreesHandler.getTree());
 
 		// TODO
 		//
-		// File input = pearltreesHandler.getHtmlFile();
+		// pearltreesHandler.writeHtmlFile("files/pearltrees_export.html");
 		// pearltreesHandler.saveInDataBase();
 
 		// Sauvegarde du résultat en base de données
