@@ -2,7 +2,7 @@ package fr.exp.files.dbmodels;
 
 import java.util.ArrayList;
 
-import fr.exp.files.PearltreesUrl;
+import fr.exp.files.treestructure.PearltreesUrl;
 
 public class TaggedUrl {
 

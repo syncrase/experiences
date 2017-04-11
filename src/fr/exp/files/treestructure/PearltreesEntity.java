@@ -1,4 +1,4 @@
-package fr.exp.files;
+package fr.exp.files.treestructure;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public abstract class PearltreesEntity {
+import fr.exp.files.FilesHandler;
+
+public abstract class PearltreesEntity extends FilesHandler {
 
 	private boolean isFolder;
 	// Accessible par toutes les sous-classes

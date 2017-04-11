@@ -12,6 +12,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import fr.exp.files.treestructure.PearltreesFolder;
+
 public class PearltreesFacade {
 
 	private PearltreesFolder pearlTreesExportData;

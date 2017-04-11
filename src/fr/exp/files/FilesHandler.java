@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import fr.exp.files.treestructure.PearltreesFolder;
+
 public class FilesHandler {
 
 	/**

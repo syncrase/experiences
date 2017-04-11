@@ -14,6 +14,9 @@ package fr.exp.files;
  * http://jericho.htmlparser.net/docs/index.html
  * http://hotsax.sourceforge.net/
  * http://htmlcleaner.sourceforge.net/
+ * 
+ * 
+ * Used parsers in this project
  * https://jsoup.org/download
  * 
  */
