@@ -19,4 +19,9 @@ package fr.exp.files;
  * Used parsers in this project
  * https://jsoup.org/download
  * 
+ * 
+ * S'en inspirer pour adapter l'arbre au mongo CRUD
+ * https://docs.mongodb.com/manual/tutorial/model-tree-structures/
+ * 
+ * 
  */

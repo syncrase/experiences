@@ -13,18 +13,6 @@ public class HtmlPrearlTreesDemo {
 		// System.out.println(fileContent != "" ? fileContent : "Unable to get
 		// the file content");
 
-		/*
-		 * Les algos
-		 *
-		 * Début Je croise un H3 => new HtmlModel() => Ajout du DL correspondant
-		 * Go à la fin du DL ajouté (pas possible ). Repeat pour tous les h3 Fin
-		 * 
-		 * Début Je croise un H3 => new HtmlModel() => depth ++ ??? Je sors d'un
-		 * H3 => depth -- Fin
-		 * 
-		 * 
-		 */
-		// HtmlExtractorDemo.test3();
 		PearltreesFacade pearltreesFacade = new PearltreesFacade("files/pearltrees_export-25-12-2016.html");
 
 		// PearltreesFolder pearlTreesModel =
