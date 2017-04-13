@@ -1,4 +1,4 @@
-package fr.exp.patterns.structural.decorator;
+package fr.exp.patterns.structural.decorator.impl;
 
 public abstract class CoffeeDecorator extends Coffee {
 

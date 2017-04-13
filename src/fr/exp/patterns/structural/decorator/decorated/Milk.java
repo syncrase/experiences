@@ -1,4 +1,7 @@
-package fr.exp.patterns.structural.decorator;
+package fr.exp.patterns.structural.decorator.decorated;
+
+import fr.exp.patterns.structural.decorator.impl.Coffee;
+import fr.exp.patterns.structural.decorator.impl.CoffeeDecorator;
 
 public class Milk extends CoffeeDecorator {
 	public Milk(Coffee decoratedCoffee) {

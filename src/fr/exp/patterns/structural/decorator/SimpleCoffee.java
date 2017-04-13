@@ -1,5 +1,7 @@
 package fr.exp.patterns.structural.decorator;
 
+import fr.exp.patterns.structural.decorator.impl.Coffee;
+
 public class SimpleCoffee extends Coffee {
 
 	@Override

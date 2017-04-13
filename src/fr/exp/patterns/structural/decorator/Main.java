@@ -1,5 +1,10 @@
 package fr.exp.patterns.structural.decorator;
 
+import fr.exp.patterns.structural.decorator.decorated.Milk;
+import fr.exp.patterns.structural.decorator.decorated.Sprinkles;
+import fr.exp.patterns.structural.decorator.decorated.Whip;
+import fr.exp.patterns.structural.decorator.impl.Coffee;
+
 public class Main {
 
 	public static void main(String[] args) {
