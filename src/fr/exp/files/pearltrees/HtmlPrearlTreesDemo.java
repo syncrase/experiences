@@ -36,7 +36,8 @@ public class HtmlPrearlTreesDemo {
 		PearltreesFacade2 pearltreesFacade2 = new PearltreesFacade2("files/pearltrees_export-25-12-2016.html");
 		// print(pearltreesFacade2.getFoldedTags());
 		// print(pearltreesFacade2.getHtml());
-		System.out.println(pearltreesFacade2.getHtml());
+		// pearltreesFacade2.writeHtmlFile("files/my_pearltrees_export.html");
+
 		// Sauvegarde du résultat en base de données
 		// Structure de dossier -> le tag complexe de chaque url doit être son
 		// path dans la struture de dossiers
@@ -55,7 +56,11 @@ public class HtmlPrearlTreesDemo {
 	}
 
 	private static void print(String msg, Object... args) {
-		System.out.println(String.format(msg, args));
+		if (args.length == 0) {
+			System.out.println(msg);
+		} else {
+			System.out.println(String.format(msg, args));
+		}
 	}
 	//
 	// private static String trim(String s, int width) {
