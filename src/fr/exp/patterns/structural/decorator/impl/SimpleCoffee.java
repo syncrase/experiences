@@ -1,6 +1,4 @@
-package fr.exp.patterns.structural.decorator;
-
-import fr.exp.patterns.structural.decorator.impl.Coffee;
+package fr.exp.patterns.structural.decorator.impl;
 
 public class SimpleCoffee extends Coffee {
 
