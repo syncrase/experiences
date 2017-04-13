@@ -37,7 +37,7 @@ public class HtmlPrearlTreesDemo {
 		// print(pearltreesFacade2.getFoldedTags());
 		// print(pearltreesFacade2.getHtml());
 		// pearltreesFacade2.writeHtmlFile("files/my_pearltrees_export.html");
-
+		pearltreesFacade2.saveInDataBase();
 		// Sauvegarde du résultat en base de données
 		// Structure de dossier -> le tag complexe de chaque url doit être son
 		// path dans la struture de dossiers

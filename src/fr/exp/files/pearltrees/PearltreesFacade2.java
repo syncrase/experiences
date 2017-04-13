@@ -24,6 +24,23 @@ public class PearltreesFacade2 {
 		try {
 			// Ajout dans la base de données de chaque url associées à son tag
 			// composé
+			// Dans la base de données
+			// * Pour les urls taggées
+			// 1 tables urls
+			// 1 tables tags
+			// 1 tables de liaison url_tags (id_url, id_tags, id_tag_path)
+			
+			// TODO
+			// --> pour 1 url, plusieurs tags, 1 path
+			// --> pour cette même url, même tag de base
+			
+			
+			// * Pour les folded tags
+			// 1 tables de liaison folded_tags pour enregistrer les path de tags
+			// id_parent_tag, id_child_tag, id_tag_path
+			// id_path permet de rendre unique un path (un certain tag peut
+			// avoir plusieurs parents et/ou enfant => permet de rendre unique
+			// un path)
 			throw new Exception("saveInDataBase isn't yet implemented");
 		} catch (Exception e) {
 			e.printStackTrace();
