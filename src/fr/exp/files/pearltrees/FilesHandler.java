@@ -1,10 +1,10 @@
-package fr.exp.files;
+package fr.exp.files.pearltrees;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import fr.exp.files.treestructure.PearltreesFolder;
+import fr.exp.files.pearltrees.treestructure.PearltreesFolder;
 
 public class FilesHandler {
 

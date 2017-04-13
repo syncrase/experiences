@@ -5,7 +5,7 @@
  * @author I310911
  *
  */
-package fr.exp.files.treestructure;
+package fr.exp.files.pearltrees.treestructure;
 /*
  * 
  * Revoir les classes pour adapter le design pattern composite? Adapter? Strategy? Cascading Lists? Treemap?

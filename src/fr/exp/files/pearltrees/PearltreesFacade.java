@@ -1,18 +1,13 @@
-package fr.exp.files;
+package fr.exp.files.pearltrees;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-
-import fr.exp.files.treestructure.PearltreesFolder;
+import fr.exp.files.pearltrees.treestructure.PearltreesFolder;
 
 public class PearltreesFacade {
 
@@ -80,25 +75,26 @@ public class PearltreesFacade {
 	 * PRIVATES METHODS
 	 */
 
-	/**
-	 * Extrait les données avec jsoup
-	 * 
-	 * @param filePath
-	 */
-	private void updateData(String filePath) {
-		// TODO L'implémenter avec w3c puis voir pour implémenter le pattern
-		// pour ajouter un comportement
-		// https://docs.oracle.com/javase/7/docs/api/org/w3c/dom/package-summary.html
-		File input = new File(filePath);
-		Document doc;
-		try {
-			doc = Jsoup.parse(input, "UTF-8");
-			Elements allElements = doc.getAllElements();
-			pearlTreesExportData.buildObject(allElements);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	// /**
+	// * Extrait les données avec jsoup
+	// *
+	// * @param filePath
+	// */
+	// private void updateData(String filePath) {
+	// // TODO L'implémenter avec w3c puis voir pour implémenter le pattern
+	// // pour ajouter un comportement
+	// //
+	// https://docs.oracle.com/javase/7/docs/api/org/w3c/dom/package-summary.html
+	// File input = new File(filePath);
+	// Document doc;
+	// try {
+	// doc = Jsoup.parse(input, "UTF-8");
+	// Elements allElements = doc.getAllElements();
+	// pearlTreesExportData.buildObject(allElements);
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// }
+	// }
 
 	/**
 	 * Generate the html in order to be as near as possible of the pearltrees

@@ -1,4 +1,4 @@
-package fr.exp.files.treestructure;
+package fr.exp.files.pearltrees.treestructure;
 
 public class PearltreesFolder extends PearltreesEntity {
 

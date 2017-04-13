@@ -1,5 +1,7 @@
-package fr.exp.files.treestructure;
+package fr.exp.files.pearltrees.treestructure;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -7,7 +9,8 @@ import java.util.ArrayList;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import fr.exp.files.FilesHandler;
+import fr.exp.files.pearltrees.Document;
+import fr.exp.files.pearltrees.FilesHandler;
 
 public abstract class PearltreesEntity extends FilesHandler {
 
@@ -90,6 +93,26 @@ public abstract class PearltreesEntity extends FilesHandler {
 					i += src.getAllElements().size();
 				}
 			}
+		}
+	}
+
+	/**
+	 * Extrait les données avec jsoup
+	 * 
+	 * @param filePath
+	 */
+	private void updateData(String filePath) {
+		// TODO L'implémenter avec w3c puis voir pour implémenter le pattern
+		// pour ajouter un comportement
+		// https://docs.oracle.com/javase/7/docs/api/org/w3c/dom/package-summary.html
+		File input = new File(filePath);
+		Document doc;
+		try {
+			doc = Jsoup.parse(input, "UTF-8");
+			Elements allElements = doc.getAllElements();
+			this.buildObject(allElements);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
