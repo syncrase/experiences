@@ -1,11 +1,14 @@
-package fr.exp.files.pearltrees.composite;
+package fr.exp.files.pearltrees.composite.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PearltreesComposite implements PearltreesComponent {
 
+	private String folderName;
+
 	// Collection of child Component
+	// This is either a url or a folder
 	private List<PearltreesComponent> childComponent = new ArrayList<PearltreesComponent>();
 
 	@Override
@@ -21,6 +24,14 @@ public class PearltreesComposite implements PearltreesComponent {
 	// Removes the graphic from the composition.
 	public void remove(PearltreesComponent component) {
 		childComponent.remove(component);
+	}
+
+	public String getFolderName() {
+		return folderName;
+	}
+
+	public void setFolderName(String folderName) {
+		this.folderName = folderName;
 	}
 
 }

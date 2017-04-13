@@ -1,4 +1,4 @@
-package fr.exp.files.pearltrees.composite;
+package fr.exp.files.pearltrees.composite.impl;
 
 public interface PearltreesComponent {
 
