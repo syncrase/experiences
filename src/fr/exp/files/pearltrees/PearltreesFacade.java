@@ -16,7 +16,7 @@ public class PearltreesFacade {
 	public PearltreesFacade(String filePath) {
 		this.pearlTreesExportData = new PearltreesFolder();
 		// this.pearlTreesEntity = new PearltreesEntity();
-		updateData(filePath);
+		pearlTreesExportData.updateData(filePath);
 	}
 
 	/**

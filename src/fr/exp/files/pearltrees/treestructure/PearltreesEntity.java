@@ -101,7 +101,7 @@ public abstract class PearltreesEntity extends FilesHandler {
 	 * 
 	 * @param filePath
 	 */
-	private void updateData(String filePath) {
+	public void updateData(String filePath) {
 		// TODO L'implémenter avec w3c puis voir pour implémenter le pattern
 		// pour ajouter un comportement
 		// https://docs.oracle.com/javase/7/docs/api/org/w3c/dom/package-summary.html
