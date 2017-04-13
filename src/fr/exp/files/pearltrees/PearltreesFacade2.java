@@ -9,7 +9,6 @@ import java.nio.file.Path;
 
 import fr.exp.files.pearltrees.composite.PearltreesConstructor;
 import fr.exp.files.pearltrees.composite.impl.PearltreesComponent;
-import fr.exp.files.pearltrees.treestructure.PearltreesFolder;
 
 public class PearltreesFacade2 {
 
@@ -92,7 +91,7 @@ public class PearltreesFacade2 {
 		sb.append("<Title>Pearltrees Export</Title>\n");
 		sb.append("<H1>Pearltrees Export</H1>\n");
 		sb.append("<DL><p>\n");
-		sb.append(pearlTreesExportData.printAsHtml());
+		sb.append(pearlTreesExportData.printAsHtml(0));
 		sb.append("</DL><p>\n");
 		return sb.toString();
 	}

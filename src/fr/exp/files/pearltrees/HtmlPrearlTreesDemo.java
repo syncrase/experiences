@@ -13,7 +13,11 @@ public class HtmlPrearlTreesDemo {
 		// print(fileContent != "" ? fileContent : "Unable to get
 		// the file content");
 
-		PearltreesFacade pearltreesFacade = new PearltreesFacade("files/pearltrees_export-25-12-2016.html");
+		/**
+		 * 1er jet
+		 */
+		// PearltreesFacade pearltreesFacade = new
+		// PearltreesFacade("files/pearltrees_export-25-12-2016.html");
 
 		// PearltreesFolder pearlTreesModel =
 		// pearltreesFacade.getPearlTreesModel();
@@ -21,11 +25,18 @@ public class HtmlPrearlTreesDemo {
 		// print(pearltreesFacade.getFoldedTags());
 		// print(pearltreesFacade.getTreeWithoutLeafs());
 		// print(pearltreesFacade.getTree());
-		System.out.println(pearltreesFacade.getHtml());
+		// print(pearltreesFacade.getHtml());
 		//
 		// pearltreesHandler.writeHtmlFile("files/my_pearltrees_export.html");
 		// pearltreesHandler.saveInDataBase();
 
+		/**
+		 * 2nd jet
+		 */
+		PearltreesFacade2 pearltreesFacade2 = new PearltreesFacade2("files/pearltrees_export-25-12-2016.html");
+		// print(pearltreesFacade2.getFoldedTags());
+		// print(pearltreesFacade2.getHtml());
+		System.out.println(pearltreesFacade2.getHtml());
 		// Sauvegarde du résultat en base de données
 		// Structure de dossier -> le tag complexe de chaque url doit être son
 		// path dans la struture de dossiers

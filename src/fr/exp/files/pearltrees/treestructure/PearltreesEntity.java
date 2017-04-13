@@ -6,10 +6,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import fr.exp.files.pearltrees.Document;
 import fr.exp.files.pearltrees.FilesHandler;
 
 public abstract class PearltreesEntity extends FilesHandler {

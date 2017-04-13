@@ -14,8 +14,20 @@ public class PearltreesComposite extends RecursiveFolderBuilder implements Pearl
 	private List<PearltreesComponent> childComponent = new ArrayList<PearltreesComponent>();
 
 	@Override
-	public String printAsHtml() {
-		return null;
+	public String printAsHtml(int depth) {
+		String returnedString = "";
+		String tab = "";
+		for (int i = 0; i < depth; i++) {
+			tab += "\t";
+		}
+		returnedString += tab + "<DT><H3 FOLDED ADD_DATE=\"1364146937\">" + this.folderName + "</H3>\n";
+		returnedString += tab + "<DD><DL><p>\n";
+		for (PearltreesComponent component : childComponent) {
+			returnedString += component.printAsHtml(depth + 1);
+		}
+
+		returnedString += tab + "</DL><p>\n";
+		return returnedString;
 	}
 
 	// Adds the graphic to the composition.

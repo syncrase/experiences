@@ -2,16 +2,16 @@ package fr.exp.files.pearltrees.composite;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import fr.exp.files.pearltrees.composite.impl.PearltreesComponent;
 import fr.exp.files.pearltrees.composite.impl.PearltreesComposite;
-import fr.exp.files.pearltrees.treestructure.PearltreesEntity;
-import fr.exp.files.pearltrees.treestructure.PearltreesFolder;
-import fr.exp.files.pearltrees.treestructure.PearltreesUrl;
+import fr.exp.files.pearltrees.composite.impl.utils.RecursiveFolderBuilder;
 
-public class PearltreesConstructor {
+public class PearltreesConstructor extends RecursiveFolderBuilder {
 
 	PearltreesComponent content;
 
@@ -24,7 +24,8 @@ public class PearltreesConstructor {
 			doc = Jsoup.parse(input, "UTF-8");
 			Elements allElements = doc.getAllElements();
 			content = new PearltreesComposite();
-			this.buildObject(allElements, null);
+//			((PearltreesComposite) content).setFolderName("root");
+			this.buildObject(allElements, (PearltreesComposite) content);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
