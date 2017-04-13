@@ -6,7 +6,6 @@ public class PearltreesLeaf implements PearltreesComponent {
 
 	@Override
 	public String printAsHtml() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -11,8 +11,9 @@ import fr.exp.files.pearltrees.treestructure.PearltreesFolder;
 
 public class PearltreesFacade {
 
+//	private PearltreesFolder pearlTreesExportData;
 	private PearltreesFolder pearlTreesExportData;
-
+	
 	public PearltreesFacade(String filePath) {
 		this.pearlTreesExportData = new PearltreesFolder();
 		// this.pearlTreesEntity = new PearltreesEntity();

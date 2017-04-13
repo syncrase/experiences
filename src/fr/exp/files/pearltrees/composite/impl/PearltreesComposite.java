@@ -3,7 +3,9 @@ package fr.exp.files.pearltrees.composite.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PearltreesComposite implements PearltreesComponent {
+import fr.exp.files.pearltrees.composite.impl.utils.RecursiveFolderBuilder;
+
+public class PearltreesComposite extends RecursiveFolderBuilder implements PearltreesComponent {
 
 	private String folderName;
 
@@ -17,12 +19,12 @@ public class PearltreesComposite implements PearltreesComponent {
 	}
 
 	// Adds the graphic to the composition.
-	public void add(PearltreesComponent component) {
+	public void addChildComponent(PearltreesComponent component) {
 		childComponent.add(component);
 	}
 
 	// Removes the graphic from the composition.
-	public void remove(PearltreesComponent component) {
+	public void removeChildComponent(PearltreesComponent component) {
 		childComponent.remove(component);
 	}
 

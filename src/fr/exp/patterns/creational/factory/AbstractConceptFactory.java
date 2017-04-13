@@ -8,6 +8,7 @@ public abstract class AbstractConceptFactory {
 	 */
 	public static AbstractConceptFactory getAbstactConcept() {
 		// Decide which type to instanciate
+		// Ici il faut décider laquelle j'instancie => implémenter la condition
 		return new ConcreteConcept1();
 		// return new ConcreteConcept2();
 	}

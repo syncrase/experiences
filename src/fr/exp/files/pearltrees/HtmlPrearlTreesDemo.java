@@ -6,21 +6,21 @@ public class HtmlPrearlTreesDemo {
 
 		// obtient un objet représentant mon fichier html
 		// String fileContent = FilesHandler.getHtmlFileContent(filePath);
-		// System.out.println(fileContent != "" ? fileContent : "Unable to get
+		// Sprint(fileContent != "" ? fileContent : "Unable to get
 		// the file content");
 
 		// fileContent = FilesHandler.getPearlTreesExportContent(filePath);
-		// System.out.println(fileContent != "" ? fileContent : "Unable to get
+		// print(fileContent != "" ? fileContent : "Unable to get
 		// the file content");
 
 		PearltreesFacade pearltreesFacade = new PearltreesFacade("files/pearltrees_export-25-12-2016.html");
 
 		// PearltreesFolder pearlTreesModel =
 		// pearltreesFacade.getPearlTreesModel();
-		// System.out.println(pearltreesFacade.toString());
-		// System.out.println(pearltreesFacade.getFoldedTags());
-		// System.out.println(pearltreesFacade.getTreeWithoutLeafs());
-		// System.out.println(pearltreesFacade.getTree());
+		// print(pearltreesFacade.toString());
+		// print(pearltreesFacade.getFoldedTags());
+		// print(pearltreesFacade.getTreeWithoutLeafs());
+		// print(pearltreesFacade.getTree());
 		System.out.println(pearltreesFacade.getHtml());
 		//
 		// pearltreesHandler.writeHtmlFile("files/my_pearltrees_export.html");
@@ -43,9 +43,9 @@ public class HtmlPrearlTreesDemo {
 		// fichier! ==>> Bosser sur le pattern adéquat! (builder, factory?)
 	}
 
-	// private static void print(String msg, Object... args) {
-	// System.out.println(String.format(msg, args));
-	// }
+	private static void print(String msg, Object... args) {
+		System.out.println(String.format(msg, args));
+	}
 	//
 	// private static String trim(String s, int width) {
 	// if (s.length() > width)
