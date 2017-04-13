@@ -31,58 +31,13 @@ public class PearltreesConstructor {
 
 	}
 
-	public static PearltreesComponent getComponent(String filePath){
+	public static PearltreesComponent getComponent(String filePath) {
 		PearltreesConstructor contructor = new PearltreesConstructor(filePath);
 		return contructor.getContent();
 	}
 
-	public PearltreesComponent getContent() {
+	private PearltreesComponent getContent() {
 		return content;
 	}
-	
-	
-//	private void buildObject(Elements allElements, PearltreesComposite currentFolder) {
-//		PearltreesComponent component = null;
-//		boolean lookForFolderContent = false;
-//		Element src;
-//		String url, value;
-//		for (int i = 0; i < allElements.size(); i++) {
-//			src = allElements.get(i);
-//			if (!lookForFolderContent) {
-//				if (src.tagName().equals("h3")) {
-//					component = new PearltreesComposite();
-//					component.setFolderName(src.ownText());
-//					currentFolder.add(component);
-//
-//					// ((PearltreesFolder) entity).setIsFolder(true);
-//					// this.addEntity(entity);
-//					lookForFolderContent = true;
-//				}
-//				if (src.tagName().equals("a")) {
-//					url = src.attr("href");
-//					value = src.ownText();
-//					try {
-//						// entity = new PearltreesUrl(new URL(url));
-//						// ((PearltreesUrl) entity).setValue(value);
-//						// ((PearltreesUrl) entity).setIsFolder(false);
-//						// this.addEntity(entity);
-//					} catch (MalformedURLException e) {
-//						e.printStackTrace();
-//					}
-//				}
-//			} else {
-//				// If I am here it's because I've found an h3 tag and I'm
-//				// waiting for the whole content in the dl tag
-//				if (src.tagName().equals("dl")) {
-//					// L'objet entity à déjà été ajouté à la liste des
-//					// folders
-//					// L'appel récursif de buildObject oblige
-//					this.buildObject(src.getAllElements());
-//					lookForFolderContent = false;
-//					// Go after all the previous computed 'wholeContent'
-//					i += src.getAllElements().size();
-//				}
-//			}
-//		}
-//	}
+
 }
