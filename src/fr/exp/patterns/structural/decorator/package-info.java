@@ -19,6 +19,6 @@ package fr.exp.patterns.structural.decorator;
  * dynamiquement de nouvelles responsabilités à un objet. Les décorateurs
  * offrent une alternative assez souple à l'héritage pour composer de nouvelles
  * fonctionnalités.
- * Permet de compléter le comportement d'une méthode de la AbstractDecoratorClass
+ * Permet de compléter le comportement d'une méthode de la AbstractDecoratorClass (ici, SimpleCoffee.java)
  * 
  */

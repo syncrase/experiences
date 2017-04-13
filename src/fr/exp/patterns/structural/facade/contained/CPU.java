@@ -1,4 +1,4 @@
-package fr.exp.patterns.structural.facade;
+package fr.exp.patterns.structural.facade.contained;
 
 public class CPU {
 	public void freeze() {

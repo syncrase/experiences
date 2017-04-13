@@ -1,4 +1,4 @@
-package fr.exp.patterns.structural.facade;
+package fr.exp.patterns.structural.facade.contained;
 
 public class HardDrive {
 	public byte[] read(long lba, int size) {

@@ -1,4 +1,8 @@
-package fr.exp.patterns.structural.facade;
+package fr.exp.patterns.structural.facade.container;
+
+import fr.exp.patterns.structural.facade.contained.CPU;
+import fr.exp.patterns.structural.facade.contained.HardDrive;
+import fr.exp.patterns.structural.facade.contained.Memory;
 
 //Facade
 public class Computer {
