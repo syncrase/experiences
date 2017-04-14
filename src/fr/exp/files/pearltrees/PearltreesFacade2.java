@@ -26,13 +26,14 @@ public class PearltreesFacade2 {
 			// composé
 			// Dans la base de données
 			// * Pour les urls taggées
-			// 1 tables urls
-			// 1 tables tags
-			// 1 tables de liaison url_tags (id_url, id_tags, id_tag_path)
+			// 1 table urls (id, url, label)
+			// 1 table tags (id, tag)
+			// 1 table de liaison url_tags (id, id_url, id_tagS, --non id_tag_path-- )
+			// 1 table de liaison tag_path (id, id_url_tagsS)
 			
 			// TODO
 			// --> pour 1 url, plusieurs tags, 1 path
-			// --> pour cette même url, même tag de base
+			// --> pour cette même url, même tag de base pour un autre path
 			
 			
 			// * Pour les folded tags
