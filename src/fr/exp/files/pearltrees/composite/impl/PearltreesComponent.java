@@ -1,7 +1,14 @@
 package fr.exp.files.pearltrees.composite.impl;
 
+import java.util.ArrayList;
+
+import fr.exp.files.pearltrees.database.models.TaggedUrl;
+
 public interface PearltreesComponent {
 
-	// Print recursively
-	public String printAsHtml(int depth);
+	public String getHtmlFormat(int depth);
+
+	// public String getFoldedTags(String path);
+
+	public ArrayList<TaggedUrl> getFoldedTags(ArrayList<String> path);
 }

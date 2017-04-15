@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.exp.files.pearltrees.composite.impl.utils.RecursiveFolderBuilder;
+import fr.exp.files.pearltrees.database.models.TaggedUrl;
 
 public class PearltreesComposite extends RecursiveFolderBuilder implements PearltreesComponent {
 
@@ -14,7 +15,7 @@ public class PearltreesComposite extends RecursiveFolderBuilder implements Pearl
 	private List<PearltreesComponent> childComponent = new ArrayList<PearltreesComponent>();
 
 	@Override
-	public String printAsHtml(int depth) {
+	public String getHtmlFormat(int depth) {
 		String returnedString = "";
 		String tab = "";
 		for (int i = 0; i < depth; i++) {
@@ -23,11 +24,37 @@ public class PearltreesComposite extends RecursiveFolderBuilder implements Pearl
 		returnedString += tab + "<DT><H3 FOLDED ADD_DATE=\"1364146937\">" + this.folderName + "</H3>\n";
 		returnedString += tab + "<DD><DL><p>\n";
 		for (PearltreesComponent component : childComponent) {
-			returnedString += component.printAsHtml(depth + 1);
+			returnedString += component.getHtmlFormat(depth + 1);
 		}
 
 		returnedString += tab + "</DL><p>\n";
 		return returnedString;
+	}
+
+	// @Override
+	// public String getFoldedTags(String path) {
+	// String returnedString = "";
+	// path += this.folderName + "/";
+	//// returnedString += path;// + this.folderName + "/"
+	//// returnedString += "\n";
+	// for (PearltreesComponent entity : this.childComponent) {
+	// returnedString += entity.getFoldedTags(path);// + this.folderName +
+	// // "/"
+	// }
+	// return returnedString;
+	// }
+
+	@Override
+	public ArrayList<TaggedUrl> getFoldedTags(ArrayList<String> path) {
+		ArrayList<TaggedUrl> taggedUrlList = new ArrayList<TaggedUrl>();
+		ArrayList<String> tempPath;
+		for (PearltreesComponent entity : this.childComponent) {
+			tempPath = new ArrayList<String>();
+			tempPath.addAll(path);
+			tempPath.add(folderName);
+			taggedUrlList.addAll(entity.getFoldedTags(tempPath));
+		}
+		return taggedUrlList;
 	}
 
 	// Adds the graphic to the composition.

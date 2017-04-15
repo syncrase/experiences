@@ -6,9 +6,11 @@ import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 import fr.exp.files.pearltrees.composite.PearltreesConstructor;
 import fr.exp.files.pearltrees.composite.impl.PearltreesComponent;
+import fr.exp.files.pearltrees.database.models.TaggedUrl;
 
 public class PearltreesFacade2 {
 
@@ -28,20 +30,18 @@ public class PearltreesFacade2 {
 			// * Pour les urls taggées
 			// 1 table urls (id, url, label)
 			// 1 table tags (id, tag)
-			// 1 table de liaison url_tags (id, id_url, id_tagS, --non id_tag_path-- )
-			// 1 table de liaison tag_path (id, id_url_tagsS)
-			
+			// 1 table de liaison url_tags (id, id_url, id_tagS, --non
+			// id_tag_path-- )
+			// 1 table de liaison tag_path (id, id_url_tagsS, id_path)
+
 			// TODO
 			// --> pour 1 url, plusieurs tags, 1 path
 			// --> pour cette même url, même tag de base pour un autre path
-			
-			
-			// * Pour les folded tags
-			// 1 tables de liaison folded_tags pour enregistrer les path de tags
-			// id_parent_tag, id_child_tag, id_tag_path
-			// id_path permet de rendre unique un path (un certain tag peut
-			// avoir plusieurs parents et/ou enfant => permet de rendre unique
-			// un path)
+
+			// Get all taggedUrls
+
+			// Write each taggedUrl in db
+
 			throw new Exception("saveInDataBase isn't yet implemented");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -80,9 +80,22 @@ public class PearltreesFacade2 {
 		return "";
 	}
 
+	// public String getFoldedTags() {
+	// return pearlTreesExportData.getFoldedTags("");
+	// }
+
 	public String getFoldedTags() {
-		// return pearlTreesExportData.toString_listOfPaths("");
-		return "";
+		// return pearlTreesExportData.getFoldedTags("");
+		ArrayList<TaggedUrl> taggedUrlList = this.getFoldedTagsList();
+		String returnedString = "";
+		for (TaggedUrl taggedUrl : taggedUrlList) {
+			returnedString += taggedUrl.getPath() + taggedUrl.getUrl().getLabel() + "\n";
+		}
+		return returnedString;
+	}
+
+	public ArrayList<TaggedUrl> getFoldedTagsList() {
+		return pearlTreesExportData.getFoldedTags(new ArrayList<String>());
 	}
 
 	public String getHtml() {
@@ -109,7 +122,7 @@ public class PearltreesFacade2 {
 		sb.append("<Title>Pearltrees Export</Title>\n");
 		sb.append("<H1>Pearltrees Export</H1>\n");
 		sb.append("<DL><p>\n");
-		sb.append(pearlTreesExportData.printAsHtml(0));
+		sb.append(pearlTreesExportData.getHtmlFormat(0));
 		sb.append("</DL><p>\n");
 		return sb.toString();
 	}

@@ -1,12 +1,19 @@
 package fr.exp.files.pearltrees.composite.impl;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+
+import fr.exp.files.pearltrees.database.models.TaggedUrl;
+import fr.exp.files.pearltrees.database.models.Url;
+
 public class PearltreesLeaf implements PearltreesComponent {
 
 	private String url;
 	private String label;
 
 	@Override
-	public String printAsHtml(int depth) {
+	public String getHtmlFormat(int depth) {
 		String returnedString = "";
 		String tab = "";
 		for (int i = 0; i < depth; i++) {
@@ -34,6 +41,26 @@ public class PearltreesLeaf implements PearltreesComponent {
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	// @Override
+	// public String getFoldedTags(String path) {
+	// return path + this.label + "\n";// path + "\n"
+	// // + this.label;
+	// }
+
+	@Override
+	public ArrayList<TaggedUrl> getFoldedTags(ArrayList<String> path) {
+		Url url = null;
+		try {
+			url = new Url(new URL(this.url), this.label);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		TaggedUrl taggedUrl = new TaggedUrl(url, path);
+		ArrayList<TaggedUrl> returnedList = new ArrayList<TaggedUrl>();
+		returnedList.add(taggedUrl);
+		return returnedList;
 	}
 
 }
