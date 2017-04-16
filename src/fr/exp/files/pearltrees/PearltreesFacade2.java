@@ -29,12 +29,6 @@ public class PearltreesFacade2 {
 			// Ajout dans la base de données de chaque url associées à son tag
 			// composé
 			// Dans la base de données
-			// * Pour les urls taggées
-			// 1 table urls (id, url, label)
-			// 1 table tags (id, tag)
-			// 1 table de liaison url_tags (id, id_url, id_tagS, --non
-			// id_tag_path-- )
-			// 1 table de liaison tag_path (id, id_url_tagsS, id_path)
 
 			// Get all taggedUrls
 			ArrayList<TaggedUrl> taggedUrlList = this.getFoldedTagsList();
@@ -50,8 +44,6 @@ public class PearltreesFacade2 {
 
 	public String toString() {
 		return pearlTreesExportData.toString();
-		// return pearlTreesEntity.toString();
-		// return pearltreesStructureBuilder.toString();
 	}
 
 	/**
@@ -79,10 +71,6 @@ public class PearltreesFacade2 {
 		// return pearlTreesExportData.toString_asATree(0, true, true);
 		return "";
 	}
-
-	// public String getFoldedTags() {
-	// return pearlTreesExportData.getFoldedTags("");
-	// }
 
 	public String getFoldedTags() {
 		ArrayList<TaggedUrl> taggedUrlList = this.getFoldedTagsList();
@@ -124,6 +112,11 @@ public class PearltreesFacade2 {
 		sb.append(pearlTreesExportData.getHtmlFormat(0));
 		sb.append("</DL><p>\n");
 		return sb.toString();
+	}
+
+	public void loadFromDataBase() {
+		// TODO Construction du pearltreesComponent à partir de la bdd
+		
 	}
 
 }
