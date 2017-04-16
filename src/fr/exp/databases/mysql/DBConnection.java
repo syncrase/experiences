@@ -2,6 +2,7 @@ package fr.exp.databases.mysql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,6 +13,7 @@ public class DBConnection {
 
 	private static Connection connection = null;
 	private static Map<String, Statement> statementsPool = new HashMap<String, Statement>();
+	private static Map<String, PreparedStatement> preparedStatementsPool = new HashMap<String, PreparedStatement>();
 
 	/**
 	 * 
@@ -77,8 +79,8 @@ public class DBConnection {
 	}
 
 	public static Statement getCurrentStatement() {
-		Statement currentStatement = null;
-		if (statementsPool.get("current") == null) {
+		Statement currentStatement = statementsPool.get("current");
+		if (currentStatement == null) {
 			currentStatement = DBConnection.getStatement("current");
 		}
 		return currentStatement;
@@ -103,12 +105,38 @@ public class DBConnection {
 		return DBConnection.addStatement(statementName, DBConnection.getConnection().createStatement());
 	}
 
+	private static PreparedStatement getNewPreparedStatement(String statementName, String query) throws SQLException {
+		return (PreparedStatement) DBConnection.addPreparedStatement(statementName,
+				DBConnection.getConnection().prepareStatement(query));
+	}
+
 	private static Statement addStatement(String name, Statement createStatement) {
 		statementsPool.put(name, createStatement);
 		return createStatement;
 	}
 
+	private static Statement addPreparedStatement(String name, PreparedStatement createStatement) {
+		preparedStatementsPool.put(name, createStatement);
+		return createStatement;
+	}
+
 	public static ResultSet executeQuery(String query) throws SQLException {
 		return DBConnection.getCurrentStatement().executeQuery(query);
+	}
+
+	public static PreparedStatement getPreparedStatement(String query) {
+		// PreparedStatement statementTEMP = null;
+		// = preparedStatementsPool.get("current");
+		PreparedStatement currentStatement = null;
+		// if (statementTEMP == null) {
+		try {
+			currentStatement = DBConnection.getNewPreparedStatement("current", query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		// } else {
+		// currentStatement = statementTEMP;
+		// }
+		return currentStatement;
 	}
 }

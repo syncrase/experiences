@@ -4,13 +4,22 @@ import java.util.ArrayList;
 
 public class TaggedUrl {
 
+	private int id;
 	private Url url;
-	private ArrayList<String> tags;
+	private ArrayList<Tag> tags;
 
-	public TaggedUrl(Url url, ArrayList<String> tags) {
+	public TaggedUrl(Url url, ArrayList<Tag> tags) {
 		super();
 		this.url = url;
 		this.tags = tags;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Url getUrl() {
@@ -21,18 +30,18 @@ public class TaggedUrl {
 		this.url = url;
 	}
 
-	public ArrayList<String> getTags() {
+	public ArrayList<Tag> getTags() {
 		return tags;
 	}
 
-	public void setTags(ArrayList<String> tags) {
+	public void setTags(ArrayList<Tag> tags) {
 		this.tags = tags;
 	}
 
 	public String getPath() {
 		String returnedString = "";
-		for (String s : tags) {
-			returnedString += s + "/";
+		for (Tag s : tags) {
+			returnedString += s.getTag() + "/";
 		}
 		return returnedString;
 	}

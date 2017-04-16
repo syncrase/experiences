@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 import fr.exp.files.pearltrees.composite.PearltreesConstructor;
 import fr.exp.files.pearltrees.composite.impl.PearltreesComponent;
+import fr.exp.files.pearltrees.database.TaggedUrlWriter;
+import fr.exp.files.pearltrees.database.models.Tag;
 import fr.exp.files.pearltrees.database.models.TaggedUrl;
 
 public class PearltreesFacade2 {
@@ -34,15 +36,13 @@ public class PearltreesFacade2 {
 			// id_tag_path-- )
 			// 1 table de liaison tag_path (id, id_url_tagsS, id_path)
 
-			// TODO
-			// --> pour 1 url, plusieurs tags, 1 path
-			// --> pour cette même url, même tag de base pour un autre path
-
 			// Get all taggedUrls
-
+			ArrayList<TaggedUrl> taggedUrlList = this.getFoldedTagsList();
 			// Write each taggedUrl in db
-
-			throw new Exception("saveInDataBase isn't yet implemented");
+			TaggedUrlWriter writer = new TaggedUrlWriter();
+			for (TaggedUrl taggedUrl : taggedUrlList) {
+				writer.write(taggedUrl);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -85,7 +85,6 @@ public class PearltreesFacade2 {
 	// }
 
 	public String getFoldedTags() {
-		// return pearlTreesExportData.getFoldedTags("");
 		ArrayList<TaggedUrl> taggedUrlList = this.getFoldedTagsList();
 		String returnedString = "";
 		for (TaggedUrl taggedUrl : taggedUrlList) {
@@ -95,7 +94,7 @@ public class PearltreesFacade2 {
 	}
 
 	public ArrayList<TaggedUrl> getFoldedTagsList() {
-		return pearlTreesExportData.getFoldedTags(new ArrayList<String>());
+		return pearlTreesExportData.getFoldedTags(new ArrayList<Tag>());
 	}
 
 	public String getHtml() {
