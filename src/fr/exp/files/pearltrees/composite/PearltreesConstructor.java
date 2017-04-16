@@ -24,7 +24,6 @@ public class PearltreesConstructor extends RecursiveFolderBuilder {
 			doc = Jsoup.parse(input, "UTF-8");
 			Elements allElements = doc.getAllElements();
 			content = new PearltreesComposite();
-//			((PearltreesComposite) content).setFolderName("root");
 			this.buildObject(allElements, (PearltreesComposite) content);
 		} catch (IOException e) {
 			e.printStackTrace();
