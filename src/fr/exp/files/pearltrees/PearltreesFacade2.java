@@ -76,7 +76,7 @@ public class PearltreesFacade2 {
 		ArrayList<TaggedUrl> taggedUrlList = this.getFoldedTagsList();
 		String returnedString = "";
 		for (TaggedUrl taggedUrl : taggedUrlList) {
-			returnedString += taggedUrl.getPath() + taggedUrl.getUrl().getLabel() + "\n";
+			returnedString += taggedUrl.getFullPath() + taggedUrl.getUrl().getLabel() + "\n";
 		}
 		return returnedString;
 	}
@@ -114,13 +114,23 @@ public class PearltreesFacade2 {
 		return sb.toString();
 	}
 
-	public void loadFromDataBase() {
+	public String loadFromDataBase() {
 		// TODO Construction du pearltreesComponent à partir de la bdd
-		
-		
-		// Parcours de toutes les urls pour les ajouter une a une à l'objet pearlTreesExportData
-		
-		
+
+		// Parcours de toutes les urls pour les ajouter une a une à l'objet
+		// pearlTreesExportData
+
+		TaggedUrlWriter writer = new TaggedUrlWriter();
+		ArrayList<TaggedUrl> taggedUrlList;
+		taggedUrlList = writer.read();
+
+		StringBuilder sb = new StringBuilder();
+		for (TaggedUrl taggedUrl : taggedUrlList) {
+			sb.append(taggedUrl.getFullPath() + taggedUrl.getUrl().getLabel()+"\n");
+//			sb.append("");
+//			sb.append("");
+		}
+		return sb.toString();
 	}
 
 }

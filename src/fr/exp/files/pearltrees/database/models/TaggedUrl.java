@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 public class TaggedUrl {
 
+	@Deprecated
 	private int id;
 	private Url url;
 	private ArrayList<Tag> tags;
+	private int path;
 
 	public TaggedUrl(Url url, ArrayList<Tag> tags) {
 		super();
@@ -14,10 +16,21 @@ public class TaggedUrl {
 		this.tags = tags;
 	}
 
+	public TaggedUrl(Url url, Tag tag, int path) {
+		super();
+		this.url = url;
+		// if (this.tags == null)
+		this.tags = new ArrayList<Tag>();
+		this.tags.add(tag);
+		this.path = path;
+	}
+
+	@Deprecated
 	public int getId() {
 		return id;
 	}
 
+	@Deprecated
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -38,12 +51,20 @@ public class TaggedUrl {
 		this.tags = tags;
 	}
 
-	public String getPath() {
+	public String getFullPath() {
 		String returnedString = "";
 		for (Tag s : tags) {
 			returnedString += s.getTag() + "/";
 		}
 		return returnedString;
+	}
+
+	public void setPath(int path) {
+		this.path = path;
+	}
+
+	public int getPath() {
+		return path;
 	}
 
 }
