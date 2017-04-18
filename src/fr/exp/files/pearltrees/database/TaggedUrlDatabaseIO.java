@@ -3,6 +3,7 @@ package fr.exp.files.pearltrees.database;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import fr.exp.databases.mysql.DBConnection;
@@ -11,7 +12,7 @@ import fr.exp.files.pearltrees.database.models.Tag;
 import fr.exp.files.pearltrees.database.models.TaggedUrl;
 import fr.exp.files.pearltrees.database.models.Url;
 
-public class TaggedUrlWriter {
+public class TaggedUrlDatabaseIO {
 
 	public void write(TaggedUrl taggedUrl) {
 		PreparedStatement insertIntoLiaisonUrlTagStatement, insertIntoLiaisonFoldedTagsStatement;
@@ -174,23 +175,44 @@ public class TaggedUrlWriter {
 			// Parcours récursif de l'arbre et ajout du tag parent récursivement
 			// Map accessible par singleton
 			for (TaggedUrl obtainedTaggedUrl : pool.getArrayList()) {
-				query += "SELECT * "// U.id_url U.url U.label T.tag
-						+ "FROM urls U, liaison_url_tags L, tags T, liaison_folded_tag F "
+				query = "SELECT * "// U.id_url U.url U.label T.tag
+						+ "FROM liaison_url_tags L, liaison_folded_tags F, tags T "
 						// " + DBInfo.DBName + ".
 						// + "WHERE L.id_url = U.id_url AND T.id_tag =
 						// L.id_tag";
-						+ "WHERE L.id_url = " + obtainedTaggedUrl.getUrl().getId_url() + " AND L.id_path = F.id_path AND F.id_tag = T.id_tag";
+						+ "WHERE L.id_url = " + obtainedTaggedUrl.getUrl().getId_url()
+						+ " AND L.id_path = F.id_path AND F.id_parent_tag  = T.id_tag";
 				resultSet = DBConnection.executeQuery(query);
-				while(resultSet.next()){
+				while (resultSet.next()) {
 					// Je récupère tous les tags et je les ajoute à mon objet
-					obtainedTaggedUrl.addTag(new Tag(resultSet.getInt("id_tag"), resultSet.getString("tag")), resultSet.getInt("id_parent_tag"));
+					obtainedTaggedUrl.addTag(new Tag(resultSet.getInt("id_tag"), resultSet.getString("tag")),
+							resultSet.getInt("id_parent_tag"));
 				}
-				
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		return pool.getArrayList();
+	}
+
+	public void deleteAll() {
+
+		PreparedStatement delete = DBConnection.getPreparedStatement("DELETE FROM `liaison_folded_tags` WHERE 1");
+		try {
+			delete.executeUpdate();
+			delete = DBConnection.getPreparedStatement("DELETE FROM `liaison_url_tags` WHERE 1");
+			delete.executeUpdate();
+			delete = DBConnection.getPreparedStatement("DELETE FROM `tags` WHERE 1");
+			delete.executeUpdate();
+			delete = DBConnection.getPreparedStatement("DELETE FROM `urls` WHERE 1");
+			delete.executeUpdate();
+			delete = DBConnection.getPreparedStatement("DELETE FROM `paths` WHERE 1");
+			delete.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 }

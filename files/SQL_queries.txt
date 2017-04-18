@@ -21,3 +21,8 @@ SELECT * FROM urls U, liaison_url_tags L, tags T, liaison_folded_tags F WHERE U.
 
 
 AND F.id_parent_tag = T.id_tag
+
+
+SELECT * FROM urls U, liaison_url_tags L, liaison_folded_tags F, tags T WHERE L.id_url = 19774 AND L.id_path = F.id_path AND F.id_tag = T.id_tag
+SELECT * FROM liaison_url_tags L, liaison_folded_tags F, tags T WHERE L.id_url = 19774 AND L.id_path = F.id_path AND F.id_tag = T.id_tag
+SELECT * FROM liaison_url_tags L, liaison_folded_tags F, tags T WHERE L.id_url = 19779 AND L.id_path = F.id_path AND F.id_parent_tag = T.id_tag
