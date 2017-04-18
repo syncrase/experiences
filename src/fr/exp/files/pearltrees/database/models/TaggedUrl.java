@@ -67,4 +67,14 @@ public class TaggedUrl {
 		return path;
 	}
 
+	/**
+	 * Ajoute un tag dans la liste de tag.
+	 * @param tag
+	 * @param id_parent_tag
+	 */
+	public void addTag(Tag tag, int id_parent_tag) {
+		tags.add(tag);
+		
+	}
+
 }

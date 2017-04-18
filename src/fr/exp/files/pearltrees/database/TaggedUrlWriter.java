@@ -173,12 +173,20 @@ public class TaggedUrlWriter {
 
 			// Parcours récursif de l'arbre et ajout du tag parent récursivement
 			// Map accessible par singleton
-			query += "SELECT * "// U.id_url U.url U.label T.tag
-					+ "FROM urls U, liaison_url_tags L, tags T "
-					// " + DBInfo.DBName + ".
-					+ "WHERE L.id_url = U.id_url AND T.id_tag = L.id_tag";
-			resultSet = DBConnection.executeQuery(query);
-
+			for (TaggedUrl obtainedTaggedUrl : pool.getArrayList()) {
+				query += "SELECT * "// U.id_url U.url U.label T.tag
+						+ "FROM urls U, liaison_url_tags L, tags T, liaison_folded_tag F "
+						// " + DBInfo.DBName + ".
+						// + "WHERE L.id_url = U.id_url AND T.id_tag =
+						// L.id_tag";
+						+ "WHERE L.id_url = " + obtainedTaggedUrl.getUrl().getId_url() + " AND L.id_path = F.id_path AND F.id_tag = T.id_tag";
+				resultSet = DBConnection.executeQuery(query);
+				while(resultSet.next()){
+					// Je récupère tous les tags et je les ajoute à mon objet
+					obtainedTaggedUrl.addTag(new Tag(resultSet.getInt("id_tag"), resultSet.getString("tag")), resultSet.getInt("id_parent_tag"));
+				}
+				
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

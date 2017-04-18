@@ -2,12 +2,13 @@ package fr.exp.files.pearltrees.database.models;
 
 public class Tag {
 
-	private int id;
+	private int id_tag;
 	private String tag;
+	private int id_parent_tag;
 
 	public Tag(int id, String tag) {
 		super();
-		this.id = id;
+		this.id_tag = id;
 		this.tag = tag;
 	}
 
@@ -17,11 +18,11 @@ public class Tag {
 	}
 
 	public int getId() {
-		return id;
+		return id_tag;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.id_tag = id;
 	}
 
 	public String getTag() {
