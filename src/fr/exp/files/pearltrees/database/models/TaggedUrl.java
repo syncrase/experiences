@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 public class TaggedUrl {
 
-	@Deprecated
-	private int id;
 	private Url url;
 	private ArrayList<Tag> tags;
 	private int path;
@@ -23,16 +21,6 @@ public class TaggedUrl {
 		this.tags = new ArrayList<Tag>();
 		this.tags.add(tag);
 		this.path = path;
-	}
-
-	@Deprecated
-	public int getId() {
-		return id;
-	}
-
-	@Deprecated
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public Url getUrl() {
@@ -69,12 +57,13 @@ public class TaggedUrl {
 
 	/**
 	 * Ajoute un tag dans la liste de tag.
+	 * 
 	 * @param tag
 	 * @param id_parent_tag
 	 */
 	public void addTag(Tag tag, int id_parent_tag) {
 		tags.add(tag);
-		
+
 	}
 
 }

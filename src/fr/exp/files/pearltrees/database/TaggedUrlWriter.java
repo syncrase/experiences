@@ -24,7 +24,7 @@ public class TaggedUrlWriter {
 			insertIntoTagsStatement.setString(2, taggedUrl.getUrl().getLabel());
 			insertIntoTagsStatement.executeUpdate();
 
-			taggedUrl.setId(getLastInsertedId("id_url", "urls"));
+			taggedUrl.getUrl().setId_url(getLastInsertedId("id_url", "urls"));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -48,14 +48,14 @@ public class TaggedUrlWriter {
 					insertIntoTagsStatement.executeUpdate();
 					id_tag = getLastInsertedId("id_tag", "tags");
 				}
-				taggedUrl.getTags().get(i).setId(id_tag);
+				taggedUrl.getTags().get(i).setId_tag(id_tag);
 
 				// Enregistrement dans la table folded url pour avoir le parent
 				// de ce tag
 				if (i > 0) {
 					insertIntoLiaisonFoldedTagsStatement.setInt(1, id_path);
-					insertIntoLiaisonFoldedTagsStatement.setInt(2, taggedUrl.getTags().get(i).getId());
-					insertIntoLiaisonFoldedTagsStatement.setInt(3, taggedUrl.getTags().get(i - 1).getId());
+					insertIntoLiaisonFoldedTagsStatement.setInt(2, taggedUrl.getTags().get(i).getId_tag());
+					insertIntoLiaisonFoldedTagsStatement.setInt(3, taggedUrl.getTags().get(i - 1).getId_tag());
 					insertIntoLiaisonFoldedTagsStatement.executeUpdate();
 				}
 
@@ -63,8 +63,8 @@ public class TaggedUrlWriter {
 				// dernier uniquement, celui qui est directement associé à
 				// l'url)
 				if (i == taggedUrl.getTags().size() - 1) {
-					insertIntoLiaisonUrlTagStatement.setInt(1, taggedUrl.getId());
-					insertIntoLiaisonUrlTagStatement.setInt(2, taggedUrl.getTags().get(i).getId());
+					insertIntoLiaisonUrlTagStatement.setInt(1, taggedUrl.getUrl().getId_url());
+					insertIntoLiaisonUrlTagStatement.setInt(2, taggedUrl.getTags().get(i).getId_tag());
 					insertIntoLiaisonUrlTagStatement.setInt(3, id_path);
 					insertIntoLiaisonUrlTagStatement.executeUpdate();
 				}
