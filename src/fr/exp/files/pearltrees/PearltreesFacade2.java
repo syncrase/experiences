@@ -147,4 +147,10 @@ public class PearltreesFacade2 {
 		writer.deleteAll();
 	}
 
+	public String getTablesName() {
+		TaggedUrlDatabaseIO taggedUrlDatabaseIO = new TaggedUrlDatabaseIO();
+		
+		return taggedUrlDatabaseIO.getTablesName();
+	}
+
 }

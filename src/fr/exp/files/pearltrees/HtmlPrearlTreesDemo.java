@@ -40,7 +40,8 @@ public class HtmlPrearlTreesDemo {
 
 //		 pearltreesFacade2.deleteAll();
 //		pearltreesFacade2.saveInDataBase();
-		 print(pearltreesFacade2.loadFromDataBase());
+		print(pearltreesFacade2.getTablesName());
+//		 print(pearltreesFacade2.loadFromDataBase());
 
 		// Sauvegarde du résultat en base de données
 		// Structure de dossier -> le tag complexe de chaque url doit être son

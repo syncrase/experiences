@@ -244,4 +244,35 @@ public class TaggedUrlDatabaseIO {
 		}
 
 	}
+
+	public String getTablesName() {
+		// Cette méthode n'a rien à faire dans cette classe. Créer un classe
+		// DatabaseIO? DBConnection?
+		ResultSet resultSet;
+		String query = "";
+		String returnedString = "";
+		ArrayList<String> tableList = new ArrayList<String>();
+		// TODO Comment récupérer les urls et tous leurs tags dans une seule
+		// requête?
+		query += "SELECT TABLE_NAME FROM information_schema.tables "
+				+ "where TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA = 'pearltrees_data'";
+		// AND L.id_path = F.id_path
+		// AND F.id_parent = T.id_tag --> pas nécessaire puisque j'ai le
+		// path j'obtiens l'information id_parent dans le retour
+		try {
+			resultSet = DBConnection.executeQuery(query);
+			while (resultSet.next()) {
+				// TODO need some parse
+				tableList.add(resultSet.getString("TABLE_NAME"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		for (String tableName : tableList) {
+			returnedString += tableName + "\n";
+		}
+		return null;
+	}
 }
