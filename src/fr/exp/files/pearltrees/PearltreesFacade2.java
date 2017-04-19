@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import fr.exp.files.pearltrees.composite.PearltreesConstructor;
 import fr.exp.files.pearltrees.composite.impl.PearltreesComponent;
-import fr.exp.files.pearltrees.database.TaggedUrlWriter;
+import fr.exp.files.pearltrees.database.TaggedUrlDatabaseIO;
 import fr.exp.files.pearltrees.database.models.Tag;
 import fr.exp.files.pearltrees.database.models.TaggedUrl;
 
@@ -33,7 +33,7 @@ public class PearltreesFacade2 {
 			// Get all taggedUrls
 			ArrayList<TaggedUrl> taggedUrlList = this.getFoldedTagsList();
 			// Write each taggedUrl in db
-			TaggedUrlWriter writer = new TaggedUrlWriter();
+			TaggedUrlDatabaseIO writer = new TaggedUrlDatabaseIO();
 			for (TaggedUrl taggedUrl : taggedUrlList) {
 				writer.write(taggedUrl);
 			}
@@ -120,17 +120,26 @@ public class PearltreesFacade2 {
 		// Parcours de toutes les urls pour les ajouter une a une à l'objet
 		// pearlTreesExportData
 
-		TaggedUrlWriter writer = new TaggedUrlWriter();
+		TaggedUrlDatabaseIO writer = new TaggedUrlDatabaseIO();
+
+		// TODO faire en sorte que je reçoive un PearltreesComponent!!!
+		// Permettra d'utiliser les autres méthodes de la façade + avoir à
+		// disposition tous les IO pour construire l'objet
 		ArrayList<TaggedUrl> taggedUrlList;
 		taggedUrlList = writer.read();
 
 		StringBuilder sb = new StringBuilder();
 		for (TaggedUrl taggedUrl : taggedUrlList) {
-			sb.append(taggedUrl.getFullPath() + taggedUrl.getUrl().getLabel()+"\n");
-//			sb.append("");
-//			sb.append("");
+			sb.append(taggedUrl.getFullPath() + taggedUrl.getUrl().getLabel() + "\n");
+			// sb.append("");
+			// sb.append("");
 		}
 		return sb.toString();
+	}
+
+	public void deleteAll() {
+		TaggedUrlDatabaseIO writer = new TaggedUrlDatabaseIO();
+		writer.deleteAll();
 	}
 
 }
