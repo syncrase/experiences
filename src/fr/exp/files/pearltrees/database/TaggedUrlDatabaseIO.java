@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
@@ -31,7 +32,7 @@ public class TaggedUrlDatabaseIO {
 		}
 
 		int id_path = getUniqueIdPath(), id_tag;
-
+		LinkedList<FoldedTag> foldedTags;
 		// Enregistrement des folded tags
 		insertIntoTagsStatement = DBConnection
 				.getPreparedStatement("insert into " + DBInfo.DBName + ".tags (tag) values (?)");
@@ -48,6 +49,8 @@ public class TaggedUrlDatabaseIO {
 		// TODO Cas particulier : Toutes les urls ont un root_tag = syncrase.
 		// Comment
 		// cela se passe quand il y en a plusieurs?
+		// INFO dans le cadre de l'export pearltrees il n'y a tag (mais le tag
+		// est taggé!)
 		for (int i = 0; i < taggedUrl.getTags().size(); i++) {
 			try {
 				// Récupère l'id du tag s'il existe ou le créé
@@ -59,6 +62,18 @@ public class TaggedUrlDatabaseIO {
 				}
 				taggedUrl.getTags().get(i).setId_tag(id_tag);
 
+				// Enregistrement dans la table de liaison url tag (pour le
+				// dernier uniquement, celui qui est directement associé à
+				// l'url)
+				// TODO la condition n'est pas nécessaire puisqu'il faut que
+				// tous les tags soient des tags de 1er niveau
+				// if (i == taggedUrl.getTags().size() - 1) {
+				insertIntoLiaisonUrlTagStatement.setInt(1, taggedUrl.getUrl().getId_url());
+				insertIntoLiaisonUrlTagStatement.setInt(2, taggedUrl.getTags().get(i).getId_tag());
+				insertIntoLiaisonUrlTagStatement.setInt(3, id_path);
+				insertIntoLiaisonUrlTagStatement.executeUpdate();
+				// }
+
 				// Enregistrement dans la table folded url pour avoir le parent
 				// de ce tag
 				// TODO à utiliser dans chaque cas, pour chaque tag de 1er
@@ -69,24 +84,23 @@ public class TaggedUrlDatabaseIO {
 				// LinkedList<FoldedTag> foldedTagsList =
 				// taggedUrl.getTags().get(i).getFullPath();
 				// Avec cette liste je peux traiter tous les tags parents
-				if (i > 0) {
+				foldedTags = taggedUrl.getTags().get(i).getFullPath();
+				for (int j = 0; j < foldedTags.size(); j++) {
 					insertIntoLiaisonFoldedTagsStatement.setInt(1, id_path);
-					insertIntoLiaisonFoldedTagsStatement.setInt(2, taggedUrl.getTags().get(i).getId_tag());
-					insertIntoLiaisonFoldedTagsStatement.setInt(3, taggedUrl.getTags().get(i - 1).getId_tag());
+					insertIntoLiaisonFoldedTagsStatement.setInt(2, foldedTags.get(j).getId_tag());
+					// Le parent du premier tag est celui qui est lié à l'url
+					insertIntoLiaisonFoldedTagsStatement.setInt(3,
+							j == 0 ? taggedUrl.getTags().get(i).getId_tag() : foldedTags.get(j - 1).getId_tag());
 					insertIntoLiaisonFoldedTagsStatement.executeUpdate();
 				}
-
-				// Enregistrement dans la table de liaison url tag (pour le
-				// dernier uniquement, celui qui est directement associé à
-				// l'url)
-				// TODO la condition n'est pas nécessaire puisqu'il faut que
-				// tous les tags soient des tags de 1er niveau
-				if (i == taggedUrl.getTags().size() - 1) {
-					insertIntoLiaisonUrlTagStatement.setInt(1, taggedUrl.getUrl().getId_url());
-					insertIntoLiaisonUrlTagStatement.setInt(2, taggedUrl.getTags().get(i).getId_tag());
-					insertIntoLiaisonUrlTagStatement.setInt(3, id_path);
-					insertIntoLiaisonUrlTagStatement.executeUpdate();
-				}
+				// if (i > 0) {
+				// insertIntoLiaisonFoldedTagsStatement.setInt(1, id_path);
+				// insertIntoLiaisonFoldedTagsStatement.setInt(2,
+				// taggedUrl.getTags().get(i).getId_tag());
+				// insertIntoLiaisonFoldedTagsStatement.setInt(3,
+				// taggedUrl.getTags().get(i - 1).getId_tag());
+				// insertIntoLiaisonFoldedTagsStatement.executeUpdate();
+				// }
 
 				// Nouvel algo
 				// Enregistrement du tag de 1er niveau et du lien dans url_tags
@@ -99,7 +113,9 @@ public class TaggedUrlDatabaseIO {
 	}
 
 	/**
-	 * Check in the table 'tags' if the tagName exists. If it does, return the id. If it doesn't, return 0.
+	 * Check in the table 'tags' if the tagName exists. If it does, return the
+	 * id. If it doesn't, return 0.
+	 * 
 	 * @param tagName
 	 * @return if( tagName exists in 'tags') tagId else 0
 	 */
