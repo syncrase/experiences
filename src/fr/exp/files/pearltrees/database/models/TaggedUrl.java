@@ -57,4 +57,9 @@ public class TaggedUrl {
 
 	}
 
+	public String getFullTagPath() {
+		// TODO Récupérer tous les tags path pour cette url
+		return "À implémenter";
+	}
+
 }

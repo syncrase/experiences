@@ -19,8 +19,6 @@ public class PearltreesFacade2 {
 	private PearltreesComponent pearlTreesExportData;
 
 	public PearltreesFacade2(String filePath) {
-		// this.pearlTreesExportData = new PearltreesComponent();
-		// this.pearlTreesEntity = new PearltreesEntity();
 		pearlTreesExportData = PearltreesConstructor.getComponent(filePath);
 	}
 
@@ -76,7 +74,8 @@ public class PearltreesFacade2 {
 		ArrayList<TaggedUrl> taggedUrlList = this.getFoldedTagsList();
 		String returnedString = "";
 		for (TaggedUrl taggedUrl : taggedUrlList) {
-			returnedString += taggedUrl.getFullPath() + taggedUrl.getUrl().getLabel() + "\n";
+			// TODO Faire la même chose pour tous les tags
+			returnedString += taggedUrl.getTags().get(0).getFullPath() + taggedUrl.getUrl().getLabel() + "\n";
 		}
 		return returnedString;
 	}
@@ -122,7 +121,12 @@ public class PearltreesFacade2 {
 
 		TaggedUrlDatabaseIO writer = new TaggedUrlDatabaseIO();
 
-		// TODO faire en sorte que je reçoive un PearltreesComponent!!!
+		// TODO faire en sorte que je reçoive un PearltreesComponent!!! Pas
+		// possible, la nature du PearltreesComponent est une structure de
+		// fichier => une url = un path
+		// Possible si une url apparaît plusieurs fois. problème quand il n'y a
+		// pas de tag de base!!!!
+		// Pas possible d'utiliser PearltreesComponent
 		// Permettra d'utiliser les autres méthodes de la façade + avoir à
 		// disposition tous les IO pour construire l'objet
 		ArrayList<TaggedUrl> taggedUrlList;
@@ -130,9 +134,10 @@ public class PearltreesFacade2 {
 
 		StringBuilder sb = new StringBuilder();
 		for (TaggedUrl taggedUrl : taggedUrlList) {
-			sb.append(taggedUrl.getFullPath() + taggedUrl.getUrl().getLabel() + "\n");
-			// sb.append("");
-			// sb.append("");
+			// TODO ici ça ne va pas. Chaque url peut avoir plusieurs folded
+			// tags
+			// Donc, récupérer le path pour chaque tag
+			sb.append(taggedUrl.getTags().get(0).getFullPath() + taggedUrl.getUrl().getLabel() + "\n");
 		}
 		return sb.toString();
 	}
