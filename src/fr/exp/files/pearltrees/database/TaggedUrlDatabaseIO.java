@@ -3,18 +3,17 @@ package fr.exp.files.pearltrees.database;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
-import fr.exp.files.pearltrees.database.models.Tag;
+import fr.exp.files.pearltrees.database.models.FoldedTag;
 import fr.exp.files.pearltrees.database.models.TaggedUrl;
 import fr.exp.files.pearltrees.database.models.Url;
 
 public class TaggedUrlDatabaseIO {
 
-	public void write(TaggedUrl taggedUrl) {
+	public void writeTaggedUrl(TaggedUrl taggedUrl) {
 		PreparedStatement insertIntoLiaisonUrlTagStatement, insertIntoLiaisonFoldedTagsStatement;
 
 		// Enregistrement de l'url
@@ -41,8 +40,17 @@ public class TaggedUrlDatabaseIO {
 		insertIntoLiaisonUrlTagStatement = DBConnection.getPreparedStatement(
 				"insert into " + DBInfo.DBName + ".liaison_url_tags (id_url,id_tag,id_path) values (?,?,?)");
 
+		// TODO Dans l'idée ça ne va pas, la liste de tags de taggedUrl
+		// représente tous les tags de 1er niveau ou tous les éléments de
+		// l'arborescence d'un folded tag? Sachant que dans le cas PearlTrees,
+		// une url n'a qu'un folded tag de 1er niveau.
+
+		// TODO Cas particulier : Toutes les urls ont un root_tag = syncrase.
+		// Comment
+		// cela se passe quand il y en a plusieurs?
 		for (int i = 0; i < taggedUrl.getTags().size(); i++) {
 			try {
+				// Récupère l'id du tag s'il existe ou le créé
 				id_tag = getTagId(taggedUrl.getTags().get(i).getTag());
 				if (id_tag == 0) {
 					insertIntoTagsStatement.setString(1, taggedUrl.getTags().get(i).getTag());
@@ -53,6 +61,14 @@ public class TaggedUrlDatabaseIO {
 
 				// Enregistrement dans la table folded url pour avoir le parent
 				// de ce tag
+				// TODO à utiliser dans chaque cas, pour chaque tag de 1er
+				// niveau contenu dans la liste taggedUrl.getTags()
+
+				// taggedUrl.getTags().get(i) : tag de 1er niveau
+
+				// LinkedList<FoldedTag> foldedTagsList =
+				// taggedUrl.getTags().get(i).getFullPath();
+				// Avec cette liste je peux traiter tous les tags parents
 				if (i > 0) {
 					insertIntoLiaisonFoldedTagsStatement.setInt(1, id_path);
 					insertIntoLiaisonFoldedTagsStatement.setInt(2, taggedUrl.getTags().get(i).getId_tag());
@@ -63,30 +79,34 @@ public class TaggedUrlDatabaseIO {
 				// Enregistrement dans la table de liaison url tag (pour le
 				// dernier uniquement, celui qui est directement associé à
 				// l'url)
+				// TODO la condition n'est pas nécessaire puisqu'il faut que
+				// tous les tags soient des tags de 1er niveau
 				if (i == taggedUrl.getTags().size() - 1) {
 					insertIntoLiaisonUrlTagStatement.setInt(1, taggedUrl.getUrl().getId_url());
 					insertIntoLiaisonUrlTagStatement.setInt(2, taggedUrl.getTags().get(i).getId_tag());
 					insertIntoLiaisonUrlTagStatement.setInt(3, id_path);
 					insertIntoLiaisonUrlTagStatement.executeUpdate();
 				}
+
+				// Nouvel algo
+				// Enregistrement du tag de 1er niveau et du lien dans url_tags
+				// Enregistrement des tags parents et de leur lien dans
+				// folded_tags
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
+	/**
+	 * Check in the table 'tags' if the tagName exists. If it does, return the id. If it doesn't, return 0.
+	 * @param tagName
+	 * @return if( tagName exists in 'tags') tagId else 0
+	 */
 	private int getTagId(String tagName) {
 		ResultSet resultSet;
 		String query = "";
-		// TODO Comment récupérer les urls et tous leurs tags dans une seule
-		// requête?
-		query += "SELECT * "// U.id_url U.url U.label T.tag
-				+ "FROM tags "
-				// " + DBInfo.DBName + ".
-				+ "WHERE tag = \"" + tagName + "\"";
-		// AND L.id_path = F.id_path
-		// AND F.id_parent = T.id_tag --> pas nécessaire puisque j'ai le
-		// path j'obtiens l'information id_parent dans le retour
+		query += "SELECT * FROM tags WHERE tag = \"" + tagName + "\"";
 		try {
 			resultSet = DBConnection.executeQuery(query);
 			if (resultSet.next())
@@ -139,11 +159,7 @@ public class TaggedUrlDatabaseIO {
 			String query = "";
 			// TODO Comment récupérer les urls et tous leurs tags dans une seule
 			// requête?
-			// TODO Faire un fichier d'export simple pour tester
-			// l'enregistrement en bdd
-			query += "SELECT * "// U.id_url U.url U.label T.tag
-					+ "FROM urls U, liaison_url_tags L, tags T "
-					// " + DBInfo.DBName + ".
+			query += "SELECT * " + "FROM urls U, liaison_url_tags L, tags T "
 					+ "WHERE U.id_url = L.id_url AND T.id_tag = L.id_tag";
 			// AND L.id_path = F.id_path
 			// AND F.id_parent = T.id_tag --> pas nécessaire puisque j'ai le
@@ -151,12 +167,12 @@ public class TaggedUrlDatabaseIO {
 			resultSet = DBConnection.executeQuery(query);
 			int path;
 			Url url;
-			Tag tag;
+			FoldedTag tag;
 			TaggedUrl taggedUrl;
 			while (resultSet.next()) {
 				url = new Url(resultSet.getInt("U.id_url"), resultSet.getString("U.url"),
 						resultSet.getString("U.label"));
-				tag = new Tag(resultSet.getInt("T.id_tag"), resultSet.getString("T.tag"));
+				tag = new FoldedTag(resultSet.getInt("T.id_tag"), resultSet.getString("T.tag"));
 
 				path = resultSet.getInt("L.id_path");
 
@@ -176,16 +192,13 @@ public class TaggedUrlDatabaseIO {
 			// Map accessible par singleton
 			for (TaggedUrl obtainedTaggedUrl : pool.getArrayList()) {
 				query = "SELECT * "// U.id_url U.url U.label T.tag
-						+ "FROM liaison_url_tags L, liaison_folded_tags F, tags T "
-						// " + DBInfo.DBName + ".
-						// + "WHERE L.id_url = U.id_url AND T.id_tag =
-						// L.id_tag";
-						+ "WHERE L.id_url = " + obtainedTaggedUrl.getUrl().getId_url()
+						+ "FROM liaison_url_tags L, liaison_folded_tags F, tags T " + "WHERE L.id_url = "
+						+ obtainedTaggedUrl.getUrl().getId_url()
 						+ " AND L.id_path = F.id_path AND F.id_parent_tag  = T.id_tag";
 				resultSet = DBConnection.executeQuery(query);
 				while (resultSet.next()) {
 					// Je récupère tous les tags et je les ajoute à mon objet
-					obtainedTaggedUrl.addTag(new Tag(resultSet.getInt("id_tag"), resultSet.getString("tag")),
+					obtainedTaggedUrl.addTag(new FoldedTag(resultSet.getInt("id_tag"), resultSet.getString("tag")),
 							resultSet.getInt("id_parent_tag"));
 				}
 
@@ -198,9 +211,9 @@ public class TaggedUrlDatabaseIO {
 	}
 
 	public void deleteAll() {
-
-		PreparedStatement delete = DBConnection.getPreparedStatement("DELETE FROM `liaison_folded_tags` WHERE 1");
+		PreparedStatement delete;
 		try {
+			delete = DBConnection.getPreparedStatement("DELETE FROM `liaison_folded_tags` WHERE 1");
 			delete.executeUpdate();
 			delete = DBConnection.getPreparedStatement("DELETE FROM `liaison_url_tags` WHERE 1");
 			delete.executeUpdate();

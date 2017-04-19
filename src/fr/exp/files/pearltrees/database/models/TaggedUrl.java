@@ -5,20 +5,19 @@ import java.util.ArrayList;
 public class TaggedUrl {
 
 	private Url url;
-	private ArrayList<Tag> tags;
+	private ArrayList<FoldedTag> tags;
 	private int path;
 
-	public TaggedUrl(Url url, ArrayList<Tag> tags) {
+	public TaggedUrl(Url url, ArrayList<FoldedTag> tags) {
 		super();
 		this.url = url;
 		this.tags = tags;
 	}
 
-	public TaggedUrl(Url url, Tag tag, int path) {
+	public TaggedUrl(Url url, FoldedTag tag, int path) {
 		super();
 		this.url = url;
-		// if (this.tags == null)
-		this.tags = new ArrayList<Tag>();
+		this.tags = new ArrayList<FoldedTag>();
 		this.tags.add(tag);
 		this.path = path;
 	}
@@ -31,20 +30,12 @@ public class TaggedUrl {
 		this.url = url;
 	}
 
-	public ArrayList<Tag> getTags() {
+	public ArrayList<FoldedTag> getTags() {
 		return tags;
 	}
 
-	public void setTags(ArrayList<Tag> tags) {
+	public void setTags(ArrayList<FoldedTag> tags) {
 		this.tags = tags;
-	}
-
-	public String getFullPath() {
-		String returnedString = "";
-		for (Tag s : tags) {
-			returnedString += s.getTag() + "/";
-		}
-		return returnedString;
 	}
 
 	public void setPath(int path) {
@@ -61,7 +52,7 @@ public class TaggedUrl {
 	 * @param tag
 	 * @param id_parent_tag
 	 */
-	public void addTag(Tag tag, int id_parent_tag) {
+	public void addTag(FoldedTag tag, int id_parent_tag) {
 		tags.add(tag);
 
 	}

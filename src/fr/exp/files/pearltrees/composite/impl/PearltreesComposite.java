@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.exp.files.pearltrees.composite.impl.utils.RecursiveFolderBuilder;
-import fr.exp.files.pearltrees.database.models.Tag;
+import fr.exp.files.pearltrees.database.models.FoldedTag;
 import fr.exp.files.pearltrees.database.models.TaggedUrl;
 
 public class PearltreesComposite extends RecursiveFolderBuilder implements PearltreesComponent {
@@ -46,13 +46,13 @@ public class PearltreesComposite extends RecursiveFolderBuilder implements Pearl
 	// }
 
 	@Override
-	public ArrayList<TaggedUrl> getFoldedTags(ArrayList<Tag> path) {
+	public ArrayList<TaggedUrl> getFoldedTags(ArrayList<FoldedTag> path) {
 		ArrayList<TaggedUrl> taggedUrlList = new ArrayList<TaggedUrl>();
-		ArrayList<Tag> tempPath;
+		ArrayList<FoldedTag> tempPath;
 		for (PearltreesComponent entity : this.childComponent) {
-			tempPath = new ArrayList<Tag>();
+			tempPath = new ArrayList<FoldedTag>();
 			tempPath.addAll(path);
-			tempPath.add(new Tag(folderName));
+			tempPath.add(new FoldedTag(folderName));
 			taggedUrlList.addAll(entity.getFoldedTags(tempPath));
 		}
 		return taggedUrlList;

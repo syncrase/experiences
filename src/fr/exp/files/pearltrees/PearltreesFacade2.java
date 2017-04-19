@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import fr.exp.files.pearltrees.composite.PearltreesConstructor;
 import fr.exp.files.pearltrees.composite.impl.PearltreesComponent;
 import fr.exp.files.pearltrees.database.TaggedUrlDatabaseIO;
-import fr.exp.files.pearltrees.database.models.Tag;
+import fr.exp.files.pearltrees.database.models.FoldedTag;
 import fr.exp.files.pearltrees.database.models.TaggedUrl;
 
 public class PearltreesFacade2 {
@@ -35,7 +35,7 @@ public class PearltreesFacade2 {
 			// Write each taggedUrl in db
 			TaggedUrlDatabaseIO writer = new TaggedUrlDatabaseIO();
 			for (TaggedUrl taggedUrl : taggedUrlList) {
-				writer.write(taggedUrl);
+				writer.writeTaggedUrl(taggedUrl);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -54,7 +54,7 @@ public class PearltreesFacade2 {
 		Path path = FileSystems.getDefault().getPath(filePath);
 		String html = generateHtml();
 		Charset charset = Charset.forName("UTF-8");
-		// The BufferedWriter use require to set the project compliance to 1.7
+		// The BufferedWriter use requires to set the project compliance to 1.7
 		try (BufferedWriter writer = Files.newBufferedWriter(path, charset)) {
 			writer.write(html, 0, html.length());
 		} catch (IOException x) {
@@ -82,7 +82,7 @@ public class PearltreesFacade2 {
 	}
 
 	public ArrayList<TaggedUrl> getFoldedTagsList() {
-		return pearlTreesExportData.getFoldedTags(new ArrayList<Tag>());
+		return pearlTreesExportData.getFoldedTags(new ArrayList<FoldedTag>());
 	}
 
 	public String getHtml() {

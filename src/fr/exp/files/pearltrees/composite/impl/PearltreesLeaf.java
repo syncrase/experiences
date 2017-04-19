@@ -4,7 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import fr.exp.files.pearltrees.database.models.Tag;
+import fr.exp.files.pearltrees.database.models.FoldedTag;
 import fr.exp.files.pearltrees.database.models.TaggedUrl;
 import fr.exp.files.pearltrees.database.models.Url;
 
@@ -51,7 +51,7 @@ public class PearltreesLeaf implements PearltreesComponent {
 	// }
 
 	@Override
-	public ArrayList<TaggedUrl> getFoldedTags(ArrayList<Tag> path) {
+	public ArrayList<TaggedUrl> getFoldedTags(ArrayList<FoldedTag> path) {
 		Url url = null;
 		try {
 			url = new Url(new URL(this.url), this.label);

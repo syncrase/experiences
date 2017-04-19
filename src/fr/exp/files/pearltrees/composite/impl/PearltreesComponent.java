@@ -2,7 +2,7 @@ package fr.exp.files.pearltrees.composite.impl;
 
 import java.util.ArrayList;
 
-import fr.exp.files.pearltrees.database.models.Tag;
+import fr.exp.files.pearltrees.database.models.FoldedTag;
 import fr.exp.files.pearltrees.database.models.TaggedUrl;
 
 public interface PearltreesComponent {
@@ -11,5 +11,5 @@ public interface PearltreesComponent {
 
 	// public String getFoldedTags(String path);
 
-	public ArrayList<TaggedUrl> getFoldedTags(ArrayList<Tag> path);
+	public ArrayList<TaggedUrl> getFoldedTags(ArrayList<FoldedTag> path);
 }
