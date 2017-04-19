@@ -19,8 +19,6 @@ public class PearltreesFacade2 {
 	private PearltreesComponent pearlTreesExportData;
 
 	public PearltreesFacade2(String filePath) {
-		// this.pearlTreesExportData = new PearltreesComponent();
-		// this.pearlTreesEntity = new PearltreesEntity();
 		pearlTreesExportData = PearltreesConstructor.getComponent(filePath);
 	}
 
@@ -76,7 +74,8 @@ public class PearltreesFacade2 {
 		ArrayList<TaggedUrl> taggedUrlList = this.getFoldedTagsList();
 		String returnedString = "";
 		for (TaggedUrl taggedUrl : taggedUrlList) {
-			returnedString += taggedUrl.getFullPath() + taggedUrl.getUrl().getLabel() + "\n";
+			// TODO Faire la même chose pour tous les tags
+			returnedString += taggedUrl.getTags().get(0).getFullPath() + taggedUrl.getUrl().getLabel() + "\n";
 		}
 		return returnedString;
 	}
@@ -130,7 +129,7 @@ public class PearltreesFacade2 {
 
 		StringBuilder sb = new StringBuilder();
 		for (TaggedUrl taggedUrl : taggedUrlList) {
-			sb.append(taggedUrl.getFullPath() + taggedUrl.getUrl().getLabel() + "\n");
+			sb.append(taggedUrl.getFullTagPath() + taggedUrl.getUrl().getLabel() + "\n");
 			// sb.append("");
 			// sb.append("");
 		}

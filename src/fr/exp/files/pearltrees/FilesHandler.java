@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import fr.exp.files.pearltrees.treestructure.PearltreesFolder;
-
 public class FilesHandler {
 
 	/**
@@ -28,17 +26,14 @@ public class FilesHandler {
 
 	public static String getPearlTreesExportContent(String filePath) {
 		String fileContent = "";
-		PearltreesFolder pearlTreesContent;
-		String name;
 		try {
 			for (String line : Files.readAllLines(Paths.get(filePath))) {
-				if(line.contains("FOLDED")){
+				if (line.contains("FOLDED")) {
 					// get the related name
-//					line.substring(beginIndex, endIndex)
-					name = "";
-//					pearlTreesContent = new PearltreesModel(name);
+					// line.substring(beginIndex, endIndex)
+					// pearlTreesContent = new PearltreesModel(name);
 				}
-//				fileContent += line + "\n";
+				// fileContent += line + "\n";
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
