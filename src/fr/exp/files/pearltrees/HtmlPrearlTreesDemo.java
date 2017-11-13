@@ -36,12 +36,13 @@ public class HtmlPrearlTreesDemo {
 		PearltreesFacade2 pearltreesFacade2 = new PearltreesFacade2("files/pearltrees_export-25-12-2016.html");
 		// print(pearltreesFacade2.getFoldedTags());
 		// print(pearltreesFacade2.getHtml());
-		// pearltreesFacade2.writeHtmlFile("files/my_pearltrees_export.html");
+		 pearltreesFacade2.writeHtmlFile("files/my_pearltrees_export.html");
 
-//		 pearltreesFacade2.deleteAll();
-//		pearltreesFacade2.saveInDataBase();
-		print(pearltreesFacade2.getTablesName());
-//		 print(pearltreesFacade2.loadFromDataBase());
+		// pearltreesFacade2.deleteAll();
+		// pearltreesFacade2.saveInDataBase();
+
+		// print(pearltreesFacade2.getTablesName());
+		// print(pearltreesFacade2.loadFromDataBase());
 
 		// Sauvegarde du résultat en base de données
 		// Structure de dossier -> le tag complexe de chaque url doit être son

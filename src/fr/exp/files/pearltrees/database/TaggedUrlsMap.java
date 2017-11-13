@@ -13,11 +13,11 @@ import fr.exp.files.pearltrees.database.models.TaggedUrl;
  * @author Pierre Taquet
  *
  */
-public class Pool {
+public class TaggedUrlsMap {
 
 	Map<Integer, TaggedUrl> pool;
 
-	public Pool() {
+	public TaggedUrlsMap() {
 		this.pool = new HashMap<Integer, TaggedUrl>();
 	}
 

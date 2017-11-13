@@ -119,7 +119,7 @@ public class PearltreesFacade2 {
 		// Parcours de toutes les urls pour les ajouter une a une à l'objet
 		// pearlTreesExportData
 
-		TaggedUrlDatabaseIO writer = new TaggedUrlDatabaseIO();
+		TaggedUrlDatabaseIO taggedUrlIO = new TaggedUrlDatabaseIO();
 
 		// TODO faire en sorte que je reçoive un PearltreesComponent!!! Pas
 		// possible, la nature du PearltreesComponent est une structure de
@@ -130,7 +130,7 @@ public class PearltreesFacade2 {
 		// Permettra d'utiliser les autres méthodes de la façade + avoir à
 		// disposition tous les IO pour construire l'objet
 		ArrayList<TaggedUrl> taggedUrlList;
-		taggedUrlList = writer.read();
+		taggedUrlList = taggedUrlIO.read();
 
 		StringBuilder sb = new StringBuilder();
 		for (TaggedUrl taggedUrl : taggedUrlList) {

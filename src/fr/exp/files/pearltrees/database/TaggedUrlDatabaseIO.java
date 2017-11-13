@@ -170,7 +170,7 @@ public class TaggedUrlDatabaseIO {
 	public ArrayList<TaggedUrl> read() {
 
 		ResultSet resultSet;
-		Pool pool = new Pool();
+		TaggedUrlsMap pool = new TaggedUrlsMap();
 		try {
 			String query = "";
 			// TODO Comment récupérer les urls et tous leurs tags dans une seule
