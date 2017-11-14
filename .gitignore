@@ -16,4 +16,5 @@ hs_err_pid*
 data/
 target/
 lib/
+logs/
 files/my_*

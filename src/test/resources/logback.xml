@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<!-- For more information : https://logback.qos.ch/manual/index.html -->
+<!-- All about the configuration -->
+<configuration debug="true" scan="true" scanPeriod="43 seconds"
+	packagingData="true">
+	<!-- debug="true" Avoid to implement > LoggerContext lc = (LoggerContext) 
+		LoggerFactory.getILoggerFactory();StatusPrinter.print(lc); -->
+	<!-- scan="true" Check changes in this configuration file -->
+	<!-- scanPeriod="43 seconds" each 43 seconds (milliseconds, seconds, minutes 
+		or hours) -->
+	<!-- packagingData="true" Add the name of the jar throwing the error message 
+		at the end of each log line. Can be invoked programmatically LoggerContext 
+		lc = (LoggerContext) LoggerFactory.getILoggerFactory(); lc.setPackagingDataEnabled(true); -->
+
+	<!-- Only once context is authorized in this configuration file -->
+	<contextName>LogContextName</contextName>
+	<!-- <property name="PROJECT_ROOT" value="C:/Users/Pierre Taquet/workspace/rootWebApp" 
+		/> -->
+	<property
+		file="C:/Users/Pierre/dev/Java/experiences/src/test/resources/variables.properties" />
+	<!-- <property resource="resource1.properties" /> -->
+<!-- 	Means all coming messages are printed in the console -->
+<!-- 	<statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" /> -->
+
+
+
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<file>${PROJECT_ROOT}/logs/appenders/file/myApp.log</file>
+		<append>true</append>
+		<encoder>
+			<pattern>%contextName %date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+		</encoder>
+	</appender>
+
+
+
+	<appender name="ROLLINGFILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${PROJECT_ROOT}/logs/appenders/rollingfile/myApp.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${PROJECT_ROOT}/logs/appenders/rollingfile/myApp.%i.log.zip</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>3</maxIndex>
+		</rollingPolicy>
+		<!-- <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> -->
+		<!-- daily rollover -->
+		<!-- <fileNamePattern>myapp.%d{yyyy-MM-dd}.log</fileNamePattern> -->
+
+		<!-- keep 30 days' worth of history -->
+		<!-- <maxHistory>30</maxHistory> -->
+		<!-- </rollingPolicy> -->
+
+		<triggeringPolicy
+		class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+		<maxFileSize>5MB</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %logger{0} %X{akkaSource} %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+			by default -->
+
+		<encoder>
+			<pattern>STDOUT %contextName %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+
+	<!-- one mandatory name attribute, an optional level attribute (TRACE, DEBUG, 
+		INFO, WARN, ERROR, ALL or OFF), and an optional additivity attribute (true, 
+		false) -->
+	<logger name="logger.test" level="INFO" additivity="false">
+		<!-- If additivity=true it uses 2 times the STDOUT appender, one time for -->
+		<!-- this logger and another time for root logger -->
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+	</logger>
+	
+	<logger name="logger.traces" level="TRACE" additivity="true">
+	</logger>
+
+	<root level="debug">
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>
