@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
+import org.slf4j.LoggerFactory;
+
 import fr.exp.files.pearltrees.composite.PearltreesConstructor;
 import fr.exp.files.pearltrees.composite.impl.PearltreesComponent;
 import fr.exp.files.pearltrees.database.TaggedUrlDatabaseIO;
@@ -18,12 +20,18 @@ public class PearltreesFacade2 {
 
 	private PearltreesComponent pearlTreesExportData;
 
+	public static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
+			.getLogger("fr.exp.files.pearltrees");
+
 	public PearltreesFacade2(String filePath) {
+		logger.trace("Début construction PearltreesFacade2");
 		pearlTreesExportData = PearltreesConstructor.getComponent(filePath);
+		logger.trace("Fin construction PearltreesFacade2");
 	}
 
 	public void saveInDataBase() {
 		try {
+			logger.trace("Save in data base");
 			// Ajout dans la base de données de chaque url associées à son tag
 			// composé
 			// Dans la base de données
@@ -37,6 +45,7 @@ public class PearltreesFacade2 {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.error("Fail to save in database", e);
 		}
 	}
 
@@ -49,6 +58,7 @@ public class PearltreesFacade2 {
 	 * 
 	 */
 	public void writeHtmlFile(String filePath) {
+		logger.trace("Write the result to the file {}", filePath);
 		Path path = FileSystems.getDefault().getPath(filePath);
 		String html = generateHtml();
 		Charset charset = Charset.forName("UTF-8");
@@ -57,6 +67,7 @@ public class PearltreesFacade2 {
 			writer.write(html, 0, html.length());
 		} catch (IOException x) {
 			System.err.format("IOException: %s%n", x);
+			logger.error("Unable to write the result to the file {}", filePath);
 		}
 	}
 
@@ -93,8 +104,8 @@ public class PearltreesFacade2 {
 	 */
 
 	/**
-	 * Generate the html in order to be as near as possible of the pearltrees
-	 * export html files
+	 * Generate the html in order to be as near as possible of the pearltrees export
+	 * html files
 	 * 
 	 * @return html file source code
 	 */
@@ -149,7 +160,7 @@ public class PearltreesFacade2 {
 
 	public String getTablesName() {
 		TaggedUrlDatabaseIO taggedUrlDatabaseIO = new TaggedUrlDatabaseIO();
-		
+
 		return taggedUrlDatabaseIO.getTablesName();
 	}
 

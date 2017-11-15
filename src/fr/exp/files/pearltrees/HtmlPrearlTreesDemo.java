@@ -1,9 +1,16 @@
 package fr.exp.files.pearltrees;
 
+import org.slf4j.LoggerFactory;
+
 public class HtmlPrearlTreesDemo {
 
+	public static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
+			.getLogger("fr.exp.files.pearltrees");
+	
 	public static void main(String[] args) {
 
+		logger.trace("Début d'exécution de HtmlPrearlTreesDemo");
+		
 		// obtient un objet représentant mon fichier html
 		// String fileContent = FilesHandler.getHtmlFileContent(filePath);
 		// Sprint(fileContent != "" ? fileContent : "Unable to get
@@ -36,7 +43,7 @@ public class HtmlPrearlTreesDemo {
 		PearltreesFacade2 pearltreesFacade2 = new PearltreesFacade2("files/pearltrees_export-25-12-2016.html");
 		// print(pearltreesFacade2.getFoldedTags());
 		// print(pearltreesFacade2.getHtml());
-//		 pearltreesFacade2.writeHtmlFile("files/my_pearltrees_export.html");
+		 pearltreesFacade2.writeHtmlFile("files/my_pearltrees_export.html");
 
 		// pearltreesFacade2.deleteAll();
 		// pearltreesFacade2.saveInDataBase();
@@ -59,6 +66,7 @@ public class HtmlPrearlTreesDemo {
 		// partie?
 		// Sachant que la base de données peut-être mongodb, neo4j, ... et
 		// fichier! ==>> Bosser sur le pattern adéquat! (builder, factory?)
+		logger.trace("Fin d'exécution de HtmlPrearlTreesDemo");
 	}
 
 	private static void print(String msg, Object... args) {

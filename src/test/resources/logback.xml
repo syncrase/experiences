@@ -2,6 +2,8 @@
 <!DOCTYPE xml>
 <!-- For more information : https://logback.qos.ch/manual/index.html -->
 <!-- All about the configuration -->
+<!-- https://logback.qos.ch/manual/appenders.html -->
+<!-- https://logback.qos.ch/manual/layouts.html -->
 <configuration debug="true" scan="true" scanPeriod="43 seconds"
 	packagingData="true">
 	<!-- debug="true" Avoid to implement > LoggerContext lc = (LoggerContext) 
@@ -20,8 +22,9 @@
 	<property
 		file="C:/Users/Pierre/dev/Java/experiences/src/test/resources/variables.properties" />
 	<!-- <property resource="resource1.properties" /> -->
-<!-- 	Means all coming messages are printed in the console -->
-<!-- 	<statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" /> -->
+	<!-- Means all coming messages are printed in the console -->
+	<!-- <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" 
+		/> -->
 
 
 
@@ -52,8 +55,8 @@
 		<!-- </rollingPolicy> -->
 
 		<triggeringPolicy
-		class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-		<maxFileSize>5MB</maxFileSize>
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>5MB</maxFileSize>
 		</triggeringPolicy>
 		<encoder>
 			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %logger{0} %X{akkaSource} %msg%n</pattern>
@@ -80,7 +83,13 @@
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
 	</logger>
-	
+
+	<logger name="fr.exp.files.pearltrees" level="trace" additivity="true">
+		<!-- If additivity=true it uses 2 times the STDOUT appender, one time for -->
+		<!-- this logger and another time for root logger -->
+		<appender-ref ref="ROLLINGFILE" />
+	</logger>
+
 	<logger name="logger.traces" level="TRACE" additivity="true">
 	</logger>
 

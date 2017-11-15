@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="public" author="true" classpath="C:\Users\Pierre\.m2\repository\org\mongodb\mongo-java-driver\3.4.2\mongo-java-driver-3.4.2.jar;C:\Users\Pierre\.m2\repository\org\slf4j\slf4j-api\1.7.25\slf4j-api-1.7.25.jar;C:\Users\Pierre\.m2\repository\ch\qos\logback\logback-core\1.2.3\logback-core-1.2.3.jar;C:\Users\Pierre\.m2\repository\ch\qos\logback\logback-classic\1.2.3\logback-classic-1.2.3.jar;C:\Users\Pierre\.m2\repository\org\mongodb\mongodb-driver-core\3.4.2\mongodb-driver-core-3.4.2.jar;C:\Users\Pierre\.m2\repository\org\jsoup\jsoup\1.10.2\jsoup-1.10.2.jar;C:\Users\Pierre\.m2\repository\org\mongodb\bson\3.4.2\bson-3.4.2.jar;C:\Users\Pierre\.m2\repository\mysql\mysql-connector-java\8.0.8-dmr\mysql-connector-java-8.0.8-dmr.jar" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="1.8" sourcefiles="src/fr/exp/files/pearltrees/database/TaggedUrlDatabaseIO.java" sourcepath="src;src/test/resources" splitindex="true" use="true" version="true"/>
+    </target>
+</project>

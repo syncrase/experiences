@@ -9,9 +9,11 @@ import fr.exp.files.pearltrees.composite.impl.PearltreesLeaf;
 
 public abstract class RecursiveFolderBuilder {
 
+	// public static ch.qos.logback.classic.Logger logger =
+	// (ch.qos.logback.classic.Logger) LoggerFactory
+	// .getLogger("fr.exp.files.pearltrees");
 	/*
-	 * Protected to be available for subclasses , PearltreesComposite
-	 * parentFolder
+	 * Protected to be available for subclasses , PearltreesComposite parentFolder
 	 */
 	protected void buildObject(Elements allElements, PearltreesComposite parent) {
 		PearltreesComponent component = null;

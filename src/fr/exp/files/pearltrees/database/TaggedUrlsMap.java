@@ -34,7 +34,7 @@ public class TaggedUrlsMap {
 	}
 
 	/*
-	 * ICI, je peux implémenter plein de méthode pour manipuler les données et
+	 * ICI, je peux implémenter pleins de méthodes pour manipuler les données et
 	 * de les revoir en bdd Ici ou dans une classe abstraite !
 	 */
 

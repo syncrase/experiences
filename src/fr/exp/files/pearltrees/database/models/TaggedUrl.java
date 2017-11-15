@@ -62,4 +62,19 @@ public class TaggedUrl {
 		return "À implémenter";
 	}
 
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("url{");
+		sb.append(url.getLabel());
+		sb.append(";");
+		sb.append(url.getUrl());
+		sb.append("}");
+		sb.append("tags{");
+		for (FoldedTag ft : tags) {
+			sb.append(ft.getTag());
+			sb.append(",");
+		}
+		sb.append("}");
+		return sb.toString();
+	}
 }

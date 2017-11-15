@@ -18,3 +18,4 @@ target/
 lib/
 logs/
 files/my_*
+doc/

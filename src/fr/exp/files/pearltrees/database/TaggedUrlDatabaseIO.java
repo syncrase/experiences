@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import org.slf4j.LoggerFactory;
+
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
 import fr.exp.files.pearltrees.database.models.FoldedTag;
@@ -13,6 +15,8 @@ import fr.exp.files.pearltrees.database.models.TaggedUrl;
 import fr.exp.files.pearltrees.database.models.Url;
 
 public class TaggedUrlDatabaseIO {
+	public static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
+			.getLogger("fr.exp.files.pearltrees");
 
 	public void writeTaggedUrl(TaggedUrl taggedUrl) {
 		PreparedStatement insertIntoLiaisonUrlTagStatement, insertIntoLiaisonFoldedTagsStatement;
@@ -23,14 +27,18 @@ public class TaggedUrlDatabaseIO {
 		try {
 			insertIntoTagsStatement.setString(1, taggedUrl.getUrl().getUrl().toString());
 			insertIntoTagsStatement.setString(2, taggedUrl.getUrl().getLabel());
+			logger.trace("Execute update {}", insertIntoTagsStatement);
 			insertIntoTagsStatement.executeUpdate();
 
 			taggedUrl.getUrl().setId_url(getLastInsertedId("id_url", "urls"));
-
+			logger.trace("Update success {}", taggedUrl.toString());
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.error("Fail to update", e);
 		}
 
+		
+		logger.trace("Process tags writing");
 		int id_path = getUniqueIdPath(), id_tag;
 		LinkedList<FoldedTag> foldedTags;
 		// Enregistrement des folded tags
@@ -108,40 +116,47 @@ public class TaggedUrlDatabaseIO {
 				// folded_tags
 			} catch (SQLException e) {
 				e.printStackTrace();
+				logger.error("Fail to insert tags in the database", e);
 			}
 		}
 	}
 
 	/**
-	 * Check in the table 'tags' if the tagName exists. If it does, return the
-	 * id. If it doesn't, return 0.
+	 * Check in the table 'tags' if the tagName exists. If it does, return the id.
+	 * If it doesn't, return 0.
 	 * 
 	 * @param tagName
 	 * @return if( tagName exists in 'tags') tagId else 0
 	 */
 	private int getTagId(String tagName) {
+		logger.trace("Request tag id for : {}", tagName);
 		ResultSet resultSet;
 		String query = "";
 		query += "SELECT * FROM tags WHERE tag = \"" + tagName + "\"";
 		try {
 			resultSet = DBConnection.executeQuery(query);
-			if (resultSet.next())
-				return resultSet.getInt("id_tag");
+			if (resultSet.next()) {
+				int tag_id = (int) resultSet.getInt("id_tag");
+				logger.trace("tag id for {} is {}", tagName, tag_id);
+				return tag_id;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.error("Unable to request tag id for : {}", tagName);
 		}
 		return 0;
 	}
 
 	/**
-	 * Créé une ligne dans la table path et renvoie son Id. Permet d'identifier
-	 * un parent unique alors qu'il y en a plusieurs qui le sont
-	 * potentiellement. Utile pour n'avoir qu'une inscription du tag en base de
-	 * données quand il y a plusieurs fois son occurence
+	 * Crée une ligne dans la table path et renvoie son Id. Permet d'identifier un
+	 * parent unique alors qu'il y en a plusieurs qui le sont potentiellement. Utile
+	 * pour n'avoir qu'une inscription du tag en base de données quand il y a
+	 * plusieurs fois son occurence
 	 * 
 	 * @return
 	 */
 	private int getUniqueIdPath() {
+		logger.trace("Request for a new id path to the database");
 		PreparedStatement preparedStatement = DBConnection
 				.getPreparedStatement("insert into " + DBInfo.DBName + ".paths (id_path) values (0)");
 		try {
@@ -149,11 +164,13 @@ public class TaggedUrlDatabaseIO {
 			return getLastInsertedId("id_path", "paths");
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			logger.error("Unable to have a new id path, It's weird bro...", e1);
 		}
 		return 0;
 	}
 
 	private int getLastInsertedId(String column_name, String table_name) {
+		logger.trace("Request for the last inserted id");
 		// Get the id of the last inserted row
 		ResultSet resultSet;
 		try {
@@ -163,11 +180,13 @@ public class TaggedUrlDatabaseIO {
 				return resultSet.getInt(column_name);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.error("Unable to request for the last inserted id", e);
 		}
 		return 0;
 	}
 
 	public ArrayList<TaggedUrl> read() {
+		logger.trace("Read for all urls");
 
 		ResultSet resultSet;
 		TaggedUrlsMap pool = new TaggedUrlsMap();
@@ -221,12 +240,14 @@ public class TaggedUrlDatabaseIO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.error("Read for all urls", e);
 		}
 
 		return pool.getArrayList();
 	}
 
 	public void deleteAll() {
+		logger.trace("Delete the whole database content");
 		PreparedStatement delete;
 		try {
 			delete = DBConnection.getPreparedStatement("DELETE FROM `liaison_folded_tags` WHERE 1");
@@ -241,11 +262,13 @@ public class TaggedUrlDatabaseIO {
 			delete.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.error("Unable to delete the whole database content", e);
 		}
 
 	}
 
 	public String getTablesName() {
+		logger.trace("Get database table names");
 		// Cette méthode n'a rien à faire dans cette classe. Créer un classe
 		// DatabaseIO? DBConnection?
 		ResultSet resultSet;
@@ -268,6 +291,7 @@ public class TaggedUrlDatabaseIO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error("Unable to get database table names");
 		}
 
 		for (String tableName : tableList) {
