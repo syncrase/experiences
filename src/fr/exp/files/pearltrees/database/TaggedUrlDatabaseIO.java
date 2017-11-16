@@ -18,6 +18,18 @@ public class TaggedUrlDatabaseIO {
 	public static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
 			.getLogger("fr.exp.files.pearltrees");
 
+	// CREATE TABLE `pearltrees_data`.`liaison_url_tags` ( `id_liaison_url_tags` INT
+	// NOT NULL AUTO_INCREMENT , `id_url` INT NOT NULL , `id_tag` INT NOT NULL ,
+	// PRIMARY KEY (`id_liaison_url_tags`)) ENGINE = MyISAM;
+
+	// CREATE TABLE `pearltrees_data`.`urls` ( `id_url` INT NOT NULL AUTO_INCREMENT
+	// , `url` INT NOT NULL , `label` INT NOT NULL , PRIMARY KEY (`id_url`)) ENGINE
+	// = MyISAM;
+
+	// CREATE TABLE `pearltrees_data`.`liaison_folded_tags` ( `id_path` INT NOT NULL
+	// , `id_parent_tag` INT NOT NULL , `id_liaison_folded_tags` INT NOT NULL
+	// AUTO_INCREMENT , PRIMARY KEY (`id_liaison_folded_tags`)) ENGINE = MyISAM;
+
 	public void writeTaggedUrl(TaggedUrl taggedUrl) {
 		PreparedStatement insertIntoLiaisonUrlTagStatement, insertIntoLiaisonFoldedTagsStatement;
 
@@ -37,10 +49,10 @@ public class TaggedUrlDatabaseIO {
 			logger.error("Fail to update", e);
 		}
 
-		
 		logger.trace("Process tags writing");
 		int id_path = getUniqueIdPath(), id_tag;
-		LinkedList<FoldedTag> foldedTags;
+//		LinkedList<FoldedTag> foldedTags;
+		ArrayList<FoldedTag> foldedTags;
 		// Enregistrement des folded tags
 		insertIntoTagsStatement = DBConnection
 				.getPreparedStatement("insert into " + DBInfo.DBName + ".tags (tag) values (?)");
@@ -92,7 +104,9 @@ public class TaggedUrlDatabaseIO {
 				// LinkedList<FoldedTag> foldedTagsList =
 				// taggedUrl.getTags().get(i).getFullPath();
 				// Avec cette liste je peux traiter tous les tags parents
-				foldedTags = taggedUrl.getTags().get(i).getFullPath();
+				foldedTags = taggedUrl.getTags();
+//				.get(i).getFullPath();
+				// TODO getFullPath doesn't work!!!
 				for (int j = 0; j < foldedTags.size(); j++) {
 					insertIntoLiaisonFoldedTagsStatement.setInt(1, id_path);
 					insertIntoLiaisonFoldedTagsStatement.setInt(2, foldedTags.get(j).getId_tag());
@@ -267,36 +281,36 @@ public class TaggedUrlDatabaseIO {
 
 	}
 
-//	public String getTablesName() {
-//		logger.trace("Get database table names");
-//		// Cette méthode n'a rien à faire dans cette classe. Créer un classe
-//		// DatabaseIO? DBConnection?
-//		ResultSet resultSet;
-//		String query = "";
-//		String returnedString = "";
-//		ArrayList<String> tableList = new ArrayList<String>();
-//		// TODO Comment récupérer les urls et tous leurs tags dans une seule
-//		// requête?
-//		query += "SELECT TABLE_NAME FROM information_schema.tables "
-//				+ "where TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA = 'pearltrees_data'";
-//		// AND L.id_path = F.id_path
-//		// AND F.id_parent = T.id_tag --> pas nécessaire puisque j'ai le
-//		// path j'obtiens l'information id_parent dans le retour
-//		try {
-//			resultSet = DBConnection.executeQuery(query);
-//			while (resultSet.next()) {
-//				// TODO need some parse
-//				tableList.add(resultSet.getString("TABLE_NAME"));
-//			}
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			logger.error("Unable to get database table names");
-//		}
-//
-//		for (String tableName : tableList) {
-//			returnedString += tableName + "\n";
-//		}
-//		return null;
-//	}
+	// public String getTablesName() {
+	// logger.trace("Get database table names");
+	// // Cette méthode n'a rien à faire dans cette classe. Créer un classe
+	// // DatabaseIO? DBConnection?
+	// ResultSet resultSet;
+	// String query = "";
+	// String returnedString = "";
+	// ArrayList<String> tableList = new ArrayList<String>();
+	// // TODO Comment récupérer les urls et tous leurs tags dans une seule
+	// // requête?
+	// query += "SELECT TABLE_NAME FROM information_schema.tables "
+	// + "where TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA = 'pearltrees_data'";
+	// // AND L.id_path = F.id_path
+	// // AND F.id_parent = T.id_tag --> pas nécessaire puisque j'ai le
+	// // path j'obtiens l'information id_parent dans le retour
+	// try {
+	// resultSet = DBConnection.executeQuery(query);
+	// while (resultSet.next()) {
+	// // TODO need some parse
+	// tableList.add(resultSet.getString("TABLE_NAME"));
+	// }
+	// } catch (SQLException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// logger.error("Unable to get database table names");
+	// }
+	//
+	// for (String tableName : tableList) {
+	// returnedString += tableName + "\n";
+	// }
+	// return null;
+	// }
 }

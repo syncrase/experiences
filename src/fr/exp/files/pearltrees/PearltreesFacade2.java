@@ -131,10 +131,10 @@ public class PearltreesFacade2 {
 	// return sb.toString();
 	// }
 
-	// public void deleteAll() {
-	// TaggedUrlDatabaseIO writer = new TaggedUrlDatabaseIO();
-	// writer.deleteAll();
-	// }
+	public void deleteAll() {
+		TaggedUrlDatabaseIO writer = new TaggedUrlDatabaseIO();
+		writer.deleteAll();
+	}
 
 	// public String getTablesName() {
 	// TaggedUrlDatabaseIO taggedUrlDatabaseIO = new TaggedUrlDatabaseIO();

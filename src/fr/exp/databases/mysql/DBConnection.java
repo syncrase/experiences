@@ -28,7 +28,7 @@ public class DBConnection {
 				// Setup the connection with the DB
 				try {
 					String databaseUrl = "jdbc:mysql://localhost/" + DBInfo.DBName + "?" + "user=" + DBInfo.DBUser
-							+ "&password=" + DBInfo.DBPassword;
+							+ "&password=" + DBInfo.DBPassword+"&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 					connection = DriverManager.getConnection(databaseUrl);
 				} catch (SQLException e) {
 					// TODO Logger: Unable to establish the connection with
