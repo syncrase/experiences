@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.exp.files.pearltrees.composite.impl.utils.TreeBuilder;
-import fr.exp.files.pearltrees.models.FoldedTag;
-import fr.exp.files.pearltrees.models.TaggedUrl;
+import fr.exp.files.pearltrees.metamodels.FoldedTag;
+import fr.exp.files.pearltrees.metamodels.TaggedUrl;
 
 /**
  * Extends the TreeBuilder class in order to add the build behavior

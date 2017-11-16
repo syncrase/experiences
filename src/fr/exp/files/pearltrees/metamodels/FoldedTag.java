@@ -1,4 +1,4 @@
-package fr.exp.files.pearltrees.models;
+package fr.exp.files.pearltrees.metamodels;
 
 import java.util.LinkedList;
 

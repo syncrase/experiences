@@ -4,20 +4,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import org.slf4j.LoggerFactory;
 
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
-import fr.exp.files.pearltrees.models.FoldedTag;
-import fr.exp.files.pearltrees.models.TaggedUrl;
-import fr.exp.files.pearltrees.models.Url;
+import fr.exp.files.pearltrees.database.models.Path;
+import fr.exp.files.pearltrees.database.models.Url;
+import fr.exp.files.pearltrees.metamodels.FoldedTag;
+import fr.exp.files.pearltrees.metamodels.TaggedUrl;
 
 public class TaggedUrlDatabaseIO {
 	public static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
 			.getLogger("fr.exp.files.pearltrees");
 
+	// TODO pour beaucoup plus tard. Si je veux faire des UI pour manipuler tout ça.
+	// Des méthodes pour rassembler des paths. Supprimer des paths entier. recréer
+	// le path quand un tag est supprimé
+	// Mais en priorité, permettre à une url d'avoir plusieurs foldedTags!!!
+	
+	
 	// CREATE TABLE `pearltrees_data`.`liaison_url_tags` ( `id_liaison_url_tags` INT
 	// NOT NULL AUTO_INCREMENT , `id_url` INT NOT NULL , `id_tag` INT NOT NULL ,
 	// PRIMARY KEY (`id_liaison_url_tags`)) ENGINE = MyISAM;
@@ -30,109 +36,147 @@ public class TaggedUrlDatabaseIO {
 	// , `id_parent_tag` INT NOT NULL , `id_liaison_folded_tags` INT NOT NULL
 	// AUTO_INCREMENT , PRIMARY KEY (`id_liaison_folded_tags`)) ENGINE = MyISAM;
 
-	public void writeTaggedUrl(TaggedUrl taggedUrl) {
-		PreparedStatement insertIntoLiaisonUrlTagStatement, insertIntoLiaisonFoldedTagsStatement;
+	public void taggedUrlInsertion(TaggedUrl taggedUrl) {
 
-		// Enregistrement de l'url
-		PreparedStatement insertIntoTagsStatement = DBConnection
-				.getPreparedStatement("insert into " + DBInfo.DBName + ".urls (url,label) values (?, ?)");
-		try {
-			insertIntoTagsStatement.setString(1, taggedUrl.getUrl().getUrl().toString());
-			insertIntoTagsStatement.setString(2, taggedUrl.getUrl().getLabel());
-			logger.trace("Execute update {}", insertIntoTagsStatement);
-			insertIntoTagsStatement.executeUpdate();
-
-			taggedUrl.getUrl().setId_url(getLastInsertedId("id_url", "urls"));
-			logger.trace("Update success {}", taggedUrl.toString());
-		} catch (SQLException e) {
-			e.printStackTrace();
-			logger.error("Fail to update", e);
+		logger.trace("Get or insert {}", taggedUrl.getUrl().toString());
+		// Récupère l'url existante et sinon enregistre une url
+		taggedUrl.setUrl(exists(taggedUrl.getUrl()));
+		if (taggedUrl.getUrl().getId_url() == 0) {
+			// Enregistrement de l'url
+			taggedUrl.setUrl(insert(taggedUrl.getUrl()));
 		}
+		insert(taggedUrl);
+	}
 
-		logger.trace("Process tags writing");
-		int id_path = getUniqueIdPath(), id_tag;
-//		LinkedList<FoldedTag> foldedTags;
-		ArrayList<FoldedTag> foldedTags;
-		// Enregistrement des folded tags
-		insertIntoTagsStatement = DBConnection
-				.getPreparedStatement("insert into " + DBInfo.DBName + ".tags (tag) values (?)");
+	private void insert(TaggedUrl taggedUrl) {
+		logger.trace("Process folding tags insertion");
+
+		PreparedStatement insertIntoLiaisonUrlTagStatement, insertIntoLiaisonFoldedTagsStatement;
+		Path path = new Path();
+		path = getNewPath(path);
 		insertIntoLiaisonFoldedTagsStatement = DBConnection.getPreparedStatement(
 				"insert into " + DBInfo.DBName + ".liaison_folded_tags (id_path,id_tag,id_parent_tag) values (?,?,?)");
 		insertIntoLiaisonUrlTagStatement = DBConnection.getPreparedStatement(
 				"insert into " + DBInfo.DBName + ".liaison_url_tags (id_url,id_tag,id_path) values (?,?,?)");
 
-		// TODO Dans l'idée ça ne va pas, la liste de tags de taggedUrl
-		// représente tous les tags de 1er niveau ou tous les éléments de
-		// l'arborescence d'un folded tag? Sachant que dans le cas PearlTrees,
-		// une url n'a qu'un folded tag de 1er niveau.
-
 		// TODO Cas particulier : Toutes les urls ont un root_tag = syncrase.
 		// Comment
 		// cela se passe quand il y en a plusieurs?
-		// INFO dans le cadre de l'export pearltrees il n'y a tag (mais le tag
-		// est taggé!)
-		for (int i = 0; i < taggedUrl.getTags().size(); i++) {
-			try {
-				// Récupère l'id du tag s'il existe ou le créé
-				id_tag = getTagId(taggedUrl.getTags().get(i).getTag());
-				if (id_tag == 0) {
-					insertIntoTagsStatement.setString(1, taggedUrl.getTags().get(i).getTag());
-					insertIntoTagsStatement.executeUpdate();
-					id_tag = getLastInsertedId("id_tag", "tags");
-				}
-				taggedUrl.getTags().get(i).setId_tag(id_tag);
+		try {
+
+			// Retirer la condition de taille? Normalement il y a toujours au moins un tag
+			// => donc condition inutile... Voir pour ajouter un point bloquant conditionné
+			// sur la taille du tableau de tag
+			if (taggedUrl.getTags().size() > 0) {
+				taggedUrl.getTags().set(0, insert(taggedUrl.getTags().get(0)));
+			}
+
+			for (int i = 0; i < taggedUrl.getTags().size(); i++) {
 
 				// Enregistrement dans la table de liaison url tag (pour le
 				// dernier uniquement, celui qui est directement associé à
 				// l'url)
-				// TODO la condition n'est pas nécessaire puisqu'il faut que
-				// tous les tags soient des tags de 1er niveau
-				// if (i == taggedUrl.getTags().size() - 1) {
-				insertIntoLiaisonUrlTagStatement.setInt(1, taggedUrl.getUrl().getId_url());
-				insertIntoLiaisonUrlTagStatement.setInt(2, taggedUrl.getTags().get(i).getId_tag());
-				insertIntoLiaisonUrlTagStatement.setInt(3, id_path);
-				insertIntoLiaisonUrlTagStatement.executeUpdate();
-				// }
-
-				// Enregistrement dans la table folded url pour avoir le parent
-				// de ce tag
-				// TODO à utiliser dans chaque cas, pour chaque tag de 1er
-				// niveau contenu dans la liste taggedUrl.getTags()
-
-				// taggedUrl.getTags().get(i) : tag de 1er niveau
-
-				// LinkedList<FoldedTag> foldedTagsList =
-				// taggedUrl.getTags().get(i).getFullPath();
-				// Avec cette liste je peux traiter tous les tags parents
-				foldedTags = taggedUrl.getTags();
-//				.get(i).getFullPath();
-				// TODO getFullPath doesn't work!!!
-				for (int j = 0; j < foldedTags.size(); j++) {
-					insertIntoLiaisonFoldedTagsStatement.setInt(1, id_path);
-					insertIntoLiaisonFoldedTagsStatement.setInt(2, foldedTags.get(j).getId_tag());
-					// Le parent du premier tag est celui qui est lié à l'url
-					insertIntoLiaisonFoldedTagsStatement.setInt(3,
-							j == 0 ? taggedUrl.getTags().get(i).getId_tag() : foldedTags.get(j - 1).getId_tag());
+				// Même si l'url existe déjà, ainsi que le tag, un nouveau est tout de même créé
+				if (i == taggedUrl.getTags().size() - 1) {
+					// Enregistre le tag comme directement lié à l'url
+					insertIntoLiaisonUrlTagStatement.setInt(1, taggedUrl.getUrl().getId_url());
+					insertIntoLiaisonUrlTagStatement.setInt(2, taggedUrl.getTags().get(i).getId_tag());
+					insertIntoLiaisonUrlTagStatement.setInt(3, path.getId());
+					insertIntoLiaisonUrlTagStatement.executeUpdate();
+				} else {
+					// TODO uniquement cette partie nécessaire, la table url_tags ne sers à rien si
+					// la table folded tags est bien utilisée. Voir pour commenter et remplacer
+					// toutes les
+					// références à cette table avant de supprimer le JAVA
+					// Si je fais ça, en fin de boucle je n'aurai pas de parent à mettre....
+					// 1 mettre l'url en parent? On perdrai l'information de savoir si c'est une url
+					// ou un tag dans la liste des 'parents' => temps de traitement supplémentaire
+					// Toutes les urls sont collatérales
+					// 2 rester comme ça?
+					taggedUrl.getTags().set(i + 1, insert(taggedUrl.getTags().get(i + 1)));
+					// taggedUrl.getTags().get(i) = insert(taggedUrl.getTags().get(i + 1));
+					// Sinon enregistre la succession des tags reliés indirectement à l'url
+					insertIntoLiaisonFoldedTagsStatement.setInt(1, path.getId());
+					insertIntoLiaisonFoldedTagsStatement.setInt(2, taggedUrl.getTags().get(i + 1).getId_tag());
+					// Le parent du premier tag est celui qui est le plus proche de l'url
+					insertIntoLiaisonFoldedTagsStatement.setInt(3, taggedUrl.getTags().get(i).getId_tag());
 					insertIntoLiaisonFoldedTagsStatement.executeUpdate();
 				}
-				// if (i > 0) {
-				// insertIntoLiaisonFoldedTagsStatement.setInt(1, id_path);
-				// insertIntoLiaisonFoldedTagsStatement.setInt(2,
-				// taggedUrl.getTags().get(i).getId_tag());
-				// insertIntoLiaisonFoldedTagsStatement.setInt(3,
-				// taggedUrl.getTags().get(i - 1).getId_tag());
-				// insertIntoLiaisonFoldedTagsStatement.executeUpdate();
-				// }
-
-				// Nouvel algo
-				// Enregistrement du tag de 1er niveau et du lien dans url_tags
-				// Enregistrement des tags parents et de leur lien dans
-				// folded_tags
-			} catch (SQLException e) {
-				e.printStackTrace();
-				logger.error("Fail to insert tags in the database", e);
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			logger.error("Fail to insert tags in the database", e);
 		}
+	}
+
+	private Url insert(Url url) {
+		PreparedStatement insertIntoTagsStatement = DBConnection
+				.getPreparedStatement("insert into " + DBInfo.DBName + ".urls (url,label) values (?, ?)");
+		try {
+			insertIntoTagsStatement.setString(1, url.getUrl().toString());
+			insertIntoTagsStatement.setString(2, url.getLabel());
+			logger.trace("Execute update {}", insertIntoTagsStatement);
+			insertIntoTagsStatement.executeUpdate();
+
+			url.setId_url(getLastInsertedId("id_url", "urls"));
+			logger.trace("Update success {}", url.toString());
+			return url;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			logger.error("Fail to update", e);
+		}
+		return url;
+	}
+
+	/**
+	 * Récupère l'id du tag s'il existe
+	 * 
+	 * @param foldedTag
+	 * @return
+	 * @throws SQLException
+	 */
+	private FoldedTag insert(FoldedTag foldedTag) throws SQLException {
+		int id_tag;
+		PreparedStatement insertIntoTagsStatement = DBConnection
+				.getPreparedStatement("insert into " + DBInfo.DBName + ".tags (tag) values (?)");
+
+		id_tag = tagExists(foldedTag.getTag());
+		if (id_tag == 0) {
+			// ou le créer s'il n'existe pas
+			insertIntoTagsStatement.setString(1, foldedTag.getTag());
+			insertIntoTagsStatement.executeUpdate();
+			id_tag = getLastInsertedId("id_tag", "tags");
+		}
+		foldedTag.setId_tag(id_tag);
+		return foldedTag;
+	}
+
+	/**
+	 * Récupère une Url en base de données à partir de l'url et du label
+	 * 
+	 * @param url
+	 *            Url contenant url ET label
+	 * @return L'objet url complété de son id en base de données, ou pas s'il
+	 *         n'existe pas.
+	 */
+	private Url exists(Url url) {
+		// logger.trace("Request tag id for : {}", tagName);
+		ResultSet resultSet;
+		String query = "";
+		query += "SELECT * FROM urls WHERE url = \"" + url.getUrl() + "\" & label = \"" + url.getLabel() + "\"";
+		try {
+			resultSet = DBConnection.executeQuery(query);
+			if (resultSet.next()) {
+				int id_url = (int) resultSet.getInt("id_url");
+				// logger.trace("tag id for {} is {}", tagName, tag_id);
+				url.setId_url(id_url);
+				return url;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			logger.error("Unable to check if {} exists", url);
+		}
+		return url;
 	}
 
 	/**
@@ -142,7 +186,7 @@ public class TaggedUrlDatabaseIO {
 	 * @param tagName
 	 * @return if( tagName exists in 'tags') tagId else 0
 	 */
-	private int getTagId(String tagName) {
+	private int tagExists(String tagName) {
 		logger.trace("Request tag id for : {}", tagName);
 		ResultSet resultSet;
 		String query = "";
@@ -169,18 +213,19 @@ public class TaggedUrlDatabaseIO {
 	 * 
 	 * @return
 	 */
-	private int getUniqueIdPath() {
+	private Path getNewPath(Path path) {
 		logger.trace("Request for a new id path to the database");
 		PreparedStatement preparedStatement = DBConnection
 				.getPreparedStatement("insert into " + DBInfo.DBName + ".paths (id_path) values (0)");
 		try {
 			preparedStatement.executeUpdate();
-			return getLastInsertedId("id_path", "paths");
+			path.setId(getLastInsertedId("id_path", "paths"));
+			return path;
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			logger.error("Unable to have a new id path, It's weird bro...", e1);
 		}
-		return 0;
+		return path;
 	}
 
 	private int getLastInsertedId(String column_name, String table_name) {

@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import fr.exp.files.pearltrees.composite.TreeExtractor;
 import fr.exp.files.pearltrees.composite.impl.INode;
 import fr.exp.files.pearltrees.database.TaggedUrlDatabaseIO;
-import fr.exp.files.pearltrees.models.FoldedTag;
-import fr.exp.files.pearltrees.models.TaggedUrl;
+import fr.exp.files.pearltrees.metamodels.FoldedTag;
+import fr.exp.files.pearltrees.metamodels.TaggedUrl;
 
 /**
  * All front methods
@@ -154,7 +154,7 @@ public class PearltreesFacade2 {
 			// Write each taggedUrl in db
 			TaggedUrlDatabaseIO writer = new TaggedUrlDatabaseIO();
 			for (TaggedUrl taggedUrl : taggedUrlList) {
-				writer.writeTaggedUrl(taggedUrl);
+				writer.taggedUrlInsertion(taggedUrl);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,7 +1,14 @@
-package fr.exp.files.pearltrees.models;
+package fr.exp.files.pearltrees.metamodels;
 
 import java.util.ArrayList;
 
+import fr.exp.files.pearltrees.database.models.Url;
+
+/**
+ * Equivalent Java correspondant au model 'Url' 
+ * @author Pierre
+ *
+ */
 public class TaggedUrl {
 
 	private Url url;

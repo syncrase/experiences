@@ -1,4 +1,4 @@
-package fr.exp.files.pearltrees.models;
+package fr.exp.files.pearltrees.database.models;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -51,4 +51,7 @@ public class Url {
 		this.label = label;
 	}
 
+	public String toString() {
+		return "{" + id_url + ", " + label + ": " + url.toString() + "}";
+	}
 }

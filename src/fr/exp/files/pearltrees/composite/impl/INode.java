@@ -2,8 +2,8 @@ package fr.exp.files.pearltrees.composite.impl;
 
 import java.util.ArrayList;
 
-import fr.exp.files.pearltrees.models.FoldedTag;
-import fr.exp.files.pearltrees.models.TaggedUrl;
+import fr.exp.files.pearltrees.metamodels.FoldedTag;
+import fr.exp.files.pearltrees.metamodels.TaggedUrl;
 
 /**
  * This interface gathers methods that must be implemented by tree elements

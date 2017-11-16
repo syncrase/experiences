@@ -4,9 +4,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import fr.exp.files.pearltrees.models.FoldedTag;
-import fr.exp.files.pearltrees.models.TaggedUrl;
-import fr.exp.files.pearltrees.models.Url;
+import fr.exp.files.pearltrees.database.models.Url;
+import fr.exp.files.pearltrees.metamodels.FoldedTag;
+import fr.exp.files.pearltrees.metamodels.TaggedUrl;
 
 public class PearltreesLeaf implements INode {
 
