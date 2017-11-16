@@ -4,11 +4,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import fr.exp.files.pearltrees.database.models.FoldedTag;
-import fr.exp.files.pearltrees.database.models.TaggedUrl;
-import fr.exp.files.pearltrees.database.models.Url;
+import fr.exp.files.pearltrees.models.FoldedTag;
+import fr.exp.files.pearltrees.models.TaggedUrl;
+import fr.exp.files.pearltrees.models.Url;
 
-public class PearltreesLeaf implements PearltreesComponent {
+public class PearltreesLeaf implements INode {
 
 	private String url;
 	private String label;
@@ -16,14 +16,14 @@ public class PearltreesLeaf implements PearltreesComponent {
 	@Override
 	public String getHtmlFormat(int depth) {
 		String returnedString = "";
-		String tab = "";
-		for (int i = 0; i < depth; i++) {
-			tab += "\t";
-		}
-		returnedString += tab;
-		returnedString += "<DT><A HREF=\"" + this.getUrl() + "\"";
-		returnedString += " ADD_DATE=\"1482700435\">" + this.getLabel() + "</A>\n";
-		// returnedString += tab + this.getUrl() + "\n";
+		// String tab = "";
+		// for (int i = 0; i < depth; i++) {
+		// tab += "\t";
+		// }
+		// returnedString += tab;
+		// returnedString += "<DT><A HREF=\"" + this.getUrl() + "\"";
+		// returnedString += " ADD_DATE=\"1482700435\">" + this.getLabel() + "</A>\n";
+		// // returnedString += tab + this.getUrl() + "\n";
 
 		return returnedString;
 	}

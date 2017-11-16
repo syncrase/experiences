@@ -3,18 +3,29 @@ package fr.exp.files.pearltrees.composite.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.exp.files.pearltrees.composite.impl.utils.RecursiveFolderBuilder;
-import fr.exp.files.pearltrees.database.models.FoldedTag;
-import fr.exp.files.pearltrees.database.models.TaggedUrl;
+import fr.exp.files.pearltrees.composite.impl.utils.TreeBuilder;
+import fr.exp.files.pearltrees.models.FoldedTag;
+import fr.exp.files.pearltrees.models.TaggedUrl;
 
-public class PearltreesComposite extends RecursiveFolderBuilder implements PearltreesComponent {
+/**
+ * Extends the TreeBuilder class in order to add the build behavior
+ * 
+ * @author Pierre
+ *
+ */
+public class PearltreesComposite extends TreeBuilder implements INode {
 
 	private String folderName;
 
-	// Collection of child Component
-	// This is either a url or a folder
-	private List<PearltreesComponent> childComponent = new ArrayList<PearltreesComponent>();
+	/*
+	 * Collection of child Component This is either a url or a folder
+	 */
+	private List<INode> nodeList = new ArrayList<INode>();
 
+	/**
+	 * @depth used for the indentation
+	 * @return the html format of the pearltrees tree structure
+	 */
 	@Override
 	public String getHtmlFormat(int depth) {
 		String returnedString = "";
@@ -24,7 +35,7 @@ public class PearltreesComposite extends RecursiveFolderBuilder implements Pearl
 		}
 		returnedString += tab + "<DT><H3 FOLDED ADD_DATE=\"1364146937\">" + this.folderName + "</H3>\n";
 		returnedString += tab + "<DD><DL><p>\n";
-		for (PearltreesComponent component : childComponent) {
+		for (INode component : nodeList) {
 			returnedString += component.getHtmlFormat(depth + 1);
 		}
 
@@ -45,27 +56,35 @@ public class PearltreesComposite extends RecursiveFolderBuilder implements Pearl
 	// return returnedString;
 	// }
 
+	/**
+	 * @path
+	 * @return
+	 */
 	@Override
 	public ArrayList<TaggedUrl> getFoldedTags(ArrayList<FoldedTag> path) {
 		ArrayList<TaggedUrl> taggedUrlList = new ArrayList<TaggedUrl>();
 		ArrayList<FoldedTag> tempPath;
-		for (PearltreesComponent entity : this.childComponent) {
+		for (INode node : this.nodeList) {
 			tempPath = new ArrayList<FoldedTag>();
 			tempPath.addAll(path);
 			tempPath.add(new FoldedTag(folderName));
-			taggedUrlList.addAll(entity.getFoldedTags(tempPath));
+			taggedUrlList.addAll(node.getFoldedTags(tempPath));
 		}
 		return taggedUrlList;
 	}
 
-	// Adds the graphic to the composition.
-	public void addChildComponent(PearltreesComponent component) {
-		childComponent.add(component);
+	/**
+	 * Adds the component to the component list.
+	 * 
+	 * @param component
+	 */
+	public void addINode(INode component) {
+		nodeList.add(component);
 	}
 
 	// Removes the graphic from the composition.
-	public void removeChildComponent(PearltreesComponent component) {
-		childComponent.remove(component);
+	public void removeINode(INode component) {
+		nodeList.remove(component);
 	}
 
 	public String getFolderName() {

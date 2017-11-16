@@ -1,4 +1,4 @@
-package fr.exp.files.pearltrees.database.models;
+package fr.exp.files.pearltrees.models;
 
 import java.util.ArrayList;
 

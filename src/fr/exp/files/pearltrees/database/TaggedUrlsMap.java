@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import fr.exp.files.pearltrees.database.models.TaggedUrl;
+import fr.exp.files.pearltrees.models.TaggedUrl;
 
 /**
  * Cet objet permet de stocker toutes les lignes de résultat d'une réquête. Cet

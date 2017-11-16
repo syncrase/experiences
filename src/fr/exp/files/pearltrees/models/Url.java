@@ -1,4 +1,4 @@
-package fr.exp.files.pearltrees.database.models;
+package fr.exp.files.pearltrees.models;
 
 import java.net.MalformedURLException;
 import java.net.URL;

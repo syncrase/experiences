@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
-import fr.exp.files.pearltrees.database.models.FoldedTag;
-import fr.exp.files.pearltrees.database.models.TaggedUrl;
-import fr.exp.files.pearltrees.database.models.Url;
+import fr.exp.files.pearltrees.models.FoldedTag;
+import fr.exp.files.pearltrees.models.TaggedUrl;
+import fr.exp.files.pearltrees.models.Url;
 
 public class TaggedUrlDatabaseIO {
 	public static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
@@ -267,36 +267,36 @@ public class TaggedUrlDatabaseIO {
 
 	}
 
-	public String getTablesName() {
-		logger.trace("Get database table names");
-		// Cette méthode n'a rien à faire dans cette classe. Créer un classe
-		// DatabaseIO? DBConnection?
-		ResultSet resultSet;
-		String query = "";
-		String returnedString = "";
-		ArrayList<String> tableList = new ArrayList<String>();
-		// TODO Comment récupérer les urls et tous leurs tags dans une seule
-		// requête?
-		query += "SELECT TABLE_NAME FROM information_schema.tables "
-				+ "where TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA = 'pearltrees_data'";
-		// AND L.id_path = F.id_path
-		// AND F.id_parent = T.id_tag --> pas nécessaire puisque j'ai le
-		// path j'obtiens l'information id_parent dans le retour
-		try {
-			resultSet = DBConnection.executeQuery(query);
-			while (resultSet.next()) {
-				// TODO need some parse
-				tableList.add(resultSet.getString("TABLE_NAME"));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			logger.error("Unable to get database table names");
-		}
-
-		for (String tableName : tableList) {
-			returnedString += tableName + "\n";
-		}
-		return null;
-	}
+//	public String getTablesName() {
+//		logger.trace("Get database table names");
+//		// Cette méthode n'a rien à faire dans cette classe. Créer un classe
+//		// DatabaseIO? DBConnection?
+//		ResultSet resultSet;
+//		String query = "";
+//		String returnedString = "";
+//		ArrayList<String> tableList = new ArrayList<String>();
+//		// TODO Comment récupérer les urls et tous leurs tags dans une seule
+//		// requête?
+//		query += "SELECT TABLE_NAME FROM information_schema.tables "
+//				+ "where TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA = 'pearltrees_data'";
+//		// AND L.id_path = F.id_path
+//		// AND F.id_parent = T.id_tag --> pas nécessaire puisque j'ai le
+//		// path j'obtiens l'information id_parent dans le retour
+//		try {
+//			resultSet = DBConnection.executeQuery(query);
+//			while (resultSet.next()) {
+//				// TODO need some parse
+//				tableList.add(resultSet.getString("TABLE_NAME"));
+//			}
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			logger.error("Unable to get database table names");
+//		}
+//
+//		for (String tableName : tableList) {
+//			returnedString += tableName + "\n";
+//		}
+//		return null;
+//	}
 }

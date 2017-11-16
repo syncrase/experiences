@@ -2,10 +2,16 @@ package fr.exp.files.pearltrees.composite.impl;
 
 import java.util.ArrayList;
 
-import fr.exp.files.pearltrees.database.models.FoldedTag;
-import fr.exp.files.pearltrees.database.models.TaggedUrl;
+import fr.exp.files.pearltrees.models.FoldedTag;
+import fr.exp.files.pearltrees.models.TaggedUrl;
 
-public interface PearltreesComponent {
+/**
+ * This interface gathers methods that must be implemented by tree elements
+ * 
+ * @author Pierre
+ *
+ */
+public interface INode {
 
 	public String getHtmlFormat(int depth);
 

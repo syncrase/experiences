@@ -10,50 +10,41 @@ import java.util.ArrayList;
 
 import org.slf4j.LoggerFactory;
 
-import fr.exp.files.pearltrees.composite.PearltreesConstructor;
-import fr.exp.files.pearltrees.composite.impl.PearltreesComponent;
+import fr.exp.files.pearltrees.composite.TreeExtractor;
+import fr.exp.files.pearltrees.composite.impl.INode;
 import fr.exp.files.pearltrees.database.TaggedUrlDatabaseIO;
-import fr.exp.files.pearltrees.database.models.FoldedTag;
-import fr.exp.files.pearltrees.database.models.TaggedUrl;
+import fr.exp.files.pearltrees.models.FoldedTag;
+import fr.exp.files.pearltrees.models.TaggedUrl;
 
+/**
+ * All front methods
+ * 
+ * @author Pierre
+ *
+ */
 public class PearltreesFacade2 {
 
-	private PearltreesComponent pearlTreesExportData;
+	private INode pearlTreesExportData;
 
 	public static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
 			.getLogger("fr.exp.files.pearltrees");
 
+	/**
+	 * Launch the extraction process
+	 * 
+	 * @param filePath
+	 */
 	public PearltreesFacade2(String filePath) {
 		logger.trace("Début construction PearltreesFacade2");
-		pearlTreesExportData = PearltreesConstructor.getComponent(filePath);
+		TreeExtractor treeExtractor = new TreeExtractor(filePath);
+		// pearlTreesExportData = TreeExtractor.getComponent(filePath);
+		pearlTreesExportData = treeExtractor.getContent();
 		logger.trace("Fin construction PearltreesFacade2");
 	}
 
-	public void saveInDataBase() {
-		try {
-			logger.trace("Save in data base");
-			// Ajout dans la base de données de chaque url associées à son tag
-			// composé
-			// Dans la base de données
-
-			// Get all taggedUrls
-			ArrayList<TaggedUrl> taggedUrlList = this.getFoldedTagsList();
-			// Write each taggedUrl in db
-			TaggedUrlDatabaseIO writer = new TaggedUrlDatabaseIO();
-			for (TaggedUrl taggedUrl : taggedUrlList) {
-				writer.writeTaggedUrl(taggedUrl);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("Fail to save in database", e);
-		}
-	}
-
-	public String toString() {
-		return pearlTreesExportData.toString();
-	}
-
 	/**
+	 * export process
+	 * 
 	 * @param string
 	 * 
 	 */
@@ -61,6 +52,7 @@ public class PearltreesFacade2 {
 		logger.trace("Write the result to the file {}", filePath);
 		Path path = FileSystems.getDefault().getPath(filePath);
 		String html = generateHtml();
+
 		Charset charset = Charset.forName("UTF-8");
 		// The BufferedWriter use requires to set the project compliance to 1.7
 		try (BufferedWriter writer = Files.newBufferedWriter(path, charset)) {
@@ -71,44 +63,6 @@ public class PearltreesFacade2 {
 		}
 	}
 
-	public String getTreeWithoutLeafs() {
-		// return pearlTreesExportData.toString_asATree(0, true, false);
-		return "";
-	}
-
-	public String getTree() {
-		// return pearlTreesExportData.toString_asATree(0, true, true);
-		return "";
-	}
-
-	public String getFoldedTags() {
-		ArrayList<TaggedUrl> taggedUrlList = this.getFoldedTagsList();
-		String returnedString = "";
-		for (TaggedUrl taggedUrl : taggedUrlList) {
-			// TODO Faire la même chose pour tous les tags
-			returnedString += taggedUrl.getTags().get(0).getFullPath() + taggedUrl.getUrl().getLabel() + "\n";
-		}
-		return returnedString;
-	}
-
-	public ArrayList<TaggedUrl> getFoldedTagsList() {
-		return pearlTreesExportData.getFoldedTags(new ArrayList<FoldedTag>());
-	}
-
-	public String getHtml() {
-		return generateHtml();
-	}
-
-	/*
-	 * PRIVATES METHODS
-	 */
-
-	/**
-	 * Generate the html in order to be as near as possible of the pearltrees export
-	 * html files
-	 * 
-	 * @return html file source code
-	 */
 	private String generateHtml() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<!DOCTYPE html>\n");
@@ -124,44 +78,91 @@ public class PearltreesFacade2 {
 		return sb.toString();
 	}
 
-	public String loadFromDataBase() {
-		// TODO Construction du pearltreesComponent à partir de la bdd
-
-		// Parcours de toutes les urls pour les ajouter une a une à l'objet
-		// pearlTreesExportData
-
-		TaggedUrlDatabaseIO taggedUrlIO = new TaggedUrlDatabaseIO();
-
-		// TODO faire en sorte que je reçoive un PearltreesComponent!!! Pas
-		// possible, la nature du PearltreesComponent est une structure de
-		// fichier => une url = un path
-		// Possible si une url apparaît plusieurs fois. problème quand il n'y a
-		// pas de tag de base!!!!
-		// Pas possible d'utiliser PearltreesComponent
-		// Permettra d'utiliser les autres méthodes de la façade + avoir à
-		// disposition tous les IO pour construire l'objet
-		ArrayList<TaggedUrl> taggedUrlList;
-		taggedUrlList = taggedUrlIO.read();
-
-		StringBuilder sb = new StringBuilder();
+	/**
+	 * 
+	 * @return
+	 */
+	public String getFoldedTags() {
+		ArrayList<TaggedUrl> taggedUrlList = pearlTreesExportData.getFoldedTags(new ArrayList<FoldedTag>());
+		String returnedString = "";
+		ArrayList<FoldedTag> foldedTagList;
 		for (TaggedUrl taggedUrl : taggedUrlList) {
-			// TODO ici ça ne va pas. Chaque url peut avoir plusieurs folded
-			// tags
-			// Donc, récupérer le path pour chaque tag
-			sb.append(taggedUrl.getTags().get(0).getFullPath() + taggedUrl.getUrl().getLabel() + "\n");
+			foldedTagList = taggedUrl.getTags();
+			for (FoldedTag fd : foldedTagList) {
+				returnedString += fd.getTag() + (foldedTagList.indexOf(fd) != foldedTagList.size() - 1 ? ", " : "");
+			}
+			returnedString += ": ";
+			returnedString += taggedUrl.getUrl().getLabel() + "\n";
 		}
-		return sb.toString();
+		return returnedString;
 	}
 
-	public void deleteAll() {
-		TaggedUrlDatabaseIO writer = new TaggedUrlDatabaseIO();
-		writer.deleteAll();
+	/*
+	 * DATABASE METHODS
+	 */
+
+	// public String loadFromDataBase() {
+	// // TODO Construction du pearltreesComponent à partir de la bdd
+	//
+	// // Parcours de toutes les urls pour les ajouter une a une à l'objet
+	// // pearlTreesExportData
+	//
+	// TaggedUrlDatabaseIO taggedUrlIO = new TaggedUrlDatabaseIO();
+	//
+	// // TODO faire en sorte que je reçoive un PearltreesComponent!!! Pas
+	// // possible, la nature du PearltreesComponent est une structure de
+	// // fichier => une url = un path
+	// // Possible si une url apparaît plusieurs fois. problème quand il n'y a
+	// // pas de tag de base!!!!
+	// // Pas possible d'utiliser PearltreesComponent
+	// // Permettra d'utiliser les autres méthodes de la façade + avoir à
+	// // disposition tous les IO pour construire l'objet
+	// ArrayList<TaggedUrl> taggedUrlList;
+	// taggedUrlList = taggedUrlIO.read();
+	//
+	// StringBuilder sb = new StringBuilder();
+	// for (TaggedUrl taggedUrl : taggedUrlList) {
+	// // TODO ici ça ne va pas. Chaque url peut avoir plusieurs folded
+	// // tags
+	// // Donc, récupérer le path pour chaque tag
+	// sb.append(taggedUrl.getTags().get(0).getFullPath() +
+	// taggedUrl.getUrl().getLabel() + "\n");
+	// }
+	// return sb.toString();
+	// }
+
+	// public void deleteAll() {
+	// TaggedUrlDatabaseIO writer = new TaggedUrlDatabaseIO();
+	// writer.deleteAll();
+	// }
+
+	// public String getTablesName() {
+	// TaggedUrlDatabaseIO taggedUrlDatabaseIO = new TaggedUrlDatabaseIO();
+	//
+	// return taggedUrlDatabaseIO.getTablesName();
+	// }
+
+	public void saveInDataBase() {
+		try {
+			logger.trace("Save in data base");
+			// Ajout dans la base de données de chaque url associées à son tag
+			// composé
+			// Dans la base de données
+
+			// Get all taggedUrls
+			ArrayList<TaggedUrl> taggedUrlList = pearlTreesExportData.getFoldedTags(new ArrayList<FoldedTag>());
+			// Write each taggedUrl in db
+			TaggedUrlDatabaseIO writer = new TaggedUrlDatabaseIO();
+			for (TaggedUrl taggedUrl : taggedUrlList) {
+				writer.writeTaggedUrl(taggedUrl);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Fail to save in database", e);
+		}
 	}
 
-	public String getTablesName() {
-		TaggedUrlDatabaseIO taggedUrlDatabaseIO = new TaggedUrlDatabaseIO();
-
-		return taggedUrlDatabaseIO.getTablesName();
-	}
-
+	// public String toString() {
+	// return pearlTreesExportData.toString();
+	// }
 }

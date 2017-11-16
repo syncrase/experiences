@@ -1,4 +1,4 @@
-package fr.exp.files.pearltrees.database.models;
+package fr.exp.files.pearltrees.models;
 
 import java.util.LinkedList;
 
@@ -43,6 +43,12 @@ public class FoldedTag {
 		this.parentTag = parentTag;
 	}
 
+	/**
+	 * Only used for the database import. Doesn't work with the result of the
+	 * getFoldedTags method.
+	 * 
+	 * @return
+	 */
 	public LinkedList<FoldedTag> getFullPath() {
 
 		LinkedList<FoldedTag> parentsTags = new LinkedList<FoldedTag>();

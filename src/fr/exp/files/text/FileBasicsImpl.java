@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.exp.files.basics.FilesBasics;
-import fr.exp.files.pearltrees.FilesHandler;
 
 public class FileBasicsImpl extends FilesBasics {
 
@@ -20,9 +19,9 @@ public class FileBasicsImpl extends FilesBasics {
 	 * @return
 	 */
 	public String getFullText(String filePath) {
-		FilesHandler fh = new FilesHandler();
+//		FilesHandler_TODEL fh = new FilesHandler_TODEL();
 		String fileContent = "";
-		fileContent = fh.getContentAsString(filePath, "\n");
+		fileContent = this.getContentAsString(filePath, "\n");
 		return fileContent;
 	}
 

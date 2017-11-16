@@ -8,18 +8,31 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slf4j.LoggerFactory;
 
-import fr.exp.files.pearltrees.composite.impl.PearltreesComponent;
+import fr.exp.files.pearltrees.composite.impl.INode;
 import fr.exp.files.pearltrees.composite.impl.PearltreesComposite;
-import fr.exp.files.pearltrees.composite.impl.utils.RecursiveFolderBuilder;
+import fr.exp.files.pearltrees.composite.impl.utils.TreeBuilder;
 
-public class PearltreesConstructor extends RecursiveFolderBuilder {
+/**
+ * The private constructor allow to parse the html file and to build a tree
+ * structure with the abstract class TreeBuilder
+ * 
+ * @author Pierre
+ *
+ */
+public class TreeExtractor extends TreeBuilder {
 
-	PearltreesComponent content;
+	INode content;
 
 	public static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
 			.getLogger("fr.exp.files.pearltrees");
 
-	private PearltreesConstructor(String filePath) {
+	/**
+	 * The private constructor parse the html file and build a tree structure with
+	 * the abstract class TreeBuilder. Core of the extraction process
+	 * 
+	 * @filepath path of the file to parse
+	 */
+	public TreeExtractor(String filePath) {
 		super();
 		logger.trace("Parse the pearltrees file: {}", filePath);
 
@@ -30,7 +43,7 @@ public class PearltreesConstructor extends RecursiveFolderBuilder {
 			Elements allElements = doc.getAllElements();
 			content = new PearltreesComposite();
 			logger.trace("Begin to construct the content representative objet");
-			this.buildObject(allElements, (PearltreesComposite) content);
+			this.build(allElements, (PearltreesComposite) content);
 			logger.trace("Finish to construct the content representative objet");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -39,12 +52,12 @@ public class PearltreesConstructor extends RecursiveFolderBuilder {
 
 	}
 
-	public static PearltreesComponent getComponent(String filePath) {
-		PearltreesConstructor contructor = new PearltreesConstructor(filePath);
-		return contructor.getContent();
-	}
+	// public static INode getComponent(String filePath) {
+	// TreeExtractor contructor = new TreeExtractor(filePath);
+	// return contructor.getContent();
+	// }
 
-	private PearltreesComponent getContent() {
+	public INode getContent() {
 		return content;
 	}
 

@@ -32,7 +32,8 @@
 		<file>${PROJECT_ROOT}/logs/appenders/file/myApp.log</file>
 		<append>true</append>
 		<encoder>
-			<pattern>%contextName %date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+<!-- 		%contextName %date %level [%thread] %logger{10} [%file:%line] %msg%n -->
+			<pattern>[%thread:%M] %logger{10} [%file:%line] %msg%n</pattern>
 		</encoder>
 	</appender>
 
@@ -59,7 +60,8 @@
 			<maxFileSize>5MB</maxFileSize>
 		</triggeringPolicy>
 		<encoder>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %logger{0} %X{akkaSource} %msg%n</pattern>
+<!-- 		%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %logger{0} %X{akkaSource} %msg%n -->
+			<pattern>[%thread:%M] [%file:%line] %msg%n</pattern>
 		</encoder>
 	</appender>
 
