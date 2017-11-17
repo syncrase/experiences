@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
 import fr.exp.files.pearltrees.database.models.Path;
+import fr.exp.files.pearltrees.database.models.Tag;
 import fr.exp.files.pearltrees.database.models.Url;
 import fr.exp.files.pearltrees.metamodels.FoldedTag;
 import fr.exp.files.pearltrees.metamodels.TaggedUrl;
@@ -22,8 +23,7 @@ public class TaggedUrlDatabaseIO {
 	// Des méthodes pour rassembler des paths. Supprimer des paths entier. recréer
 	// le path quand un tag est supprimé
 	// Mais en priorité, permettre à une url d'avoir plusieurs foldedTags!!!
-	
-	
+
 	// CREATE TABLE `pearltrees_data`.`liaison_url_tags` ( `id_liaison_url_tags` INT
 	// NOT NULL AUTO_INCREMENT , `id_url` INT NOT NULL , `id_tag` INT NOT NULL ,
 	// PRIMARY KEY (`id_liaison_url_tags`)) ENGINE = MyISAM;
@@ -136,18 +136,17 @@ public class TaggedUrlDatabaseIO {
 	 * @throws SQLException
 	 */
 	private FoldedTag insert(FoldedTag foldedTag) throws SQLException {
-		int id_tag;
+		Tag tag;
 		PreparedStatement insertIntoTagsStatement = DBConnection
 				.getPreparedStatement("insert into " + DBInfo.DBName + ".tags (tag) values (?)");
 
-		id_tag = tagExists(foldedTag.getTag());
-		if (id_tag == 0) {
+		foldedTag.setTag(exists(foldedTag.getTag()));
+		if (foldedTag.getTag().getId_tag() == 0) {
 			// ou le créer s'il n'existe pas
-			insertIntoTagsStatement.setString(1, foldedTag.getTag());
+			insertIntoTagsStatement.setString(1, foldedTag.getTag().getTag());
 			insertIntoTagsStatement.executeUpdate();
-			id_tag = getLastInsertedId("id_tag", "tags");
+			foldedTag.setId_tag(getLastInsertedId("id_tag", "tags"));
 		}
-		foldedTag.setId_tag(id_tag);
 		return foldedTag;
 	}
 
@@ -186,23 +185,24 @@ public class TaggedUrlDatabaseIO {
 	 * @param tagName
 	 * @return if( tagName exists in 'tags') tagId else 0
 	 */
-	private int tagExists(String tagName) {
-		logger.trace("Request tag id for : {}", tagName);
+	private Tag exists(Tag tag) {
+		logger.trace("Request tag id for : {}", tag);
 		ResultSet resultSet;
 		String query = "";
-		query += "SELECT * FROM tags WHERE tag = \"" + tagName + "\"";
+		query += "SELECT * FROM tags WHERE tag = \"" + tag.getTag() + "\"";
 		try {
 			resultSet = DBConnection.executeQuery(query);
 			if (resultSet.next()) {
-				int tag_id = (int) resultSet.getInt("id_tag");
-				logger.trace("tag id for {} is {}", tagName, tag_id);
-				return tag_id;
+				int id_tag = (int) resultSet.getInt("id_tag");
+				tag.setId_tag(id_tag);
+				logger.trace("tag id for {} is {}", tag.getTag(), id_tag);
+				return tag;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			logger.error("Unable to request tag id for : {}", tagName);
+			logger.error("Unable to request tag id for : {}", tag.getTag());
 		}
-		return 0;
+		return tag;
 	}
 
 	/**
