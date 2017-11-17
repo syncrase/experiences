@@ -10,7 +10,7 @@ import fr.exp.databases.mysql.DBInfo;
 import fr.exp.files.pearltrees.database.models.IModel;
 import fr.exp.files.pearltrees.database.models.LiaisonFoldedTagsDTO;
 
-public class LiaisonFoldedTagsDAO extends DAO_absract {
+public class LiaisonFoldedTagsDAO extends DaoAbsract {
 	private ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
 			.getLogger("fr.exp.files.pearltrees");
 

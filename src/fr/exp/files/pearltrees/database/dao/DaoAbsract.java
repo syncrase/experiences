@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
 
-abstract class DAO_absract implements DAO_interface {
+abstract class DaoAbsract implements DaoInterface {
 
 	private ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
 			.getLogger("fr.exp.files.pearltrees");

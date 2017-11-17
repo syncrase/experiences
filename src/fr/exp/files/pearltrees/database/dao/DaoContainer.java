@@ -2,9 +2,9 @@ package fr.exp.files.pearltrees.database.dao;
 
 import fr.exp.files.pearltrees.database.models.*;
 
-public class DaoContainer implements DAO_interface {
+public class DaoContainer implements DaoInterface {
 
-	private DAO_interface dao;
+	private DaoInterface dao;
 
 	public DaoContainer(IModel model) {
 		if (model instanceof TagsDTO) {

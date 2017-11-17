@@ -11,7 +11,7 @@ import fr.exp.databases.mysql.DBInfo;
 import fr.exp.files.pearltrees.database.models.IModel;
 import fr.exp.files.pearltrees.database.models.TagsDTO;
 
-public class TagDAO extends DAO_absract {
+public class TagDAO extends DaoAbsract {
 	private ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
 			.getLogger("fr.exp.files.pearltrees");
 
