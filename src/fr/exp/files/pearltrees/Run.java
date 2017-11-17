@@ -6,17 +6,18 @@ public class Run {
 
 	public static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
 			.getLogger("fr.exp.files.pearltrees");
+	public static Counter counter = new Counter();
 
 	public static void main(String[] args) {
-
-		logger.trace("Début d'exécution de HtmlPrearlTreesDemo");
+		logger.warn("Main lauched");
+		counter.start();
 
 		PearltreesFacade2 pearltreesFacade2 = new PearltreesFacade2("files/in/pearltrees_export-25-12-2016.html");
 		// print(pearltreesFacade2.getFoldedTags());
 		// pearltreesFacade2.writeHtmlFile("files/out/my_pearltrees_export.html");
 
 		pearltreesFacade2.deleteAll();
-		 pearltreesFacade2.saveInDataBase();
+		pearltreesFacade2.saveInDataBase();
 
 		// print(pearltreesFacade2.getTablesName());
 		// print(pearltreesFacade2.loadFromDataBase());
@@ -36,16 +37,17 @@ public class Run {
 		// partie?
 		// Sachant que la base de données peut-être mongodb, neo4j, ... et
 		// fichier! ==>> Bosser sur le pattern adéquat! (builder, factory?)
-		logger.trace("Fin d'exécution de HtmlPrearlTreesDemo");
+		counter.stop();
+		logger.warn("Time elapsed: {}", counter.getTime());
 	}
 
-	private static void print(String msg, Object... args) {
-		if (args.length == 0) {
-			System.out.println(msg);
-		} else {
-			System.out.println(String.format(msg, args));
-		}
-	}
+	// private static void print(String msg, Object... args) {
+	// if (args.length == 0) {
+	// System.out.println(msg);
+	// } else {
+	// System.out.println(String.format(msg, args));
+	// }
+	// }
 	//
 	// private static String trim(String s, int width) {
 	// if (s.length() > width)
@@ -54,4 +56,28 @@ public class Run {
 	// return s;
 	// }
 
+	static class Counter {
+		long startTime;
+		long endTime;
+
+		public Counter() {
+			this.startTime = 0;
+			this.endTime = 0;
+		}
+
+		public void start() {
+			startTime = System.currentTimeMillis();
+		}
+
+		public void stop() {
+			endTime = System.currentTimeMillis();
+		}
+
+		public String getTime() {
+			if (endTime == 0)
+				return ((System.currentTimeMillis() - startTime) / 1000.0) + " sec";
+			else
+				return ((endTime - startTime) / 1000.0) + " sec";
+		}
+	}
 }

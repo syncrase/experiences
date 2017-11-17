@@ -4,7 +4,7 @@
 <!-- All about the configuration -->
 <!-- https://logback.qos.ch/manual/appenders.html -->
 <!-- https://logback.qos.ch/manual/layouts.html -->
-<configuration debug="true" scan="true" scanPeriod="43 seconds"
+<configuration debug="false" scan="true" scanPeriod="43 seconds"
 	packagingData="true">
 	<!-- debug="true" Avoid to implement > LoggerContext lc = (LoggerContext) 
 		LoggerFactory.getILoggerFactory();StatusPrinter.print(lc); -->
@@ -85,7 +85,7 @@
 	<!-- one mandatory name attribute, an optional level attribute (TRACE, DEBUG, 
 		INFO, WARN, ERROR, ALL or OFF), and an optional additivity attribute (true, 
 		false) -->
-	<logger name="logger.test" level="INFO" additivity="false">
+	<logger name="logger.test" level="warn" additivity="false">
 		<!-- If additivity=true it uses 2 times the STDOUT appender, one time for -->
 		<!-- this logger and another time for root logger -->
 		<appender-ref ref="STDOUT" />
@@ -98,10 +98,10 @@
 		<appender-ref ref="ROLLINGFILE" />
 	</logger>
 
-	<logger name="logger.traces" level="TRACE" additivity="true">
+	<logger name="logger.traces" level="warn" additivity="true">
 	</logger>
 
-	<root level="debug">
+	<root level="warn">
 		<appender-ref ref="STDOUT" />
 	</root>
 </configuration>
