@@ -9,11 +9,8 @@ import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
 import fr.exp.files.pearltrees.database.models.*;
 
-public class LiaisonTagUrlDAO extends DaoAbsract {
-	private ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
-			.getLogger("fr.exp.files.pearltrees");
+public class LiaisonTagUrlDAO extends DaoMeta {
 
-	
 	public LiaisonTagUrlDAO(IModel model) {
 	}
 

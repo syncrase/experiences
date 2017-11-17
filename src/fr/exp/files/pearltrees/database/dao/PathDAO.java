@@ -10,9 +10,7 @@ import fr.exp.databases.mysql.DBInfo;
 import fr.exp.files.pearltrees.database.models.IModel;
 import fr.exp.files.pearltrees.database.models.PathsDTO;
 
-public class PathDAO extends DaoAbsract {
-	private ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
-			.getLogger("fr.exp.files.pearltrees");
+public class PathDAO extends DaoMeta {
 	IModel path;
 
 	protected PathDAO(IModel model) {

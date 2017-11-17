@@ -2,7 +2,7 @@ package fr.exp.files.pearltrees.database.dao;
 
 import fr.exp.files.pearltrees.database.models.IModel;
 
-public interface DaoInterface {
+public interface DaoMustHave {
 
 	public IModel exists(IModel model);
 

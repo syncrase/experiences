@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
 
-abstract class DaoAbsract implements DaoInterface {
+abstract class DaoMeta implements DaoMustHave {
 
-	private ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
+	protected ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
 			.getLogger("fr.exp.files.pearltrees");
 
 	protected int getLastInsertedId(String column_name, String table_name) {

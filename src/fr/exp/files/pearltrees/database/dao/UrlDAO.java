@@ -11,9 +11,7 @@ import fr.exp.databases.mysql.DBInfo;
 import fr.exp.files.pearltrees.database.models.IModel;
 import fr.exp.files.pearltrees.database.models.UrlsDTO;
 
-public class UrlDAO extends DaoAbsract {
-	private ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
-			.getLogger("fr.exp.files.pearltrees");
+public class UrlDAO extends DaoMeta {
 
 	private IModel url;
 
