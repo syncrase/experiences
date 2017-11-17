@@ -32,7 +32,13 @@
 		<file>${PROJECT_ROOT}/logs/appenders/file/myApp.log</file>
 		<append>true</append>
 		<encoder>
-<!-- 		%contextName %date %level [%thread] %logger{10} [%file:%line] %msg%n -->
+<!-- 		%contextName 
+%date 		%d{HH:mm:ss.SSS}
+%level  	%-5level 
+[%thread] 
+%logger{10} 
+[%file:%line] 
+%msg%n -->
 			<pattern>[%thread:%M] %logger{10} [%file:%line] %msg%n</pattern>
 		</encoder>
 	</appender>
@@ -70,7 +76,7 @@
 			by default -->
 
 		<encoder>
-			<pattern>STDOUT %contextName %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			<pattern> %d{ss.SSS} %class{0} - %msg%n
 			</pattern>
 		</encoder>
 	</appender>

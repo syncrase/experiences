@@ -22,7 +22,7 @@ public class TaggedUrlsMap {
 	}
 
 	public void add(TaggedUrl taggedUrl) {
-		pool.put(new Integer(taggedUrl.getUrl().getId_url()), taggedUrl);
+		pool.put(new Integer(taggedUrl.getUrl().getId()), taggedUrl);
 	}
 
 	public ArrayList<TaggedUrl> getArrayList() {

@@ -156,6 +156,7 @@ public class PearltreesFacade2 {
 			for (TaggedUrl taggedUrl : taggedUrlList) {
 				writer.taggedUrlInsertion(taggedUrl);
 			}
+			logger.info("Save complete");
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("Fail to save in database", e);

@@ -43,19 +43,6 @@ public class PearltreesComposite extends TreeBuilder implements INode {
 		return returnedString;
 	}
 
-	// @Override
-	// public String getFoldedTags(String path) {
-	// String returnedString = "";
-	// path += this.folderName + "/";
-	//// returnedString += path;// + this.folderName + "/"
-	//// returnedString += "\n";
-	// for (PearltreesComponent entity : this.childComponent) {
-	// returnedString += entity.getFoldedTags(path);// + this.folderName +
-	// // "/"
-	// }
-	// return returnedString;
-	// }
-
 	/**
 	 * @path
 	 * @return
@@ -82,10 +69,9 @@ public class PearltreesComposite extends TreeBuilder implements INode {
 		nodeList.add(component);
 	}
 
-	// Removes the graphic from the composition.
-	public void removeINode(INode component) {
-		nodeList.remove(component);
-	}
+	// public void removeINode(INode component) {
+	// nodeList.remove(component);
+	// }
 
 	public String getFolderName() {
 		return folderName;

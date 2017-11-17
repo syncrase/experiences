@@ -4,7 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import fr.exp.files.pearltrees.database.models.Url;
+import fr.exp.files.pearltrees.database.models.UrlsDTO;
 import fr.exp.files.pearltrees.metamodels.FoldedTag;
 import fr.exp.files.pearltrees.metamodels.TaggedUrl;
 
@@ -52,9 +52,9 @@ public class PearltreesLeaf implements INode {
 
 	@Override
 	public ArrayList<TaggedUrl> getFoldedTags(ArrayList<FoldedTag> path) {
-		Url url = null;
+		UrlsDTO url = null;
 		try {
-			url = new Url(new URL(this.url), this.label);
+			url = new UrlsDTO(new URL(this.url), this.label);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}

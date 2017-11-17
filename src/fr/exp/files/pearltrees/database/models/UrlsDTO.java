@@ -3,19 +3,20 @@ package fr.exp.files.pearltrees.database.models;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class Url {
+public class UrlsDTO implements IModel {
 
 	private int id_url;
 	private URL url;
 	private String label;
 
-	public Url(URL url, String label) {
+	public UrlsDTO(URL url, String label) {
 		super();
 		this.url = url;
 		this.label = label;
+		this.id_url = 0;
 	}
 
-	public Url(int id_url, String url, String label) {
+	public UrlsDTO(int id_url, String url, String label) {
 		super();
 
 		this.id_url = id_url;
@@ -27,7 +28,14 @@ public class Url {
 		}
 	}
 
-	public int getId_url() {
+	public UrlsDTO(int id_url) {
+		this.id_url = id_url;
+	}
+
+	public UrlsDTO() {
+	}
+
+	public int getId() {
 		return id_url;
 	}
 

@@ -52,11 +52,6 @@ public class TreeExtractor extends TreeBuilder {
 
 	}
 
-	// public static INode getComponent(String filePath) {
-	// TreeExtractor contructor = new TreeExtractor(filePath);
-	// return contructor.getContent();
-	// }
-
 	public INode getContent() {
 		return content;
 	}

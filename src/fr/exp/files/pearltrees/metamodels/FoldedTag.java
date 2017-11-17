@@ -2,34 +2,38 @@ package fr.exp.files.pearltrees.metamodels;
 
 import java.util.LinkedList;
 
-import fr.exp.files.pearltrees.database.models.Tag;
+import org.slf4j.LoggerFactory;
+
+import fr.exp.files.pearltrees.database.models.TagsDTO;
 
 public class FoldedTag {
+	public ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
+			.getLogger("fr.exp.files.pearltrees");
 
-	// private int id_tag;
-	// private String tag;
-	private Tag tag;
+	private TagsDTO tag;
 	private FoldedTag parentTag;
 
 	public FoldedTag(int id, String tag) {
 		super();
-		this.tag = new Tag(id, tag);
+		this.tag = new TagsDTO(id, tag);
 	}
 
-	public FoldedTag(Tag tag) {
+	public FoldedTag(TagsDTO tag) {
 		super();
 		this.tag = tag;
 	}
 
 	public FoldedTag(String tag) {
 		super();
-		this.tag = new Tag(0, tag);
+		this.tag = new TagsDTO(0, tag);
+		// this.parentTag = new TagsDTO();
 	}
 
 	public String getTagName() {
 		return tag.getTag();
 	}
-	public Tag getTag() {
+
+	public TagsDTO getTag() {
 		return tag;
 	}
 
@@ -37,11 +41,11 @@ public class FoldedTag {
 		this.tag.setTag(tag);
 	}
 
-	public void setTag(Tag tag) {
+	public void setTag(TagsDTO tag) {
 		this.tag = tag;
 	}
-	
-	public int getId_tag() {
+
+	public int getId() {
 		return tag.getId_tag();
 	}
 

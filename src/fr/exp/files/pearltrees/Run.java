@@ -15,7 +15,7 @@ public class Run {
 		// print(pearltreesFacade2.getFoldedTags());
 		// pearltreesFacade2.writeHtmlFile("files/out/my_pearltrees_export.html");
 
-//		pearltreesFacade2.deleteAll();
+		pearltreesFacade2.deleteAll();
 		 pearltreesFacade2.saveInDataBase();
 
 		// print(pearltreesFacade2.getTablesName());

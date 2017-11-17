@@ -2,38 +2,39 @@ package fr.exp.files.pearltrees.metamodels;
 
 import java.util.ArrayList;
 
-import fr.exp.files.pearltrees.database.models.Url;
+import fr.exp.files.pearltrees.database.models.*;
 
 /**
- * Equivalent Java correspondant au model 'Url' 
+ * Equivalent Java correspondant au model 'Url'
+ * 
  * @author Pierre
  *
  */
 public class TaggedUrl {
 
-	private Url url;
+	private UrlsDTO url;
 	private ArrayList<FoldedTag> tags;
-	private int path;
+	private PathsDTO path;
 
-	public TaggedUrl(Url url, ArrayList<FoldedTag> tags) {
+	public TaggedUrl(UrlsDTO url, ArrayList<FoldedTag> tags) {
 		super();
 		this.url = url;
 		this.tags = tags;
 	}
 
-	public TaggedUrl(Url url, FoldedTag tag, int path) {
+	public TaggedUrl(UrlsDTO url, FoldedTag tag, int path) {
 		super();
 		this.url = url;
 		this.tags = new ArrayList<FoldedTag>();
 		this.tags.add(tag);
-		this.path = path;
+		this.path = new PathsDTO(path);
 	}
 
-	public Url getUrl() {
+	public UrlsDTO getUrl() {
 		return url;
 	}
 
-	public void setUrl(Url url) {
+	public void setUrl(UrlsDTO url) {
 		this.url = url;
 	}
 
@@ -45,12 +46,20 @@ public class TaggedUrl {
 		this.tags = tags;
 	}
 
-	public void setPath(int path) {
+	public void setPath(PathsDTO path) {
 		this.path = path;
 	}
 
-	public int getPath() {
+	public void setPathId(int path) {
+		this.path.setId(path);
+	}
+
+	public PathsDTO getPath() {
 		return path;
+	}
+
+	public void setPath(IModel path) {
+		this.path = (PathsDTO) path;
 	}
 
 	/**
@@ -84,4 +93,5 @@ public class TaggedUrl {
 		sb.append("}");
 		return sb.toString();
 	}
+
 }

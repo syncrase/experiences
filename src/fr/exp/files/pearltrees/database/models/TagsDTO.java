@@ -1,14 +1,22 @@
 package fr.exp.files.pearltrees.database.models;
 
-public class Tag {
+public class TagsDTO implements IModel {
 
 	int id_tag;
 	String tag;
 
-	public Tag(int id_tag, String tag) {
+	public TagsDTO(int id_tag, String tag) {
 		super();
 		this.id_tag = id_tag;
 		this.tag = tag;
+	}
+
+	public TagsDTO() {
+	}
+
+	public TagsDTO(int id_tag_parent) {
+		this.id_tag = id_tag_parent;
+		this.tag = "";
 	}
 
 	public int getId_tag() {
