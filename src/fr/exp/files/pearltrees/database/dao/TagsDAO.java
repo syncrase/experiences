@@ -4,18 +4,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.slf4j.LoggerFactory;
-
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
-import fr.exp.files.pearltrees.database.models.IModel;
-import fr.exp.files.pearltrees.database.models.TagsDTO;
+import fr.exp.files.pearltrees.database.dto.TagsDTO;
+import fr.exp.files.pearltrees.database.skeleton.DaoMeta;
+import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
 
-public class TagDAO extends DaoMeta {
+public class TagsDAO extends DaoMeta {
 
-	private IModel tag;
+	private DataTransfertObject tag;
 
-	protected TagDAO(IModel model) {
+	public TagsDAO(DataTransfertObject model) {
 		this.tag = model;
 	}
 
@@ -27,7 +26,7 @@ public class TagDAO extends DaoMeta {
 	 * @return if( tagName exists in 'tags') tagId else 0
 	 */
 	@Override
-	public IModel exists(IModel tag) {
+	public DataTransfertObject exists(DataTransfertObject tag) {
 		this.tag = tag;
 		logger.trace("Request tag id for : {}", tag);
 		ResultSet resultSet;
@@ -57,7 +56,7 @@ public class TagDAO extends DaoMeta {
 	 * @throws SQLException
 	 */
 	@Override
-	public IModel insert(IModel tag) {
+	public DataTransfertObject insert(DataTransfertObject tag) {
 		try {
 
 			this.tag = exists(((TagsDTO) tag));

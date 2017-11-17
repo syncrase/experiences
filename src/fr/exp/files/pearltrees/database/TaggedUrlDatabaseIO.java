@@ -9,13 +9,13 @@ import org.slf4j.LoggerFactory;
 
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
-import fr.exp.files.pearltrees.database.dao.DaoContainer;
-import fr.exp.files.pearltrees.database.models.IModel;
-import fr.exp.files.pearltrees.database.models.LiaisonFoldedTagsDTO;
-import fr.exp.files.pearltrees.database.models.LiaisonTagUrlDTO;
-import fr.exp.files.pearltrees.database.models.PathsDTO;
-import fr.exp.files.pearltrees.database.models.TagsDTO;
-import fr.exp.files.pearltrees.database.models.UrlsDTO;
+import fr.exp.files.pearltrees.database.dto.LiaisonFoldedTagsDTO;
+import fr.exp.files.pearltrees.database.dto.LiaisonTagUrlDTO;
+import fr.exp.files.pearltrees.database.dto.PathsDTO;
+import fr.exp.files.pearltrees.database.dto.TagsDTO;
+import fr.exp.files.pearltrees.database.dto.UrlsDTO;
+import fr.exp.files.pearltrees.database.skeleton.DataAccessObject;
+import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
 import fr.exp.files.pearltrees.metamodels.FoldedTag;
 import fr.exp.files.pearltrees.metamodels.TaggedUrl;
 
@@ -44,8 +44,8 @@ public class TaggedUrlDatabaseIO {
 
 		logger.trace("Get or insert {}", taggedUrl.getUrl().toString());
 		// Récupère l'url existante et sinon enregistre une url
-		IModel url = new UrlsDTO();
-		DaoContainer urldao = new DaoContainer(url);
+		DataTransfertObject url = new UrlsDTO();
+		DataAccessObject urldao = new DataAccessObject(url);
 		// Get or insert the url
 		taggedUrl.setUrl((UrlsDTO) urldao.insert(taggedUrl.getUrl()));
 
@@ -78,15 +78,15 @@ public class TaggedUrlDatabaseIO {
 	private void insert(TaggedUrl taggedUrl) {
 		logger.trace("Process folding tags insertion");
 
-		IModel path = new PathsDTO();
-		DaoContainer pathDao = new DaoContainer(path);
+		DataTransfertObject path = new PathsDTO();
+		DataAccessObject pathDao = new DataAccessObject(path);
 		path = pathDao.insert(path);
 		taggedUrl.setPath(path);
 		// Retirer la condition de taille? Normalement il y a toujours au moins un tag
 		// => donc condition inutile... Voir pour ajouter un point bloquant conditionné
 		// sur la taille du tableau de tag
-		IModel tag = new TagsDTO();
-		DaoContainer tagdao = new DaoContainer(tag);
+		DataTransfertObject tag = new TagsDTO();
+		DataAccessObject tagdao = new DataAccessObject(tag);
 		if (taggedUrl.getTags().size() > 0) {
 			tag = taggedUrl.getTags().get(0).getTag();
 			// get or insert the tag
@@ -104,7 +104,7 @@ public class TaggedUrlDatabaseIO {
 				// Enregistre le tag comme directement lié à l'url
 				LiaisonTagUrlDTO dto = new LiaisonTagUrlDTO(taggedUrl.getUrl().getId(),
 						taggedUrl.getTags().get(i).getId(), taggedUrl.getPath().getId());
-				DaoContainer liaisonTagUrldao = new DaoContainer(dto);
+				DataAccessObject liaisonTagUrldao = new DataAccessObject(dto);
 				// Je ne récupère pas l'id car inutlie ici.
 				liaisonTagUrldao.insert(dto);
 			} else {
@@ -124,7 +124,7 @@ public class TaggedUrlDatabaseIO {
 				// Le parent du premier tag est celui qui est le plus proche de l'url
 				LiaisonFoldedTagsDTO dto = new LiaisonFoldedTagsDTO(((PathsDTO) path).getId(),
 						taggedUrl.getTags().get(i + 1).getId(), taggedUrl.getTags().get(i).getId());
-				DaoContainer liaisonFoldedTagsDao = new DaoContainer(dto);
+				DataAccessObject liaisonFoldedTagsDao = new DataAccessObject(dto);
 				// Je ne récupère pas l'id car inutlie ici.
 				liaisonFoldedTagsDao.insert(dto);
 			}

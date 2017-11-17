@@ -1,6 +1,8 @@
-package fr.exp.files.pearltrees.database.models;
+package fr.exp.files.pearltrees.database.dto;
 
-public class TagsDTO implements IModel {
+import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
+
+public class TagsDTO implements DataTransfertObject {
 
 	int id_tag;
 	String tag;

@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import org.slf4j.LoggerFactory;
 
-import fr.exp.files.pearltrees.database.models.TagsDTO;
+import fr.exp.files.pearltrees.database.dto.TagsDTO;
 
 public class FoldedTag {
 	public ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory

@@ -1,4 +1,6 @@
-package fr.exp.files.pearltrees.database.models;
+package fr.exp.files.pearltrees.database.dto;
+
+import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
 
 /**
  * Les dto sont adaptée à retourner exactement les valeurs à inscrire en bdd.
@@ -6,7 +8,7 @@ package fr.exp.files.pearltrees.database.models;
  * @author Pierre
  *
  */
-public class LiaisonFoldedTagsDTO implements IModel {
+public class LiaisonFoldedTagsDTO implements DataTransfertObject {
 
 	// En soit ça ne servira jamais à rien d'avoir ces objets. Mais ça permet
 	// d'avoir une arborescence précise d'où ces objets sont utilisés

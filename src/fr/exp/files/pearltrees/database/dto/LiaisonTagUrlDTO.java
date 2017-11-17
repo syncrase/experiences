@@ -1,6 +1,8 @@
-package fr.exp.files.pearltrees.database.models;
+package fr.exp.files.pearltrees.database.dto;
 
-public class LiaisonTagUrlDTO implements IModel {
+import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
+
+public class LiaisonTagUrlDTO implements DataTransfertObject {
 
 	int id_liaison_url_tags;
 	UrlsDTO url;

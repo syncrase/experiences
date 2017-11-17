@@ -7,19 +7,20 @@ import org.slf4j.LoggerFactory;
 
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
-import fr.exp.files.pearltrees.database.models.IModel;
-import fr.exp.files.pearltrees.database.models.PathsDTO;
+import fr.exp.files.pearltrees.database.dto.PathsDTO;
+import fr.exp.files.pearltrees.database.skeleton.DaoMeta;
+import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
 
-public class PathDAO extends DaoMeta {
-	IModel path;
+public class PathsDAO extends DaoMeta {
+	DataTransfertObject path;
 
-	protected PathDAO(IModel model) {
+	public PathsDAO(DataTransfertObject model) {
 		this.path = model;
 	}
 
 	@Override
-	public IModel exists(IModel model) {
-		logger.error("Unused method for {}", PathDAO.class);
+	public DataTransfertObject exists(DataTransfertObject model) {
+		logger.error("Unused method for {}", PathsDAO.class);
 		return null;
 	}
 
@@ -32,7 +33,7 @@ public class PathDAO extends DaoMeta {
 	 * @return
 	 */
 	@Override
-	public IModel insert(IModel model) {
+	public DataTransfertObject insert(DataTransfertObject model) {
 		this.path = model;
 		logger.trace("Request for a new id path to the database");
 		PreparedStatement preparedStatement = DBConnection

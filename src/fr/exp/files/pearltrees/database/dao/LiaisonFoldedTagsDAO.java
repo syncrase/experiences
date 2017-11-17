@@ -7,22 +7,23 @@ import org.slf4j.LoggerFactory;
 
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
-import fr.exp.files.pearltrees.database.models.IModel;
-import fr.exp.files.pearltrees.database.models.LiaisonFoldedTagsDTO;
+import fr.exp.files.pearltrees.database.dto.LiaisonFoldedTagsDTO;
+import fr.exp.files.pearltrees.database.skeleton.DaoMeta;
+import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
 
 public class LiaisonFoldedTagsDAO extends DaoMeta {
 
-	public LiaisonFoldedTagsDAO(IModel model) {
+	public LiaisonFoldedTagsDAO(DataTransfertObject model) {
 	}
 
 	@Override
-	public IModel exists(IModel model) {
+	public DataTransfertObject exists(DataTransfertObject model) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public IModel insert(IModel model) {
+	public DataTransfertObject insert(DataTransfertObject model) {
 		LiaisonFoldedTagsDTO dto = (LiaisonFoldedTagsDTO) model;
 		try {
 

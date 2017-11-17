@@ -4,22 +4,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.slf4j.LoggerFactory;
-
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
-import fr.exp.files.pearltrees.database.models.IModel;
-import fr.exp.files.pearltrees.database.models.UrlsDTO;
+import fr.exp.files.pearltrees.database.dto.UrlsDTO;
+import fr.exp.files.pearltrees.database.skeleton.DaoMeta;
+import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
 
-public class UrlDAO extends DaoMeta {
+public class UrlsDAO extends DaoMeta {
 
-	private IModel url;
+	private DataTransfertObject url;
 
-	protected UrlDAO(IModel model) {
+	public UrlsDAO(DataTransfertObject model) {
 		this.url = model;
 	}
 
-	public IModel insert(IModel url) {
+	public DataTransfertObject insert(DataTransfertObject url) {
 		this.url = (UrlsDTO) url;
 		PreparedStatement insertIntoTagsStatement = DBConnection
 				.getPreparedStatement("insert into " + DBInfo.DBName + ".urls (url,label) values (?, ?)");
@@ -47,7 +46,7 @@ public class UrlDAO extends DaoMeta {
 	 * @return L'objet url complété de son id en base de données, ou pas s'il
 	 *         n'existe pas.
 	 */
-	public IModel exists(IModel url) {
+	public DataTransfertObject exists(DataTransfertObject url) {
 		ResultSet resultSet;
 		String query = "";
 		query += "SELECT * FROM urls WHERE url = \"" + ((UrlsDTO) this.url).getUrl() + "\" & label = \""

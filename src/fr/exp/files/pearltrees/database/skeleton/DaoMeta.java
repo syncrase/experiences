@@ -1,4 +1,4 @@
-package fr.exp.files.pearltrees.database.dao;
+package fr.exp.files.pearltrees.database.skeleton;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
 
-abstract class DaoMeta implements DaoMustHave {
+public abstract class DaoMeta implements DaoMustHave {
 
 	protected ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
 			.getLogger("fr.exp.files.pearltrees");

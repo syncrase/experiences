@@ -1,6 +1,8 @@
-package fr.exp.files.pearltrees.database.models;
+package fr.exp.files.pearltrees.database.dto;
 
-public class PathsDTO implements IModel {
+import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
+
+public class PathsDTO implements DataTransfertObject {
 
 	private int id_path;
 

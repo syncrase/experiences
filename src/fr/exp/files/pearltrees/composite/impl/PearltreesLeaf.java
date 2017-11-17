@@ -4,7 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import fr.exp.files.pearltrees.database.models.UrlsDTO;
+import fr.exp.files.pearltrees.database.dto.UrlsDTO;
 import fr.exp.files.pearltrees.metamodels.FoldedTag;
 import fr.exp.files.pearltrees.metamodels.TaggedUrl;
 

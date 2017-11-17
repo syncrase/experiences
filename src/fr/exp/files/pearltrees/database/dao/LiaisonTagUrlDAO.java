@@ -7,21 +7,23 @@ import org.slf4j.LoggerFactory;
 
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
-import fr.exp.files.pearltrees.database.models.*;
+import fr.exp.files.pearltrees.database.dto.*;
+import fr.exp.files.pearltrees.database.skeleton.DaoMeta;
+import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
 
 public class LiaisonTagUrlDAO extends DaoMeta {
 
-	public LiaisonTagUrlDAO(IModel model) {
+	public LiaisonTagUrlDAO(DataTransfertObject model) {
 	}
 
 	@Override
-	public IModel exists(IModel model) {
+	public DataTransfertObject exists(DataTransfertObject model) {
 		logger.error("Unused method for {}", LiaisonTagUrlDAO.class);
 		return null;
 	}
 
 	@Override
-	public IModel insert(IModel model) {
+	public DataTransfertObject insert(DataTransfertObject model) {
 		LiaisonTagUrlDTO dto = (LiaisonTagUrlDTO) model;
 		try {
 

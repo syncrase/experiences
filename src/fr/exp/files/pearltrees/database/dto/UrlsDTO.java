@@ -1,9 +1,11 @@
-package fr.exp.files.pearltrees.database.models;
+package fr.exp.files.pearltrees.database.dto;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class UrlsDTO implements IModel {
+import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
+
+public class UrlsDTO implements DataTransfertObject {
 
 	private int id_url;
 	private URL url;

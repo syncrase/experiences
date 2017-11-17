@@ -2,7 +2,8 @@ package fr.exp.files.pearltrees.metamodels;
 
 import java.util.ArrayList;
 
-import fr.exp.files.pearltrees.database.models.*;
+import fr.exp.files.pearltrees.database.dto.*;
+import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
 
 /**
  * Equivalent Java correspondant au model 'Url'
@@ -58,7 +59,7 @@ public class TaggedUrl {
 		return path;
 	}
 
-	public void setPath(IModel path) {
+	public void setPath(DataTransfertObject path) {
 		this.path = (PathsDTO) path;
 	}
 
