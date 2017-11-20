@@ -6,4 +6,6 @@ public interface DaoMustHave {
 
 	public DataTransfertObject insert(DataTransfertObject dto);
 
+	public DataTransfertObject getOrInsert(DataTransfertObject dto);
+
 }

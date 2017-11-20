@@ -3,11 +3,10 @@ package fr.exp.files.pearltrees.database.dao;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.slf4j.LoggerFactory;
-
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
 import fr.exp.files.pearltrees.database.dto.PathsDTO;
+import fr.exp.files.pearltrees.database.dto.UrlsDTO;
 import fr.exp.files.pearltrees.database.skeleton.DaoMeta;
 import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
 
@@ -47,5 +46,10 @@ public class PathsDAO extends DaoMeta {
 			logger.error("Unable to have a new id path, It's weird bro...", e1);
 		}
 		return this.path;
+	}
+
+	@Override
+	public DataTransfertObject getOrInsert(DataTransfertObject dto) {
+		return insert(exists(((PathsDTO) dto)));
 	}
 }

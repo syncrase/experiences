@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
+import fr.exp.files.pearltrees.database.dto.TagsDTO;
 import fr.exp.files.pearltrees.database.dto.UrlsDTO;
 import fr.exp.files.pearltrees.database.skeleton.DaoMeta;
 import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
@@ -64,5 +65,10 @@ public class UrlsDAO extends DaoMeta {
 			logger.error("Unable to check if {} exists", ((UrlsDTO) this.url));
 		}
 		return this.url;
+	}
+
+	@Override
+	public DataTransfertObject getOrInsert(DataTransfertObject dto) {
+		return insert(exists(((UrlsDTO) dto)));
 	}
 }

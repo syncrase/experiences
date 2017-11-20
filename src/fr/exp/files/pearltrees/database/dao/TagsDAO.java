@@ -59,7 +59,6 @@ public class TagsDAO extends DaoMeta {
 	public DataTransfertObject insert(DataTransfertObject tag) {
 		try {
 
-			this.tag = exists(((TagsDTO) tag));
 			if (((TagsDTO) this.tag).getId_tag() == 0) {
 				// ou le créer s'il n'existe pas
 				PreparedStatement insertIntoTagsStatement = DBConnection
@@ -74,5 +73,10 @@ public class TagsDAO extends DaoMeta {
 			e.printStackTrace();
 		}
 		return this.tag;
+	}
+
+	@Override
+	public DataTransfertObject getOrInsert(DataTransfertObject dto) {
+		return insert(exists(((TagsDTO) tag)));
 	}
 }

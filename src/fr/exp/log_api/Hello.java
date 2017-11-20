@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ch.qos.logback.classic.*;
-import ch.qos.logback.core.util.StatusPrinter;
 
 public class Hello {
 

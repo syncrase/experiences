@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import org.slf4j.LoggerFactory;
 
 import fr.exp.databases.mysql.DBConnection;
-import fr.exp.databases.mysql.DBInfo;
 import fr.exp.files.pearltrees.database.dto.LiaisonFoldedTagsDTO;
 import fr.exp.files.pearltrees.database.dto.LiaisonTagUrlDTO;
 import fr.exp.files.pearltrees.database.dto.PathsDTO;
@@ -28,69 +27,30 @@ public class TaggedUrlDatabaseIO {
 	// le path quand un tag est supprimé
 	// Mais en priorité, permettre à une url d'avoir plusieurs foldedTags!!!
 
-	// CREATE TABLE `pearltrees_data`.`liaison_url_tags` ( `id_liaison_url_tags` INT
-	// NOT NULL AUTO_INCREMENT , `id_url` INT NOT NULL , `id_tag` INT NOT NULL ,
-	// PRIMARY KEY (`id_liaison_url_tags`)) ENGINE = MyISAM;
-
-	// CREATE TABLE `pearltrees_data`.`urls` ( `id_url` INT NOT NULL AUTO_INCREMENT
-	// , `url` INT NOT NULL , `label` INT NOT NULL , PRIMARY KEY (`id_url`)) ENGINE
-	// = MyISAM;
-
-	// CREATE TABLE `pearltrees_data`.`liaison_folded_tags` ( `id_path` INT NOT NULL
-	// , `id_parent_tag` INT NOT NULL , `id_liaison_folded_tags` INT NOT NULL
-	// AUTO_INCREMENT , PRIMARY KEY (`id_liaison_folded_tags`)) ENGINE = MyISAM;
-
 	public void taggedUrlInsertion(TaggedUrl taggedUrl) {
 
 		logger.trace("Get or insert {}", taggedUrl.getUrl().toString());
-		// Récupère l'url existante et sinon enregistre une url
-		DataTransfertObject url = new UrlsDTO();
-		DataAccessObject urldao = new DataAccessObject(url);
+		DataAccessObject dao = new DataAccessObject();
+
 		// Get or insert the url
-		taggedUrl.setUrl((UrlsDTO) urldao.insert(taggedUrl.getUrl()));
+		taggedUrl.setUrl((UrlsDTO) dao.insert(taggedUrl.getUrl()));
 
 		insert(taggedUrl);
 	}
 
-	// /**
-	// * Récupère l'id du tag s'il existe, ou insère dans la base de données
-	// *
-	// * @param foldedTag
-	// * @return Un foldedTag avec l'id du tag
-	// * @throws SQLException
-	// */
-	// private FoldedTag insert(FoldedTag foldedTag) throws SQLException {
-	// Tag tag;
-	// PreparedStatement insertIntoTagsStatement = DBConnection
-	// .getPreparedStatement("insert into " + DBInfo.DBName + ".tags (tag) values
-	// (?)");
-	//
-	// foldedTag.setTag(exists(foldedTag.getTag()));
-	// if (foldedTag.getTag().getId_tag() == 0) {
-	// // ou le créer s'il n'existe pas
-	// insertIntoTagsStatement.setString(1, foldedTag.getTag().getTag());
-	// insertIntoTagsStatement.executeUpdate();
-	// foldedTag.setId_tag(getLastInsertedId("id_tag", "tags"));
-	// }
-	// return foldedTag;
-	// }
-
 	private void insert(TaggedUrl taggedUrl) {
 		logger.trace("Process folding tags insertion");
 
-		DataTransfertObject path = new PathsDTO();
-		DataAccessObject pathDao = new DataAccessObject(path);
-		path = pathDao.insert(path);
-		taggedUrl.setPath(path);
+		DataAccessObject dao = new DataAccessObject();
+		taggedUrl.setPath(dao.insert(new PathsDTO()));
 		// Retirer la condition de taille? Normalement il y a toujours au moins un tag
 		// => donc condition inutile... Voir pour ajouter un point bloquant conditionné
 		// sur la taille du tableau de tag
 		DataTransfertObject tag = new TagsDTO();
-		DataAccessObject tagdao = new DataAccessObject(tag);
 		if (taggedUrl.getTags().size() > 0) {
 			tag = taggedUrl.getTags().get(0).getTag();
 			// get or insert the tag
-			tag = tagdao.insert(tag);
+			tag = dao.insert(tag);
 			taggedUrl.getTags().get(0).setTag((TagsDTO) tag);
 		}
 
@@ -104,9 +64,8 @@ public class TaggedUrlDatabaseIO {
 				// Enregistre le tag comme directement lié à l'url
 				LiaisonTagUrlDTO dto = new LiaisonTagUrlDTO(taggedUrl.getUrl().getId(),
 						taggedUrl.getTags().get(i).getId(), taggedUrl.getPath().getId());
-				DataAccessObject liaisonTagUrldao = new DataAccessObject(dto);
 				// Je ne récupère pas l'id car inutlie ici.
-				liaisonTagUrldao.insert(dto);
+				dao.insert(dto);
 			} else {
 				// TODO uniquement cette partie nécessaire, la table url_tags ne sers à rien si
 				// la table folded tags est bien utilisée. Voir pour commenter et remplacer
@@ -117,16 +76,15 @@ public class TaggedUrlDatabaseIO {
 				// ou un tag dans la liste des 'parents' => temps de traitement supplémentaire
 				// Toutes les urls sont collatérales
 				// 2 rester comme ça?
-				tag = tagdao.insert(taggedUrl.getTags().get(i + 1).getTag());
+				tag = dao.insert(taggedUrl.getTags().get(i + 1).getTag());
 				taggedUrl.getTags().get(i + 1).setTag((TagsDTO) tag);
 				// taggedUrl.getTags().get(i) = insert(taggedUrl.getTags().get(i + 1));
 				// Sinon enregistre la succession des tags reliés indirectement à l'url
 				// Le parent du premier tag est celui qui est le plus proche de l'url
-				LiaisonFoldedTagsDTO dto = new LiaisonFoldedTagsDTO(((PathsDTO) path).getId(),
+				LiaisonFoldedTagsDTO dto = new LiaisonFoldedTagsDTO(taggedUrl.getPath().getId(),
 						taggedUrl.getTags().get(i + 1).getId(), taggedUrl.getTags().get(i).getId());
-				DataAccessObject liaisonFoldedTagsDao = new DataAccessObject(dto);
 				// Je ne récupère pas l'id car inutlie ici.
-				liaisonFoldedTagsDao.insert(dto);
+				dao.insert(dto);
 			}
 		}
 		logger.trace("Fin de l'inscription de l'url taggées");

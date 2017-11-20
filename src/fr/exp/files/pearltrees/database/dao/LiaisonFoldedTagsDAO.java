@@ -3,11 +3,10 @@ package fr.exp.files.pearltrees.database.dao;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.slf4j.LoggerFactory;
-
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
 import fr.exp.files.pearltrees.database.dto.LiaisonFoldedTagsDTO;
+import fr.exp.files.pearltrees.database.dto.LiaisonTagUrlDTO;
 import fr.exp.files.pearltrees.database.skeleton.DaoMeta;
 import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
 
@@ -18,7 +17,7 @@ public class LiaisonFoldedTagsDAO extends DaoMeta {
 
 	@Override
 	public DataTransfertObject exists(DataTransfertObject model) {
-		// TODO Auto-generated method stub
+		logger.error("Unused method for {}", PathsDAO.class);
 		return null;
 	}
 
@@ -39,6 +38,11 @@ public class LiaisonFoldedTagsDAO extends DaoMeta {
 			this.logger.error("Fail to get or insert", e);
 		}
 		return dto;
+	}
+
+	@Override
+	public DataTransfertObject getOrInsert(DataTransfertObject dto) {
+		return insert(exists(((LiaisonFoldedTagsDTO) dto)));
 	}
 
 }

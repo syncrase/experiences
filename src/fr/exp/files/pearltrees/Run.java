@@ -77,7 +77,7 @@ public class Run {
 			if (endTime == 0)
 				return ((System.currentTimeMillis() - startTime) / 1000.0) + " sec";
 			else
-				return ((endTime - startTime) / 1000.0) + " sec";
+				return ((endTime - startTime) / 1000.0d) + " sec";
 		}
 	}
 }
