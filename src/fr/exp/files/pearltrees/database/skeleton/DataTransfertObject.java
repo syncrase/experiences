@@ -10,4 +10,8 @@ package fr.exp.files.pearltrees.database.skeleton;
  */
 public interface DataTransfertObject {
 
+	int getId();
+
+	void setId(int lastInsertedId);
+
 }

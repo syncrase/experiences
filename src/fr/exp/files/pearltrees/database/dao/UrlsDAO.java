@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
-import fr.exp.files.pearltrees.database.dto.TagsDTO;
 import fr.exp.files.pearltrees.database.dto.UrlsDTO;
 import fr.exp.files.pearltrees.database.skeleton.DaoMeta;
 import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
@@ -26,11 +25,10 @@ public class UrlsDAO extends DaoMeta {
 		try {
 			insertIntoTagsStatement.setString(1, ((UrlsDTO) this.url).getUrl().toString());
 			insertIntoTagsStatement.setString(2, ((UrlsDTO) this.url).getLabel());
-			logger.trace("Execute update {}", insertIntoTagsStatement);
+			logger.trace("{}", insertIntoTagsStatement);
 			insertIntoTagsStatement.executeUpdate();
 
-			((UrlsDTO) this.url).setId_url(getLastInsertedId("id_url", "urls"));
-			logger.trace("Update success {}", this.url.toString());
+			((UrlsDTO) this.url).setId(getLastInsertedId("id_url", "urls"));
 			return this.url;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -49,15 +47,15 @@ public class UrlsDAO extends DaoMeta {
 	 */
 	public DataTransfertObject exists(DataTransfertObject url) {
 		ResultSet resultSet;
-		String query = "";
-		query += "SELECT * FROM urls WHERE url = \"" + ((UrlsDTO) this.url).getUrl() + "\" & label = \""
-				+ ((UrlsDTO) this.url).getLabel() + "\"";
+		PreparedStatement ps = DBConnection.getPreparedStatement("SELECT * FROM urls WHERE url = ? & label = ?");
 		try {
-			resultSet = DBConnection.executeQuery(query);
+			ps.setString(1, ((UrlsDTO) this.url).getUrl().toString());
+			ps.setString(2, ((UrlsDTO) this.url).getLabel());
+			resultSet = ps.executeQuery();
 			if (resultSet.next()) {
 				int id_url = (int) resultSet.getInt("id_url");
-				// logger.trace("tag id for {} is {}", tagName, tag_id);
-				((UrlsDTO) this.url).setId_url(id_url);
+				logger.trace("{}", ps);
+				((UrlsDTO) this.url).setId(id_url);
 				return url;
 			}
 		} catch (SQLException e) {
@@ -67,8 +65,4 @@ public class UrlsDAO extends DaoMeta {
 		return this.url;
 	}
 
-	@Override
-	public DataTransfertObject getOrInsert(DataTransfertObject dto) {
-		return insert(exists(((UrlsDTO) dto)));
-	}
 }

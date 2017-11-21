@@ -13,7 +13,7 @@ import fr.exp.files.pearltrees.database.dto.LiaisonTagUrlDTO;
 import fr.exp.files.pearltrees.database.dto.PathsDTO;
 import fr.exp.files.pearltrees.database.dto.TagsDTO;
 import fr.exp.files.pearltrees.database.dto.UrlsDTO;
-import fr.exp.files.pearltrees.database.skeleton.DataAccessObject;
+import fr.exp.files.pearltrees.database.skeleton.DAOManipulator;
 import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
 import fr.exp.files.pearltrees.metamodels.FoldedTag;
 import fr.exp.files.pearltrees.metamodels.TaggedUrl;
@@ -30,7 +30,7 @@ public class TaggedUrlDatabaseIO {
 	public void taggedUrlInsertion(TaggedUrl taggedUrl) {
 
 		logger.trace("Get or insert {}", taggedUrl.getUrl().toString());
-		DataAccessObject dao = new DataAccessObject();
+		DAOManipulator dao = new DAOManipulator();
 
 		// Get or insert the url
 		taggedUrl.setUrl((UrlsDTO) dao.insert(taggedUrl.getUrl()));
@@ -39,9 +39,9 @@ public class TaggedUrlDatabaseIO {
 	}
 
 	private void insert(TaggedUrl taggedUrl) {
-		logger.trace("Process folding tags insertion");
+		logger.info("{}", taggedUrl.toString());
 
-		DataAccessObject dao = new DataAccessObject();
+		DAOManipulator dao = new DAOManipulator();
 		taggedUrl.setPath(dao.insert(new PathsDTO()));
 		// Retirer la condition de taille? Normalement il y a toujours au moins un tag
 		// => donc condition inutile... Voir pour ajouter un point bloquant conditionné
@@ -50,7 +50,7 @@ public class TaggedUrlDatabaseIO {
 		if (taggedUrl.getTags().size() > 0) {
 			tag = taggedUrl.getTags().get(0).getTag();
 			// get or insert the tag
-			tag = dao.insert(tag);
+			tag = dao.getOrInsert(tag);
 			taggedUrl.getTags().get(0).setTag((TagsDTO) tag);
 		}
 
@@ -76,7 +76,7 @@ public class TaggedUrlDatabaseIO {
 				// ou un tag dans la liste des 'parents' => temps de traitement supplémentaire
 				// Toutes les urls sont collatérales
 				// 2 rester comme ça?
-				tag = dao.insert(taggedUrl.getTags().get(i + 1).getTag());
+				tag = dao.getOrInsert(taggedUrl.getTags().get(i + 1).getTag());
 				taggedUrl.getTags().get(i + 1).setTag((TagsDTO) tag);
 				// taggedUrl.getTags().get(i) = insert(taggedUrl.getTags().get(i + 1));
 				// Sinon enregistre la succession des tags reliés indirectement à l'url

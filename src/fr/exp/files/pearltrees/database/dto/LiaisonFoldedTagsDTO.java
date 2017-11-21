@@ -25,10 +25,12 @@ public class LiaisonFoldedTagsDTO implements DataTransfertObject {
 		this.id_liaison_folded_tags = 0;
 	}
 
+	@Override
 	public int getId() {
 		return id_liaison_folded_tags;
 	}
 
+	@Override
 	public void setId(int id) {
 		this.id_liaison_folded_tags = id;
 	}
@@ -42,19 +44,19 @@ public class LiaisonFoldedTagsDTO implements DataTransfertObject {
 	}
 
 	public int getParent() {
-		return parent.getId_tag();
+		return parent.getId();
 	}
 
 	public void setParent(int parent) {
-		this.parent.setId_tag(parent);
+		this.parent.setId(parent);
 	}
 
 	public int getTag() {
-		return tag.getId_tag();
+		return tag.getId();
 	}
 
 	public void setTag(int tag) {
-		this.tag.setId_tag(tag);
+		this.tag.setId(tag);
 	}
 
 }

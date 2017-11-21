@@ -28,18 +28,20 @@ public class TagsDAO extends DaoMeta {
 	@Override
 	public DataTransfertObject exists(DataTransfertObject tag) {
 		this.tag = tag;
-		logger.trace("Request tag id for : {}", tag);
 		ResultSet resultSet;
-		String query = "";
-		query += "SELECT * FROM tags WHERE tag = \"" + ((TagsDTO) this.tag).getTag() + "\"";
+		PreparedStatement ps = DBConnection.getPreparedStatement("SELECT * FROM tags WHERE tag = ?");
 		try {
-			resultSet = DBConnection.executeQuery(query);
+			ps.setString(1, ((TagsDTO) this.tag).getTag());
+			logger.trace("{}", ps);
+			resultSet = ps.executeQuery();
 			if (resultSet.next()) {
 				int id_tag = (int) resultSet.getInt("id_tag");
-				((TagsDTO) this.tag).setId_tag(id_tag);
-				logger.trace("tag id for {} is {}", ((TagsDTO) this.tag).getTag(), id_tag);
-				return tag;
+				((TagsDTO) this.tag).setId(id_tag);
+				// logger.trace("{} existe", tag);
+				return this.tag;
 			}
+
+			logger.trace("{} n'existe pas", tag);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.error("Unable to request tag id for : {}", ((TagsDTO) this.tag).getTag());
@@ -48,8 +50,7 @@ public class TagsDAO extends DaoMeta {
 	}
 
 	/**
-	 * Récupère l'id du tag s'il existe, ou insère dans la base de données. Garanti
-	 * sans doublon
+	 * Insère dans la base de données.
 	 * 
 	 * @param tag
 	 * @return Un tag avec l'id du tag
@@ -57,26 +58,20 @@ public class TagsDAO extends DaoMeta {
 	 */
 	@Override
 	public DataTransfertObject insert(DataTransfertObject tag) {
+		this.tag = tag;
 		try {
-
-			if (((TagsDTO) this.tag).getId_tag() == 0) {
-				// ou le créer s'il n'existe pas
-				PreparedStatement insertIntoTagsStatement = DBConnection
+			if (this.tag.getId() == 0) {
+				PreparedStatement ps = DBConnection
 						.getPreparedStatement("insert into " + DBInfo.DBName + ".tags (tag) values (?)");
-				insertIntoTagsStatement.setString(1, ((TagsDTO) this.tag).getTag());
-				insertIntoTagsStatement.executeUpdate();
-
-				((TagsDTO) this.tag).setId_tag(getLastInsertedId("id_tag", "tags"));
+				ps.setString(1, ((TagsDTO) this.tag).getTag());
+				logger.trace("{}", ps);
+				ps.executeUpdate();
+				((TagsDTO) this.tag).setId(getLastInsertedId("id_tag", "tags"));
 			}
 		} catch (SQLException e) {
-			logger.error("Unable to insert the tag {}", tag.toString());
-			e.printStackTrace();
+			logger.error("Insert error", e);
 		}
 		return this.tag;
 	}
 
-	@Override
-	public DataTransfertObject getOrInsert(DataTransfertObject dto) {
-		return insert(exists(((TagsDTO) tag)));
-	}
 }

@@ -92,12 +92,18 @@
 		<appender-ref ref="FILE" />
 	</logger>
 
-	<logger name="fr.exp.files.pearltrees" level="trace" additivity="true">
+	<logger name="fr.exp.files.pearltrees" level="info" additivity="true">
 		<!-- If additivity=true it uses 2 times the STDOUT appender, one time for -->
 		<!-- this logger and another time for root logger -->
 		<appender-ref ref="ROLLINGFILE" />
 	</logger>
 
+	<logger name="pearltrees.dao" level="error" additivity="true">
+		<!-- If additivity=true it uses 2 times the STDOUT appender, one time for -->
+		<!-- this logger and another time for root logger -->
+<!-- 		<appender-ref ref="ROLLINGFILE" /> -->
+	</logger>
+	
 	<logger name="logger.traces" level="warn" additivity="true">
 	</logger>
 

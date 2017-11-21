@@ -6,13 +6,15 @@ public class Run {
 
 	public static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
 			.getLogger("fr.exp.files.pearltrees");
-	public static Counter counter = new Counter();
 
 	public static void main(String[] args) {
 		logger.warn("Main lauched");
+		Counter counter = Counter.getCounter();
 		counter.start();
 
-		PearltreesFacade2 pearltreesFacade2 = new PearltreesFacade2("files/in/pearltrees_export-25-12-2016.html");
+		// pearltrees_export20171007.html
+		// files/in/pearltrees_export-25-12-2016.html
+		PearltreesFacade2 pearltreesFacade2 = new PearltreesFacade2("files/in/pearltrees_export20171007.html");
 		// print(pearltreesFacade2.getFoldedTags());
 		// pearltreesFacade2.writeHtmlFile("files/out/my_pearltrees_export.html");
 
@@ -56,28 +58,4 @@ public class Run {
 	// return s;
 	// }
 
-	static class Counter {
-		long startTime;
-		long endTime;
-
-		public Counter() {
-			this.startTime = 0;
-			this.endTime = 0;
-		}
-
-		public void start() {
-			startTime = System.currentTimeMillis();
-		}
-
-		public void stop() {
-			endTime = System.currentTimeMillis();
-		}
-
-		public String getTime() {
-			if (endTime == 0)
-				return ((System.currentTimeMillis() - startTime) / 1000.0) + " sec";
-			else
-				return ((endTime - startTime) / 1000.0d) + " sec";
-		}
-	}
 }

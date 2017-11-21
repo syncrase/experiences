@@ -26,7 +26,6 @@ public class FoldedTag {
 	public FoldedTag(String tag) {
 		super();
 		this.tag = new TagsDTO(0, tag);
-		// this.parentTag = new TagsDTO();
 	}
 
 	public String getTagName() {
@@ -46,11 +45,11 @@ public class FoldedTag {
 	}
 
 	public int getId() {
-		return tag.getId_tag();
+		return tag.getId();
 	}
 
 	public void setId_tag(int id_tag) {
-		tag.setId_tag(id_tag);
+		tag.setId(id_tag);
 	}
 
 	public FoldedTag getParentTag() {

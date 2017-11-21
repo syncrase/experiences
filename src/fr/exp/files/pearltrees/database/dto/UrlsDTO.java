@@ -37,11 +37,13 @@ public class UrlsDTO implements DataTransfertObject {
 	public UrlsDTO() {
 	}
 
+	@Override
 	public int getId() {
 		return id_url;
 	}
 
-	public void setId_url(int id_url) {
+	@Override
+	public void setId(int id_url) {
 		this.id_url = id_url;
 	}
 

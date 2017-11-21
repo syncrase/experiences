@@ -5,8 +5,6 @@ import java.sql.SQLException;
 
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
-import fr.exp.files.pearltrees.database.dto.PathsDTO;
-import fr.exp.files.pearltrees.database.dto.UrlsDTO;
 import fr.exp.files.pearltrees.database.skeleton.DaoMeta;
 import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
 
@@ -34,12 +32,13 @@ public class PathsDAO extends DaoMeta {
 	@Override
 	public DataTransfertObject insert(DataTransfertObject model) {
 		this.path = model;
-		logger.trace("Request for a new id path to the database");
-		PreparedStatement preparedStatement = DBConnection
+		// logger.trace("Request for a new id path to the database");
+		PreparedStatement ps = DBConnection
 				.getPreparedStatement("insert into " + DBInfo.DBName + ".paths (id_path) values (0)");
 		try {
-			preparedStatement.executeUpdate();
-			((PathsDTO) this.path).setId(getLastInsertedId("id_path", "paths"));
+			// logger.trace("{}", ps);
+			ps.executeUpdate();
+			this.path.setId(getLastInsertedId("id_path", "paths"));
 			return this.path;
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -48,8 +47,4 @@ public class PathsDAO extends DaoMeta {
 		return this.path;
 	}
 
-	@Override
-	public DataTransfertObject getOrInsert(DataTransfertObject dto) {
-		return insert(exists(((PathsDTO) dto)));
-	}
 }

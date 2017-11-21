@@ -2,10 +2,22 @@ package fr.exp.files.pearltrees.database.skeleton;
 
 public interface DaoMustHave {
 
-	public DataTransfertObject exists(DataTransfertObject dto);
+	/**
+	 * Si l'objet existe, le renvoie complété de son id. Sinon tel quel.
+	 * 
+	 * @param dto
+	 * @return
+	 */
+	DataTransfertObject exists(DataTransfertObject dto);
 
-	public DataTransfertObject insert(DataTransfertObject dto);
+	/**
+	 * Insère l'objet en base de données et renvoie l'objet complété de son ID
+	 * 
+	 * @param dto
+	 * @return
+	 */
+	DataTransfertObject insert(DataTransfertObject dto);
 
-	public DataTransfertObject getOrInsert(DataTransfertObject dto);
+	DataTransfertObject getOrInsert(DataTransfertObject dto);
 
 }

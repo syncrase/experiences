@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import fr.exp.databases.mysql.DBConnection;
 import fr.exp.databases.mysql.DBInfo;
 import fr.exp.files.pearltrees.database.dto.LiaisonTagUrlDTO;
-import fr.exp.files.pearltrees.database.dto.UrlsDTO;
 import fr.exp.files.pearltrees.database.skeleton.DaoMeta;
 import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
 
@@ -26,12 +25,13 @@ public class LiaisonTagUrlDAO extends DaoMeta {
 		LiaisonTagUrlDTO dto = (LiaisonTagUrlDTO) model;
 		try {
 
-			PreparedStatement insertIntoLiaisonUrlTagStatement = DBConnection.getPreparedStatement(
+			PreparedStatement ps = DBConnection.getPreparedStatement(
 					"insert into " + DBInfo.DBName + ".liaison_url_tags (id_url,id_tag,id_path) values (?,?,?)");
-			insertIntoLiaisonUrlTagStatement.setInt(1, dto.getUrl());
-			insertIntoLiaisonUrlTagStatement.setInt(2, dto.getTag());
-			insertIntoLiaisonUrlTagStatement.setInt(3, dto.getPath());
-			insertIntoLiaisonUrlTagStatement.executeUpdate();
+			ps.setInt(1, dto.getUrl());
+			ps.setInt(2, dto.getTag());
+			ps.setInt(3, dto.getPath());
+			logger.trace("{}", ps);
+			ps.executeUpdate();
 			dto.setId(getLastInsertedId("id_liaison_url_tags", "liaison_url_tags"));
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -40,8 +40,4 @@ public class LiaisonTagUrlDAO extends DaoMeta {
 		return dto;
 	}
 
-	@Override
-	public DataTransfertObject getOrInsert(DataTransfertObject dto) {
-		return insert(exists(((LiaisonTagUrlDTO) dto)));
-	}
 }

@@ -21,11 +21,13 @@ public class TagsDTO implements DataTransfertObject {
 		this.tag = "";
 	}
 
-	public int getId_tag() {
+	@Override
+	public int getId() {
 		return id_tag;
 	}
 
-	public void setId_tag(int id_tag) {
+	@Override
+	public void setId(int id_tag) {
 		this.id_tag = id_tag;
 	}
 
@@ -38,6 +40,6 @@ public class TagsDTO implements DataTransfertObject {
 	}
 
 	public String toString() {
-		return this.getId_tag() + ":" + this.getTag();
+		return this.getId() + ":" + this.getTag();
 	}
 }

@@ -17,10 +17,12 @@ public class LiaisonTagUrlDTO implements DataTransfertObject {
 		this.id_liaison_url_tags = 0;
 	}
 
+	@Override
 	public int getId() {
 		return id_liaison_url_tags;
 	}
 
+	@Override
 	public void setId(int id) {
 		this.id_liaison_url_tags = id;
 	}
@@ -30,15 +32,15 @@ public class LiaisonTagUrlDTO implements DataTransfertObject {
 	}
 
 	public void setUrl(int url) {
-		this.url.setId_url(url);
+		this.url.setId(url);
 	}
 
 	public int getTag() {
-		return tag.getId_tag();
+		return tag.getId();
 	}
 
 	public void setTag(int tag) {
-		this.tag.setId_tag(tag);
+		this.tag.setId(tag);
 	}
 
 	public int getPath() {

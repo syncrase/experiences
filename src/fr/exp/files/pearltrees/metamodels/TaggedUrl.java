@@ -89,7 +89,7 @@ public class TaggedUrl {
 		sb.append("tags{");
 		for (FoldedTag ft : tags) {
 			sb.append(ft.getTag());
-			sb.append(",");
+			sb.append((tags.indexOf(ft) < (tags.size() - 1)) ? ", " : "");
 		}
 		sb.append("}");
 		return sb.toString();
