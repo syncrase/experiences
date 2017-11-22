@@ -34,8 +34,7 @@ public class LiaisonFoldedTagsDAO extends DaoMeta {
 			ps.executeUpdate();
 			dto.setId(getLastInsertedId("id_liaison_folded_tags", "liaison_folded_tags"));
 		} catch (SQLException e) {
-			e.printStackTrace();
-			this.logger.error("Fail to get or insert", e);
+			logger.error("Fail to get or insert", e);
 		}
 		return dto;
 	}

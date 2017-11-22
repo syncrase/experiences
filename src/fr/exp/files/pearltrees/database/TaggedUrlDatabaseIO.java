@@ -15,7 +15,6 @@ import fr.exp.files.pearltrees.database.dto.TagsDTO;
 import fr.exp.files.pearltrees.database.dto.UrlsDTO;
 import fr.exp.files.pearltrees.database.skeleton.DAOManipulator;
 import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
-import fr.exp.files.pearltrees.metamodels.FoldedTag;
 import fr.exp.files.pearltrees.metamodels.TaggedUrl;
 
 public class TaggedUrlDatabaseIO {
@@ -43,47 +42,24 @@ public class TaggedUrlDatabaseIO {
 
 		DAOManipulator dao = new DAOManipulator();
 		taggedUrl.setPath(dao.insert(new PathsDTO()));
-		// Retirer la condition de taille? Normalement il y a toujours au moins un tag
-		// => donc condition inutile... Voir pour ajouter un point bloquant conditionné
-		// sur la taille du tableau de tag
 		DataTransfertObject tag = new TagsDTO();
 		if (taggedUrl.getTags().size() > 0) {
-			tag = taggedUrl.getTags().get(0).getTag();
-			// get or insert the tag
+			tag = taggedUrl.getTags().get(0);
 			tag = dao.getOrInsert(tag);
-			taggedUrl.getTags().get(0).setTag((TagsDTO) tag);
+			taggedUrl.getTags().set(0, (TagsDTO) tag);
 		}
 
 		for (int i = 0; i < taggedUrl.getTags().size(); i++) {
-
-			// Enregistrement dans la table de liaison url tag (pour le
-			// dernier uniquement, celui qui est directement associé à
-			// l'url)
-			// Même si l'url existe déjà, ainsi que le tag, un nouveau est tout de même créé
 			if (i == taggedUrl.getTags().size() - 1) {
-				// Enregistre le tag comme directement lié à l'url
 				LiaisonTagUrlDTO dto = new LiaisonTagUrlDTO(taggedUrl.getUrl().getId(),
 						taggedUrl.getTags().get(i).getId(), taggedUrl.getPath().getId());
-				// Je ne récupère pas l'id car inutlie ici.
 				dao.insert(dto);
 			} else {
-				// TODO uniquement cette partie nécessaire, la table url_tags ne sers à rien si
-				// la table folded tags est bien utilisée. Voir pour commenter et remplacer
-				// toutes les
-				// références à cette table avant de supprimer le JAVA
-				// Si je fais ça, en fin de boucle je n'aurai pas de parent à mettre....
-				// 1 mettre l'url en parent? On perdrai l'information de savoir si c'est une url
-				// ou un tag dans la liste des 'parents' => temps de traitement supplémentaire
-				// Toutes les urls sont collatérales
-				// 2 rester comme ça?
-				tag = dao.getOrInsert(taggedUrl.getTags().get(i + 1).getTag());
-				taggedUrl.getTags().get(i + 1).setTag((TagsDTO) tag);
-				// taggedUrl.getTags().get(i) = insert(taggedUrl.getTags().get(i + 1));
-				// Sinon enregistre la succession des tags reliés indirectement à l'url
-				// Le parent du premier tag est celui qui est le plus proche de l'url
+				tag = dao.getOrInsert(taggedUrl.getTags().get(i + 1));
+				// Write child tag in db
+				taggedUrl.getTags().set(i + 1, (TagsDTO) tag);
 				LiaisonFoldedTagsDTO dto = new LiaisonFoldedTagsDTO(taggedUrl.getPath().getId(),
 						taggedUrl.getTags().get(i + 1).getId(), taggedUrl.getTags().get(i).getId());
-				// Je ne récupère pas l'id car inutlie ici.
 				dao.insert(dto);
 			}
 		}
@@ -107,12 +83,15 @@ public class TaggedUrlDatabaseIO {
 			resultSet = DBConnection.executeQuery(query);
 			int path;
 			UrlsDTO url;
-			FoldedTag tag;
+			// FoldedTag tag;
+			TagsDTO tag;
 			TaggedUrl taggedUrl;
 			while (resultSet.next()) {
 				url = new UrlsDTO(resultSet.getInt("U.id_url"), resultSet.getString("U.url"),
 						resultSet.getString("U.label"));
-				tag = new FoldedTag(resultSet.getInt("T.id_tag"), resultSet.getString("T.tag"));
+				// tag = new FoldedTag(resultSet.getInt("T.id_tag"),
+				// resultSet.getString("T.tag"));
+				tag = new TagsDTO(resultSet.getInt("T.id_tag"), resultSet.getString("T.tag"));
 
 				path = resultSet.getInt("L.id_path");
 
@@ -138,16 +117,17 @@ public class TaggedUrlDatabaseIO {
 				resultSet = DBConnection.executeQuery(query);
 				while (resultSet.next()) {
 					// Je récupère tous les tags et je les ajoute à mon objet
-					obtainedTaggedUrl.addTag(new FoldedTag(resultSet.getInt("id_tag"), resultSet.getString("tag")),
+					// obtainedTaggedUrl.addTag(new FoldedTag(resultSet.getInt("id_tag"),
+					// resultSet.getString("tag")),
+					// resultSet.getInt("id_parent_tag"));
+					obtainedTaggedUrl.addTag(new TagsDTO(resultSet.getInt("id_tag"), resultSet.getString("tag")),
 							resultSet.getInt("id_parent_tag"));
 				}
-
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.error("Read for all urls", e);
 		}
-
 		return pool.getArrayList();
 	}
 
@@ -169,7 +149,6 @@ public class TaggedUrlDatabaseIO {
 			e.printStackTrace();
 			logger.error("Unable to delete the whole database content", e);
 		}
-
 	}
 
 	// public String getTablesName() {

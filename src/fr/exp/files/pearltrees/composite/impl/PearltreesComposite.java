@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.exp.files.pearltrees.composite.impl.utils.TreeBuilder;
-import fr.exp.files.pearltrees.metamodels.FoldedTag;
+import fr.exp.files.pearltrees.database.dto.TagsDTO;
 import fr.exp.files.pearltrees.metamodels.TaggedUrl;
 
 /**
@@ -48,13 +48,13 @@ public class PearltreesComposite extends TreeBuilder implements INode {
 	 * @return
 	 */
 	@Override
-	public ArrayList<TaggedUrl> getFoldedTags(ArrayList<FoldedTag> path) {
+	public ArrayList<TaggedUrl> getFoldedTags(ArrayList<TagsDTO> path) {
 		ArrayList<TaggedUrl> taggedUrlList = new ArrayList<TaggedUrl>();
-		ArrayList<FoldedTag> tempPath;
+		ArrayList<TagsDTO> tempPath;
 		for (INode node : this.nodeList) {
-			tempPath = new ArrayList<FoldedTag>();
+			tempPath = new ArrayList<TagsDTO>();
 			tempPath.addAll(path);
-			tempPath.add(new FoldedTag(folderName));
+			tempPath.add(new TagsDTO(folderName));
 			taggedUrlList.addAll(node.getFoldedTags(tempPath));
 		}
 		return taggedUrlList;

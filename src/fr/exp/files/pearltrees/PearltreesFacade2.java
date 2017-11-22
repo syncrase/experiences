@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import fr.exp.files.pearltrees.composite.TreeExtractor;
 import fr.exp.files.pearltrees.composite.impl.INode;
 import fr.exp.files.pearltrees.database.TaggedUrlDatabaseIO;
-import fr.exp.files.pearltrees.metamodels.FoldedTag;
+import fr.exp.files.pearltrees.database.dto.TagsDTO;
 import fr.exp.files.pearltrees.metamodels.TaggedUrl;
 
 /**
@@ -37,7 +37,6 @@ public class PearltreesFacade2 {
 	public PearltreesFacade2(String filePath) {
 		logger.trace("Début construction PearltreesFacade2");
 		TreeExtractor treeExtractor = new TreeExtractor(filePath);
-		// pearlTreesExportData = TreeExtractor.getComponent(filePath);
 		pearlTreesExportData = treeExtractor.getContent();
 		logger.trace("Fin construction PearltreesFacade2");
 	}
@@ -83,12 +82,12 @@ public class PearltreesFacade2 {
 	 * @return
 	 */
 	public String getFoldedTags() {
-		ArrayList<TaggedUrl> taggedUrlList = pearlTreesExportData.getFoldedTags(new ArrayList<FoldedTag>());
+		ArrayList<TaggedUrl> taggedUrlList = pearlTreesExportData.getFoldedTags(new ArrayList<TagsDTO>());
 		String returnedString = "";
-		ArrayList<FoldedTag> foldedTagList;
+		ArrayList<TagsDTO> foldedTagList;
 		for (TaggedUrl taggedUrl : taggedUrlList) {
 			foldedTagList = taggedUrl.getTags();
-			for (FoldedTag fd : foldedTagList) {
+			for (TagsDTO fd : foldedTagList) {
 				returnedString += fd.getTag() + (foldedTagList.indexOf(fd) != foldedTagList.size() - 1 ? ", " : "");
 			}
 			returnedString += ": ";
@@ -145,12 +144,9 @@ public class PearltreesFacade2 {
 	public void saveInDataBase() {
 		try {
 			logger.trace("Save in data base");
-			// Ajout dans la base de données de chaque url associées à son tag
-			// composé
-			// Dans la base de données
 
 			// Get all taggedUrls
-			ArrayList<TaggedUrl> taggedUrlList = pearlTreesExportData.getFoldedTags(new ArrayList<FoldedTag>());
+			ArrayList<TaggedUrl> taggedUrlList = pearlTreesExportData.getFoldedTags(new ArrayList<TagsDTO>());
 			// Write each taggedUrl in db
 			TaggedUrlDatabaseIO writer = new TaggedUrlDatabaseIO();
 			for (TaggedUrl taggedUrl : taggedUrlList) {

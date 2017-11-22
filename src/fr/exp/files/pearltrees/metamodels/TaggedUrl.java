@@ -14,19 +14,32 @@ import fr.exp.files.pearltrees.database.skeleton.DataTransfertObject;
 public class TaggedUrl {
 
 	private UrlsDTO url;
-	private ArrayList<FoldedTag> tags;
+	// private ArrayList<FoldedTag> tags;
+	private ArrayList<TagsDTO> tags;
 	private PathsDTO path;
 
-	public TaggedUrl(UrlsDTO url, ArrayList<FoldedTag> tags) {
+	// public TaggedUrl(UrlsDTO url, ArrayList<FoldedTag> tags) {
+	// super();
+	// this.url = url;
+	// this.tags = tags;
+	// }
+	public TaggedUrl(UrlsDTO url, ArrayList<TagsDTO> tags) {
 		super();
 		this.url = url;
 		this.tags = tags;
 	}
 
-	public TaggedUrl(UrlsDTO url, FoldedTag tag, int path) {
+	// public TaggedUrl(UrlsDTO url, FoldedTag tag, int path) {
+	// super();
+	// this.url = url;
+	// this.tags = new ArrayList<FoldedTag>();
+	// this.tags.add(tag);
+	// this.path = new PathsDTO(path);
+	// }
+	public TaggedUrl(UrlsDTO url, TagsDTO tag, int path) {
 		super();
 		this.url = url;
-		this.tags = new ArrayList<FoldedTag>();
+		this.tags = new ArrayList<TagsDTO>();
 		this.tags.add(tag);
 		this.path = new PathsDTO(path);
 	}
@@ -39,11 +52,15 @@ public class TaggedUrl {
 		this.url = url;
 	}
 
-	public ArrayList<FoldedTag> getTags() {
+	/**
+	 * 
+	 * @return liste de FoldedTag
+	 */
+	public ArrayList<TagsDTO> getTags() {
 		return tags;
 	}
 
-	public void setTags(ArrayList<FoldedTag> tags) {
+	public void setTags(ArrayList<TagsDTO> tags) {
 		this.tags = tags;
 	}
 
@@ -69,14 +86,8 @@ public class TaggedUrl {
 	 * @param tag
 	 * @param id_parent_tag
 	 */
-	public void addTag(FoldedTag tag, int id_parent_tag) {
+	public void addTag(TagsDTO tag, int id_parent_tag) {
 		tags.add(tag);
-
-	}
-
-	public String getFullTagPath() {
-		// TODO Récupérer tous les tags path pour cette url
-		return "À implémenter";
 	}
 
 	public String toString() {
@@ -87,7 +98,7 @@ public class TaggedUrl {
 		sb.append(url.getUrl());
 		sb.append("}");
 		sb.append("tags{");
-		for (FoldedTag ft : tags) {
+		for (TagsDTO ft : tags) {
 			sb.append(ft.getTag());
 			sb.append((tags.indexOf(ft) < (tags.size() - 1)) ? ", " : "");
 		}

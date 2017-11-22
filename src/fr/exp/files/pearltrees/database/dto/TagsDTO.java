@@ -13,6 +13,12 @@ public class TagsDTO implements DataTransfertObject {
 		this.tag = tag;
 	}
 
+	public TagsDTO(String tag) {
+		super();
+		this.id_tag = 0;
+		this.tag = tag;
+	}
+
 	public TagsDTO() {
 	}
 
