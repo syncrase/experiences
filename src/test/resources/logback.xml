@@ -103,6 +103,12 @@
 		<!-- this logger and another time for root logger -->
 <!-- 		<appender-ref ref="ROLLINGFILE" /> -->
 	</logger>
+
+	<logger name="database.mysql" level="error" additivity="true">
+		<!-- If additivity=true it uses 2 times the STDOUT appender, one time for -->
+		<!-- this logger and another time for root logger -->
+<!-- 		<appender-ref ref="ROLLINGFILE" /> -->
+	</logger>
 	
 	<logger name="logger.traces" level="warn" additivity="true">
 	</logger>

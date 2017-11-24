@@ -9,8 +9,11 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DBConnection {
+import org.slf4j.LoggerFactory;
 
+public class DBConnection {
+	public static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
+			.getLogger("database.mysql");
 	private static Connection connection = null;
 	private static Map<String, Statement> statementsPool = new HashMap<String, Statement>();
 	private static Map<String, PreparedStatement> preparedStatementsPool = new HashMap<String, PreparedStatement>();
@@ -28,16 +31,14 @@ public class DBConnection {
 				// Setup the connection with the DB
 				try {
 					String databaseUrl = "jdbc:mysql://localhost/" + DBInfo.DBName + "?" + "user=" + DBInfo.DBUser
-							+ "&password=" + DBInfo.DBPassword+"&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+							+ "&password=" + DBInfo.DBPassword
+							+ "&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 					connection = DriverManager.getConnection(databaseUrl);
 				} catch (SQLException e) {
-					// TODO Logger: Unable to establish the connection with
-					// $databaseUrl
-					e.printStackTrace();
+					logger.error("Unable to establish the connection", e);
 				}
 			} catch (ClassNotFoundException e) {
-				// TODO Logger: Unable to find the driver: com.mysql.jdbc.Driver
-				e.printStackTrace();
+				logger.error("Unable to find Driver", e);
 			}
 
 		}
@@ -51,7 +52,7 @@ public class DBConnection {
 				connection = null;
 			}
 		} catch (Exception e) {
-			// TODO Logger: Unable to close the database
+			logger.error("Unable to close the connection", e);
 		}
 	}
 
@@ -62,7 +63,7 @@ public class DBConnection {
 				statementsPool.remove("current");
 			}
 		} catch (Exception e) {
-			// TODO Logger: Unable to close the database
+			logger.error("Unable to close the current statement", e);
 		}
 	}
 
@@ -71,7 +72,7 @@ public class DBConnection {
 			try {
 				statement.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error("Unable to close the statement", e);
 			}
 		}
 		statementsPool = new HashMap<String, Statement>();
@@ -93,7 +94,7 @@ public class DBConnection {
 			try {
 				currentStatement = DBConnection.getNewStatement(statementName);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error("Unable to get a new statement", e);
 			}
 		} else {
 			currentStatement = statementTEMP;
@@ -132,7 +133,7 @@ public class DBConnection {
 		try {
 			currentStatement = DBConnection.getNewPreparedStatement("current", query);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Unable to get the current PreparedStatement", e);
 		}
 		// } else {
 		// currentStatement = statementTEMP;

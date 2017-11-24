@@ -159,7 +159,6 @@ public class TaggedUrlDatabaseIO {
 	// String query = "";
 	// String returnedString = "";
 	// ArrayList<String> tableList = new ArrayList<String>();
-	// // TODO Comment récupérer les urls et tous leurs tags dans une seule
 	// // requête?
 	// query += "SELECT TABLE_NAME FROM information_schema.tables "
 	// + "where TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA = 'pearltrees_data'";
@@ -173,7 +172,6 @@ public class TaggedUrlDatabaseIO {
 	// tableList.add(resultSet.getString("TABLE_NAME"));
 	// }
 	// } catch (SQLException e) {
-	// // TODO Auto-generated catch block
 	// e.printStackTrace();
 	// logger.error("Unable to get database table names");
 	// }

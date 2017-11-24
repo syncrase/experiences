@@ -101,7 +101,6 @@ public class PearltreesFacade2 {
 	 */
 
 	// public String loadFromDataBase() {
-	// // TODO Construction du pearltreesComponent à partir de la bdd
 	//
 	// // Parcours de toutes les urls pour les ajouter une a une à l'objet
 	// // pearlTreesExportData

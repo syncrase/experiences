@@ -49,5 +49,10 @@
 			<version>8.0.8-dmr</version>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.17</version>
+		</dependency>
 	</dependencies>
 </project>

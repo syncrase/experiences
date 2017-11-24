@@ -18,13 +18,12 @@ public abstract class FilesBasics {
 		return sb.toString();
 	}
 
-
 	/**
 	 * @param filePath
 	 *            Path of the file
 	 * @param params
 	 *            eol other than the default "\n"
-	 * @return  Returns the full text contained in the file
+	 * @return Returns the full text contained in the file
 	 */
 	public String getContentAsString(String filePath, String... params) {
 		String eol = params.length > 0 ? params[0] : "\n";
@@ -37,6 +36,12 @@ public abstract class FilesBasics {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param filePath
+	 *            The relative filepath from which the line is extracted
+	 * @return The first line of the file as a String
+	 */
 	public String getFirstLineAsString(String filePath) {
 		try {
 			List<String> readAllLines = Files.readAllLines(Paths.get(filePath));

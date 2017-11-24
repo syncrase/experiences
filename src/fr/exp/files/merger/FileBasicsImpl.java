@@ -1,4 +1,4 @@
-package fr.exp.files.text;
+package fr.exp.files.merger;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -19,7 +19,6 @@ public class FileBasicsImpl extends FilesBasics {
 	 * @return
 	 */
 	public String getFullText(String filePath) {
-//		FilesHandler_TODEL fh = new FilesHandler_TODEL();
 		String fileContent = "";
 		fileContent = this.getContentAsString(filePath, "\n");
 		return fileContent;
@@ -31,6 +30,7 @@ public class FileBasicsImpl extends FilesBasics {
 
 		// Vérifie que la ligne n'est pas coupée à cause du caractère '/' et sioui,
 		// reconstitu
+		// Spécifique au format d'export de Kezia II
 		List<String> readAllLines2 = new ArrayList<String>();
 		String tampon = "";
 		for (String s : readAllLines) {
@@ -43,8 +43,7 @@ public class FileBasicsImpl extends FilesBasics {
 		}
 		return readAllLines2;
 	}
-	
-	
+
 	/**
 	 * @param string
 	 * 
@@ -59,5 +58,5 @@ public class FileBasicsImpl extends FilesBasics {
 			System.err.format("IOException: %s%n", x);
 		}
 	}
-	
+
 }

@@ -30,7 +30,6 @@ public class SetOfActionDoImpl implements ISetOfAction {
 		try {
 			throw new Exception("PerformOn depuis la classe abstraite");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -1,4 +1,4 @@
-package fr.exp.files.text;
+package fr.exp.files.merger;
 
 public class TextBasicsImpl {
 
