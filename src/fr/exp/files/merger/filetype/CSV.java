@@ -3,9 +3,10 @@ package fr.exp.files.merger.filetype;
 import java.util.List;
 
 import fr.exp.files.merger.FileBasicsImpl;
+import fr.exp.files.merger.IMergeableFile;
 import fr.exp.files.merger.TextBasicsImpl;
 
-public class CSV extends AFileType {
+public class CSV extends AFileType implements IMergeableFile {
 
 	protected String separator;
 	protected String[] charsToDelete;
@@ -17,8 +18,6 @@ public class CSV extends AFileType {
 		String firstLine = fb.getFirstLineAsString(filePath);
 		return tb.getCleanedValues(firstLine, separator, charsToDelete);
 	}
-
-
 
 	public String getSeparator() {
 		return separator;
@@ -36,12 +35,22 @@ public class CSV extends AFileType {
 		this.charsToDelete = charsToDelete;
 	}
 
-
-
 	@Override
 	public List<String> getAllLines() {
 		FileBasicsImpl fb = new FileBasicsImpl();
 		return fb.getAllLines(this.getFilepath());
+	}
+
+	@Override
+	public void loadFile() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public List<String[]> getFileContent() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -48,7 +48,7 @@ public class FileBasicsImpl extends FilesBasics {
 	 * @param string
 	 * 
 	 */
-	public void writeCSVFile(String filePath, String content) {
+	public void write(String filePath, String content) {
 		Path path = FileSystems.getDefault().getPath(filePath);
 		Charset charset = Charset.forName("UTF-8");
 		// The BufferedWriter use requires to set the project compliance to 1.7

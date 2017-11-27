@@ -1,11 +1,11 @@
 package fr.exp.files.merger;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.exp.files.merger.filetype.AFileType;
 import fr.exp.files.merger.filetype.CSV;
-import fr.exp.files.merger.filetype.XLS;
+import fr.exp.files.merger.filetype.IFileType;
 
 public class Merger extends CSV {
 
@@ -13,83 +13,89 @@ public class Merger extends CSV {
 	TextBasicsImpl tb = new TextBasicsImpl();
 
 	public void printPrestashopComptatibleCSV(String[] outCols, AFileType csvFile, AFileType xlsFile) throws Exception {
-		StringBuilder sb = new StringBuilder();
-		CSV csvF = (CSV) csvFile;
-		XLS xlsF = (XLS) xlsFile;
+		IFileType file1 = csvFile;
+		IFileType file2 = xlsFile;
 		// Vérification de la taille des tableaux
-		if (outCols.length != 10 || outCols.length != csvF.getIndexMapping().length
-				|| outCols.length != xlsF.getIndexMapping().length)
+		if (outCols.length != 10 || outCols.length != file1.getIndexMapping().length
+				|| outCols.length != file2.getIndexMapping().length)
 			throw new Exception("Both arrays length must be the same");
 
-		List<String> csvRows = csvF.getAllLines();
-		List<String> xlsRows = xlsF.getAllLines();
+		file1.loadFile();
+		file2.loadFile();
+
+		List<String[]> csvRows = file1.getFileContent();
+		List<String[]> xlsRows = file2.getFileContent();
 		// Récupère la taille la plus petite
 		int rows = csvRows.size() == xlsRows.size() ? xlsRows.size()
 				: csvRows.size() < xlsRows.size() ? csvRows.size() : xlsRows.size();
 
 		if (csvRows.size() != xlsRows.size()) {
-			// throw new Exception(
-			// "The number of rows isn't the same. CSV: " + csvRows.size() + "; XLS: " +
-			// xlsRows.size());
 			System.err.println(
-					"The number of rows of both input files are differents. The end of the larger file will be ignored.");
+					"The number of rows of both input files are differents. We will try to rebuilding something based on ids of the first column");
 		}
 
-		String[] csvRowAsTab;
-		String[] xlsRowAsTab;
-		int csvRowAsTabLength = -1;
-		int xlsRowAsTabLength = -1;
+		String[] entireRow1;
+		String[] entireRow2;
+		List<String[]> finalList = new ArrayList<String[]>();
 		// Ajout des noms des colonnes
-		for (int j = 0; j < outCols.length; j++) {
-			sb.append("\"" + outCols[j] + "\"" + (j < outCols.length - 1 ? this.getSeparator() : ""));
-		}
-		sb.append("\n");
-
+		finalList.add(outCols);
 		// Ajout du contenu
 		String[] rowTmp;
+		int idGap1 = 0, idGap2 = 0;
 		for (int i = 1; i < rows; i++) {
 			rowTmp = new String[outCols.length];
-			Arrays.fill(rowTmp, "");
-
-			csvRowAsTab = tb.getCleanedValues(csvRows.get(i), csvF.getSeparator(), charsToDelete);
-			xlsRowAsTab = tb.getCleanedValues(xlsRows.get(i), xlsF.getSeparator(), charsToDelete);
-			// Ne peux plus être changé une fois différent de "-1"
-			csvRowAsTabLength = csvRowAsTabLength == -1 ? csvRowAsTab.length : csvRowAsTabLength;
-			xlsRowAsTabLength = xlsRowAsTabLength == -1 ? xlsRowAsTab.length : xlsRowAsTabLength;
-
-			// Si le nombre de colonnes n'est pas constant d'une ligne à l'autre
-			if (csvRowAsTabLength != csvRowAsTab.length) {
-				throw new Exception("Corrupted CSV file. Row length isn't constant from line " + i);
-			}
-			if (xlsRowAsTabLength != xlsRowAsTab.length) {
-				System.err.println("row: " + i);
-				throw new Exception("Corrupted XLS file. Row length isn't constant from line " + i);
-			}
-
-			// Complète la ligne grâce aux infos des deux fichiers d'entrée
-			for (int j = 0; j < csvF.getIndexMapping().length; j++) {
-				if (csvF.getIndexMapping()[j] > -1) {
-					rowTmp[j] = csvRowAsTab[csvF.getIndexMapping()[j]];
+			entireRow1 = csvRows.get(i - idGap1);
+			entireRow2 = xlsRows.get(i - idGap2);
+			int id1, id2;
+			id1 = (int) Float.parseFloat(entireRow1[0]);
+			id2 = (int) Float.parseFloat(entireRow2[0]);
+			if (id1 == id2) {
+				// Complète la ligne grâce aux infos des deux fichiers d'entrée
+				for (int j = 0; j < file1.getIndexMapping().length; j++) {
+					if (file1.getIndexMapping()[j] > -1) {
+						rowTmp[j] = entireRow1[file1.getIndexMapping()[j]];
+					}
+					if (file2.getIndexMapping()[j] > -1) {
+						rowTmp[j] = entireRow2[file2.getIndexMapping()[j]];
+					}
 				}
-			}
-			for (int j = 0; j < xlsF.getIndexMapping().length; j++) {
-				if (xlsF.getIndexMapping()[j] > -1) {
-					rowTmp[j] = xlsRowAsTab[xlsF.getIndexMapping()[j]];
-				}
-			}
-			if (Integer.parseInt(csvRowAsTab[0]) == (int) Float.parseFloat(xlsRowAsTab[0])) {
-				// System.err.println("ids are validate");
+				finalList.add(rowTmp);
+
 			} else {
-				// TODO problème de non correspondance d'ids
-				System.err.println("ids mismatch. CSV id: " + csvRowAsTab[0] + " & XLS id: " + xlsRowAsTab[0]);
+				// Les identifiants ne sont pas les mêmes => on inscrit la ligne avec l'id le
+				// plus petit et on incrémente uniquement celle-ci
+				if (id1 > id2) {
+					// Alors on inscrit id2 et on voit à la boucle d'après si id2 == id1, sinon on
+					// boucle ici tant que ce n'est pas valide
+					for (int j = 0; j < file1.getIndexMapping().length; j++) {
+						if (file2.getIndexMapping()[j] > -1) {
+							rowTmp[j] = entireRow2[file2.getIndexMapping()[j]];
+						}
+					}
+					finalList.add(rowTmp);
+					idGap1++;
+				}
+				if (id2 > id1) {
+					for (int j = 0; j < file1.getIndexMapping().length; j++) {
+						if (file1.getIndexMapping()[j] > -1) {
+							rowTmp[j] = entireRow1[file1.getIndexMapping()[j]];
+						}
+					}
+					finalList.add(rowTmp);
+					idGap2++;
+				}
 			}
+		}
 
-			for (int j = 0; j < outCols.length; j++) {
-				sb.append("\"" + rowTmp[j] + "\"" + (j < rowTmp.length - 1 ? this.getSeparator() : ""));
+		StringBuilder sb = new StringBuilder();
+		for (int r = 0; r < finalList.size(); r++) {
+			for (int c = 0; c < finalList.get(r).length; c++) {
+				sb.append("\"" + finalList.get(r)[c] + "\""
+						+ (c < finalList.get(r).length - 1 ? this.getSeparator() : ""));
 			}
 			sb.append("\n");
 		}
-		fb.writeCSVFile("files/out/haxia_export_prestashop_format.csv", sb.toString());
+		fb.write("files/out/haxia_export_prestashop_format.csv", sb.toString());
 	}
 
 }

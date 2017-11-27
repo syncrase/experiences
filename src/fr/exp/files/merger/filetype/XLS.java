@@ -10,9 +10,12 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
-public class XLS extends AFileType {
+import fr.exp.files.merger.IMergeableFile;
+
+public class XLS extends AFileType implements IMergeableFile {
 
 	private String separator = ";";
+	private List<String[]> fileContent;
 
 	public String getSeparator() {
 		return separator;
@@ -79,7 +82,9 @@ public class XLS extends AFileType {
 				if (row != null) {
 					for (int c = 0; c < cols; c++) {
 						cell = row.getCell((short) c);
-						if (cell != null) {
+						// Ignore toute ligne qui ne contient pas le même nombre de colonnes (Par
+						// exemple: les totaux)
+						if (cell != null && cols == row.getPhysicalNumberOfCells()) {
 							sb.append("\"" + cell.toString() + "\"" + ((c < cols - 1) ? this.getSeparator() : ""));
 						}
 					}
@@ -93,6 +98,52 @@ public class XLS extends AFileType {
 			ioe.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public void loadFile() {
+		ArrayList<String[]> fileContent = new ArrayList<String[]>();
+		try {
+			POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(this.filePath));
+			HSSFWorkbook wb = new HSSFWorkbook(fs);
+			HSSFSheet sheet = wb.getSheetAt(0);
+			HSSFCell cell;
+
+			int rows; // No of rows
+			rows = sheet.getPhysicalNumberOfRows();
+			int cols = sheet.getRow(0).getPhysicalNumberOfCells();
+			String[] returnedRow;
+			HSSFRow row;
+			returnedRow = new String[cols];
+			for (int r = 0; r < rows; r++) {
+				row = sheet.getRow(r);
+				returnedRow = new String[cols];
+				if (row != null) {
+					for (int c = 0; c < cols; c++) {
+						cell = row.getCell((short) c);
+						// Ignore toute ligne qui ne contient pas le même nombre de colonnes (Par
+						// exemple: les totaux)
+						if (cell != null && cols == row.getPhysicalNumberOfCells()) {
+							returnedRow[c] = cell.toString();
+						}
+					}
+					fileContent.add(returnedRow);
+				}
+			}
+			wb.close();
+			this.fileContent = fileContent;
+		} catch (Exception ioe) {
+			ioe.printStackTrace();
+		}
+
+	}
+
+	public List<String[]> getFileContent() {
+		return fileContent;
+	}
+
+	public void setFileContent(List<String[]> fileContent) {
+		this.fileContent = fileContent;
 	}
 
 }

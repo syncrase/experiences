@@ -19,8 +19,14 @@ public abstract class AFileType implements IFileType {
 		this.filePath = filepath;
 	}
 
-	public void setMapping(String[] mapping) {
+	/**
+	 * 
+	 * @param mapping
+	 * @throws Exception when mapping with the columns name had failed
+	 */
+	public void setMapping(String[] mapping) throws Exception {
 		this.mapping = mapping;
+		this.initializeIndexing();
 	}
 
 	public int[] getIndexMapping() {
