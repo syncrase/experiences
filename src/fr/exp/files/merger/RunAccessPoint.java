@@ -1,52 +1,21 @@
 package fr.exp.files.merger;
 
-import fr.exp.files.merger.filetype.XLS;
+import fr.exp.files.merger.filetype.IFileType;
 
 public class RunAccessPoint {
 
 	public static void main(String[] args) {
 		try {
-			// TODO supprimer la variable mapping car uniquement utile pour retrouver la
-			// correspondance entre index
-
 			// 1/ récupération du tableau ordonné, depuis le fichier texte, contenant
 			// tous les noms de colonne
-//			IMergeableFile mf = MergeableFileFactory.getMergeableFile("files/in/haxia_export.csv");haxia_
-			XLS cvsManipulator = (XLS) MergeableFileFactory.getMergeableFile("files/in/export.xls");
-//					new CSV();
-//			String separatorIn = "\",\"";
-//			String[] charsToDelete = { "\"" };
-//			cvsManipulator.setCharsToDelete(charsToDelete);
-//			cvsManipulator.setSeparator(separatorIn);
-//			cvsManipulator.setFilepath("files/in/haxia_export.csv");
-//			cvsManipulator.loadTitles();
+			IFileType cvsManipulator = MergeableFileFactory.getMergeableFile("files/in/export.xls");
 			String[] newCSVColumnOrder = { "IDART", "IMAGE", "DEF", "", "", "BaseHT", "PRIX_TTC", "", "", "LOCATION" };
 			cvsManipulator.setMapping(newCSVColumnOrder);
-//			cvsManipulator.initializeIndexing();
-			
-			// String[] haxiaExportColumnNames =
-			// merger.extractColumnNames("files/in/haxia_export.csv");
 
-			// int[] csvIndexMapping = merger.findIndexMapping(mappingWithCSV,
-			// haxiaExportColumnNames);
-			// int[] xlsIndexMapping = merger.findIndexMapping(mappingWithXLS,
-			// haxiaStockExportColumnNames);  Article_stock.xls
-			
-			XLS xlsManipulator = (XLS) MergeableFileFactory.getMergeableFile("files/in/ETAT_DU_STOCK.xls");
-//			new XLS();
-//			xlsManipulator.setFilepath("files/in/Article_stock.xls");
-//			xlsManipulator.loadTitles();
+			IFileType xlsManipulator = MergeableFileFactory.getMergeableFile("files/in/ETAT_DU_STOCK.xls");
 			String[] newXLSColumnOrder = { "", "", "", "", "", "", "", "Qté en Stock", "", "" };
 			xlsManipulator.setMapping(newXLSColumnOrder);
-//			xlsManipulator.initializeIndexing();
 
-			// String[] haxiaStockExportColumnNames =
-			// xlsManipulator.extractColumnNames("files/in/Article_stock.xls");
-			// for (String s : haxiaStockExportColumnNames) {
-			// System.out.print(s + ", ");
-			// }
-
-			// haxiaStockExportColumnNames.clone();
 			// 3/ Enregistrement du mapping entre les deux tables, ie table de
 			// correspondance clé valeur (clé: nom dans la table d'entrée; valeur: nom dans
 			// la table de sortie) UI facile à faire?
@@ -75,11 +44,9 @@ public class RunAccessPoint {
 
 			// récupération du format du fichier de sorti
 			Merger merger = new Merger();
-			// String separatorOut = ";";
-			merger.setSeparator(";");
-			String[] outCols = merger.extractColumnNames("files/in/prestashop_product_export.csv");
-
-			merger.printPrestashopComptatibleCSV(outCols, cvsManipulator, xlsManipulator);
+			IFileType desiredLayout = MergeableFileFactory.getMergeableFile("files/in/prestashop_product_export.csv");
+			desiredLayout.loadTitles();
+			merger.printPrestashopComptatibleCSV(desiredLayout, cvsManipulator, xlsManipulator);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

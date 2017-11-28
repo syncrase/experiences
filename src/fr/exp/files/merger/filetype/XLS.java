@@ -2,7 +2,6 @@ package fr.exp.files.merger.filetype;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -15,7 +14,6 @@ import fr.exp.files.merger.IMergeableFile;
 public class XLS extends AFileType implements IMergeableFile {
 
 	private String separator = ";";
-	private List<String[]> fileContent;
 
 	public String getSeparator() {
 		return separator;
@@ -49,57 +47,61 @@ public class XLS extends AFileType implements IMergeableFile {
 		return null;
 	}
 
-	@Override
-	public List<String> getAllLines() {
-		ArrayList<String> returnedList = new ArrayList<String>();
-		StringBuilder sb;
-		try {
-			POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(this.filePath));
-			HSSFWorkbook wb = new HSSFWorkbook(fs);
-			HSSFSheet sheet = wb.getSheetAt(0);
-			HSSFRow row;
-			HSSFCell cell;
+	// @Override
+	// public List<String> getAllLines() {
+	// ArrayList<String> returnedList = new ArrayList<String>();
+	// StringBuilder sb;
+	// try {
+	// POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(this.filePath));
+	// HSSFWorkbook wb = new HSSFWorkbook(fs);
+	// HSSFSheet sheet = wb.getSheetAt(0);
+	// HSSFRow row;
+	// HSSFCell cell;
+	//
+	// int rows; // No of rows
+	// rows = sheet.getPhysicalNumberOfRows();
+	//
+	// int cols = sheet.getRow(0).getPhysicalNumberOfCells();
+	// // int tmp = 0;
+	//
+	// // This trick ensures that we get the data properly even if it doesn't start
+	// // from first few rows
+	// // for(int i = 0; i < 10 || i < rows; i++) {
+	// // row = sheet.getRow(i);
+	// // if(row != null) {
+	// // tmp = sheet.getRow(i).getPhysicalNumberOfCells();
+	// // if(tmp > cols) cols = tmp;
+	// // }
+	// // }
+	// // Commence à 1 car la première ligne (index 0) est la ligne de titre
+	// for (int r = 0; r < rows; r++) {
+	// sb = new StringBuilder();
+	// row = sheet.getRow(r);
+	// if (row != null) {
+	// for (int c = 0; c < cols; c++) {
+	// cell = row.getCell((short) c);
+	// // Ignore toute ligne qui ne contient pas le même nombre de colonnes (Par
+	// // exemple: les totaux)
+	// if (cell != null && cols == row.getPhysicalNumberOfCells()) {
+	// sb.append("\"" + cell.toString() + "\"" + ((c < cols - 1) ?
+	// this.getSeparator() : ""));
+	// }
+	// }
+	// // System.out.println(sb.toString());
+	// returnedList.add(sb.toString());
+	// }
+	// }
+	// wb.close();
+	// return returnedList;
+	// } catch (Exception ioe) {
+	// ioe.printStackTrace();
+	// }
+	// return null;
+	// }
 
-			int rows; // No of rows
-			rows = sheet.getPhysicalNumberOfRows();
-
-			int cols = sheet.getRow(0).getPhysicalNumberOfCells();
-			// int tmp = 0;
-
-			// This trick ensures that we get the data properly even if it doesn't start
-			// from first few rows
-			// for(int i = 0; i < 10 || i < rows; i++) {
-			// row = sheet.getRow(i);
-			// if(row != null) {
-			// tmp = sheet.getRow(i).getPhysicalNumberOfCells();
-			// if(tmp > cols) cols = tmp;
-			// }
-			// }
-			// Commence à 1 car la première ligne (index 0) est la ligne de titre
-			for (int r = 0; r < rows; r++) {
-				sb = new StringBuilder();
-				row = sheet.getRow(r);
-				if (row != null) {
-					for (int c = 0; c < cols; c++) {
-						cell = row.getCell((short) c);
-						// Ignore toute ligne qui ne contient pas le même nombre de colonnes (Par
-						// exemple: les totaux)
-						if (cell != null && cols == row.getPhysicalNumberOfCells()) {
-							sb.append("\"" + cell.toString() + "\"" + ((c < cols - 1) ? this.getSeparator() : ""));
-						}
-					}
-					// System.out.println(sb.toString());
-					returnedList.add(sb.toString());
-				}
-			}
-			wb.close();
-			return returnedList;
-		} catch (Exception ioe) {
-			ioe.printStackTrace();
-		}
-		return null;
-	}
-
+	/**
+	 * Load the content of the XLS file. Set it in the fileVariable field
+	 */
 	@Override
 	public void loadFile() {
 		ArrayList<String[]> fileContent = new ArrayList<String[]>();
@@ -136,14 +138,6 @@ public class XLS extends AFileType implements IMergeableFile {
 			ioe.printStackTrace();
 		}
 
-	}
-
-	public List<String[]> getFileContent() {
-		return fileContent;
-	}
-
-	public void setFileContent(List<String[]> fileContent) {
-		this.fileContent = fileContent;
 	}
 
 }

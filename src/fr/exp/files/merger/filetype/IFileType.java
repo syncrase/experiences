@@ -7,10 +7,9 @@ public interface IFileType {
 	public String[] extractColumnNames(String filePath);
 
 	public void loadTitles();
-	
-	public List<String> getAllLines();
 
-	
+//	public List<String> getAllLines();
+
 	public int[] getIndexMapping();
 
 	public String getSeparator();
@@ -18,4 +17,6 @@ public interface IFileType {
 	public void loadFile();
 
 	public List<String[]> getFileContent();
+
+	public void setMapping(String[] newXLSColumnOrder) throws Exception;
 }

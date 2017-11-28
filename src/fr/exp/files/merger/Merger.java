@@ -3,22 +3,21 @@ package fr.exp.files.merger;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.exp.files.merger.filetype.AFileType;
-import fr.exp.files.merger.filetype.CSV;
 import fr.exp.files.merger.filetype.IFileType;
 
-public class Merger extends CSV {
+public class Merger {
 
 	FileBasicsImpl fb = new FileBasicsImpl();
 	TextBasicsImpl tb = new TextBasicsImpl();
 
-	public void printPrestashopComptatibleCSV(String[] outCols, AFileType csvFile, AFileType xlsFile) throws Exception {
+	public void printPrestashopComptatibleCSV(IFileType outCols, IFileType csvFile, IFileType xlsFile)
+			throws Exception {
 		IFileType file1 = csvFile;
 		IFileType file2 = xlsFile;
 		// Vérification de la taille des tableaux
-		if (outCols.length != 10 || outCols.length != file1.getIndexMapping().length
-				|| outCols.length != file2.getIndexMapping().length)
-			throw new Exception("Both arrays length must be the same");
+//		if (outCols.getFileContent().get(0).length != file1.getIndexMapping().length
+//				|| outCols.getFileContent().get(0).length != file2.getIndexMapping().length)
+//			throw new Exception("Both arrays length must be the same");
 
 		file1.loadFile();
 		file2.loadFile();
@@ -38,12 +37,12 @@ public class Merger extends CSV {
 		String[] entireRow2;
 		List<String[]> finalList = new ArrayList<String[]>();
 		// Ajout des noms des colonnes
-		finalList.add(outCols);
+		finalList.add(outCols.getFileContent().get(0));
 		// Ajout du contenu
 		String[] rowTmp;
 		int idGap1 = 0, idGap2 = 0;
 		for (int i = 1; i < rows; i++) {
-			rowTmp = new String[outCols.length];
+			rowTmp = new String[outCols.getFileContent().get(0).length];
 			entireRow1 = csvRows.get(i - idGap1);
 			entireRow2 = xlsRows.get(i - idGap2);
 			int id1, id2;
@@ -90,8 +89,7 @@ public class Merger extends CSV {
 		StringBuilder sb = new StringBuilder();
 		for (int r = 0; r < finalList.size(); r++) {
 			for (int c = 0; c < finalList.get(r).length; c++) {
-				sb.append("\"" + finalList.get(r)[c] + "\""
-						+ (c < finalList.get(r).length - 1 ? this.getSeparator() : ""));
+				sb.append("\"" + finalList.get(r)[c] + "\"" + (c < finalList.get(r).length - 1 ? ";" : ""));
 			}
 			sb.append("\n");
 		}

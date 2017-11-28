@@ -1,5 +1,6 @@
 package fr.exp.files.merger.filetype;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.exp.files.merger.FileBasicsImpl;
@@ -13,7 +14,6 @@ public class CSV extends AFileType implements IMergeableFile {
 
 	public String[] extractColumnNames(String filePath) {
 		FileBasicsImpl fb = new FileBasicsImpl();
-
 		TextBasicsImpl tb = new TextBasicsImpl();
 		String firstLine = fb.getFirstLineAsString(filePath);
 		return tb.getCleanedValues(firstLine, separator, charsToDelete);
@@ -35,22 +35,40 @@ public class CSV extends AFileType implements IMergeableFile {
 		this.charsToDelete = charsToDelete;
 	}
 
-	@Override
-	public List<String> getAllLines() {
-		FileBasicsImpl fb = new FileBasicsImpl();
-		return fb.getAllLines(this.getFilepath());
-	}
+	// @Override
+	// public List<String> getAllLines() {
+	// FileBasicsImpl fb = new FileBasicsImpl();
+	// return fb.getAllLines(this.getFilepath());
+	// }
 
 	@Override
 	public void loadFile() {
-		// TODO Auto-generated method stub
+		// FileBasicsImpl fb = new FileBasicsImpl();
+		// List<String> lines = fb.getAllLines(this.getFilepath());
+		// TextBasicsImpl tb = new TextBasicsImpl();
+		// fileContent = new ArrayList<String[]>();
+		// for (int i = 0; i < lines.size(); i++) {
+		// fileContent.add(tb.getCleanedValues(lines.get(i), separator, charsToDelete));
+		// }
+	}
 
+	@Override
+	public void loadTitles() {
+		FileBasicsImpl fb = new FileBasicsImpl();
+		List<String> lines = fb.getAllLines(this.getFilepath());
+		TextBasicsImpl tb = new TextBasicsImpl();
+		fileContent = new ArrayList<String[]>();
+		String[] row;
+		// Only get titles
+		for (int i = 0; i < 1; i++) {
+			row = tb.getCleanedValues(lines.get(i), separator, charsToDelete);
+			fileContent.add(row);
+		}
 	}
 
 	@Override
 	public List<String[]> getFileContent() {
-		// TODO Auto-generated method stub
-		return null;
+		return fileContent;
 	}
 
 }

@@ -1,11 +1,14 @@
 package fr.exp.files.merger.filetype;
 
+import java.util.List;
+
 public abstract class AFileType implements IFileType {
 
 	protected String filePath;
 	protected String[] columnNames;
 	protected String[] mapping;
 	protected int[] indexMapping;
+	protected List<String[]> fileContent;
 
 	public void loadTitles() {
 		this.columnNames = this.extractColumnNames(filePath);
@@ -22,7 +25,8 @@ public abstract class AFileType implements IFileType {
 	/**
 	 * 
 	 * @param mapping
-	 * @throws Exception when mapping with the columns name had failed
+	 * @throws Exception
+	 *             when mapping with the columns name had failed
 	 */
 	public void setMapping(String[] mapping) throws Exception {
 		this.mapping = mapping;
@@ -65,6 +69,14 @@ public abstract class AFileType implements IFileType {
 		if (mapping == null || columnNames == null)
 			throw new Exception("Mapping or columnNames shouldn't be null");
 		this.indexMapping = this.findIndexMapping(mapping, columnNames);
+	}
+
+	public List<String[]> getFileContent() {
+		return fileContent;
+	}
+
+	public void setFileContent(List<String[]> fileContent) {
+		this.fileContent = fileContent;
 	}
 
 }

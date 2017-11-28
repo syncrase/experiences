@@ -12,13 +12,14 @@ public class MergeableFileFactory {
 	 * @param filePath
 	 * @return
 	 */
-	public static IMergeableFile getMergeableFile(String filePath) {
+	public static IFileType getMergeableFile(String filePath) {
 
 		MergeableFileFactory factory = new MergeableFileFactory();
 		switch (factory.getExtension(filePath)) {
 		case "csv":
 			CSV csv = new CSV();
 			csv.setFilepath(filePath);
+			csv.setSeparator(";");
 			return csv;
 		case "xls":
 			XLS xls = new XLS();
