@@ -1,6 +1,8 @@
 package fr.exp.files.merger;
 
 import fr.exp.files.merger.filetype.IFileType;
+import fr.exp.files.merger.skeleton.MergeableFileFactory;
+import fr.exp.files.merger.skeleton.Merger;
 
 public class RunAccessPoint {
 

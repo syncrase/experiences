@@ -1,4 +1,4 @@
-package fr.exp.files.merger;
+package fr.exp.files.merger.skeleton;
 
 public interface IMergeableFile {
 

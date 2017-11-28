@@ -1,9 +1,11 @@
-package fr.exp.files.merger;
+package fr.exp.files.merger.skeleton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.exp.files.merger.filetype.IFileType;
+import fr.exp.files.merger.ioimpl.FileBasicsImpl;
+import fr.exp.files.merger.ioimpl.TextBasicsImpl;
 
 public class Merger {
 

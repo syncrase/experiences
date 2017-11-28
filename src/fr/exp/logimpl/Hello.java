@@ -1,4 +1,4 @@
-package fr.exp.log_api;
+package fr.exp.logimpl;
 
 import java.util.ArrayList;
 

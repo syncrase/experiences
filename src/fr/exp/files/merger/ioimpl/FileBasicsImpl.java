@@ -1,4 +1,4 @@
-package fr.exp.files.merger;
+package fr.exp.files.merger.ioimpl;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

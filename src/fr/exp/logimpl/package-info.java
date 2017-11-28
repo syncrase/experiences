@@ -5,4 +5,4 @@
  * @author Pierre
  *
  */
-package fr.exp.log_api;
+package fr.exp.logimpl;

@@ -3,9 +3,9 @@ package fr.exp.files.merger.filetype;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.exp.files.merger.FileBasicsImpl;
-import fr.exp.files.merger.IMergeableFile;
-import fr.exp.files.merger.TextBasicsImpl;
+import fr.exp.files.merger.ioimpl.FileBasicsImpl;
+import fr.exp.files.merger.ioimpl.TextBasicsImpl;
+import fr.exp.files.merger.skeleton.IMergeableFile;
 
 public class CSV extends AFileType implements IMergeableFile {
 
