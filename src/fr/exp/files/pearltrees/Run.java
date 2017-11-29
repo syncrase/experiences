@@ -2,6 +2,8 @@ package fr.exp.files.pearltrees;
 
 import org.slf4j.LoggerFactory;
 
+import fr.exp.logimpl.Counter;
+
 public class Run {
 
 	public static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory

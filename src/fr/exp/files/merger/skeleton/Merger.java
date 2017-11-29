@@ -10,9 +10,6 @@ import fr.exp.files.merger.ioimpl.TextBasicsImpl;
 
 public class Merger {
 
-	FileBasicsImpl fb = new FileBasicsImpl();
-	TextBasicsImpl tb = new TextBasicsImpl();
-
 	public void printPrestashopComptatibleCSV(IFileType outCols, IFileType fileType1, IFileType fileType)
 			throws Exception {
 		// TODO pour beaucoup plus tard ou juste pour faire une méthode plus générique:
@@ -91,8 +88,6 @@ public class Merger {
 			}
 		}
 
-		// TODO prioritaire: extraire le nom de la photo pour la mettre dans la colonne
-		// références
 		// Ici on parcours les lignes et pour chaque ligne, s'il y a une image, on
 		// inscrit le nom de l'image comme référence
 		String imageUrl = "";
@@ -135,6 +130,7 @@ public class Merger {
 			}
 			sb.append("\n");
 		}
+		FileBasicsImpl fb = new FileBasicsImpl();
 		fb.write("files/out/haxia_export_prestashop_format.csv", sb.toString());
 	}
 
