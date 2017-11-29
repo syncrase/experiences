@@ -2,6 +2,7 @@ package fr.exp.files.merger.skeleton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import fr.exp.files.merger.filetype.IFileType;
 import fr.exp.files.merger.ioimpl.FileBasicsImpl;
@@ -12,14 +13,16 @@ public class Merger {
 	FileBasicsImpl fb = new FileBasicsImpl();
 	TextBasicsImpl tb = new TextBasicsImpl();
 
-	public void printPrestashopComptatibleCSV(IFileType outCols, IFileType csvFile, IFileType xlsFile)
+	public void printPrestashopComptatibleCSV(IFileType outCols, IFileType fileType1, IFileType fileType)
 			throws Exception {
-		IFileType file1 = csvFile;
-		IFileType file2 = xlsFile;
+		// TODO pour beaucoup plus tard ou juste pour faire une méthode plus générique:
+		// donner une liste de IFileType à la place
+		IFileType file1 = fileType1;
+		IFileType file2 = fileType;
 		// Vérification de la taille des tableaux
-//		if (outCols.getFileContent().get(0).length != file1.getIndexMapping().length
-//				|| outCols.getFileContent().get(0).length != file2.getIndexMapping().length)
-//			throw new Exception("Both arrays length must be the same");
+		// if (outCols.getFileContent().get(0).length != file1.getIndexMapping().length
+		// || outCols.getFileContent().get(0).length != file2.getIndexMapping().length)
+		// throw new Exception("Both arrays length must be the same");
 
 		file1.loadFile();
 		file2.loadFile();
@@ -85,6 +88,43 @@ public class Merger {
 					finalList.add(rowTmp);
 					idGap2++;
 				}
+			}
+		}
+
+		// TODO prioritaire: extraire le nom de la photo pour la mettre dans la colonne
+		// références
+		// Ici on parcours les lignes et pour chaque ligne, s'il y a une image, on
+		// inscrit le nom de l'image comme référence
+		String imageUrl = "";
+		String imageName = "";
+		String[] tab;
+		// La ligne 0 est la ligne de titre
+		for (int r = 1; r < finalList.size(); r++) {
+			imageUrl = finalList.get(r)[1];
+			// Si l'image existe
+			if (imageUrl != "") {
+				// Puisque le format de l'image est de la forme //*/*/name.ext
+				// Je split par "\" pour avoir name.ext
+				// Puis je split par "."
+				tab = imageUrl.split("\\\\");
+				imageName = tab[tab.length - 1];
+				tab = imageName.split(Pattern.quote("."));
+				imageName = tab[0];
+				// Ajout de la référence
+				finalList.get(r)[3] = imageName;
+
+				// au passage on va modifier l'url de l'image
+				// Remplacer \\CAISSE1\Users\Public\Pictures\ par
+				// http://instantpresent-cadeaux.com/haxia_img/
+				// Supprimer AMADEUS\, NATIVES\, DERRIERE LA PORTE\, CMP\, KROESE\
+				imageUrl = imageUrl.replaceAll(Pattern.quote("\\\\CAISSE1\\Users\\Public\\Pictures\\"),
+						"http://instantpresent-cadeaux.com/haxia_img/");
+				imageUrl = imageUrl.replaceAll(Pattern.quote("AMADEUS\\"), "");
+				imageUrl = imageUrl.replaceAll(Pattern.quote("NATIVES\\"), "");
+				imageUrl = imageUrl.replaceAll(Pattern.quote("DERRIERE LA PORTE\\"), "");
+				imageUrl = imageUrl.replaceAll(Pattern.quote("CMP\\"), "");
+				imageUrl = imageUrl.replaceAll(Pattern.quote("KROESE\\"), "");
+				finalList.get(r)[1] = imageUrl;
 			}
 		}
 
