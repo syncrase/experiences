@@ -1,5 +1,8 @@
 package fr.exp.files.merger;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.LoggerFactory;
 
 import fr.exp.files.merger.filetype.IFileType;
@@ -8,7 +11,7 @@ import fr.exp.files.merger.skeleton.Merger;
 import fr.exp.logimpl.Counter;
 
 public class RunAccessPoint {
-	
+
 	public static ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory
 			.getLogger("fr.exp.files.*");
 
@@ -16,19 +19,25 @@ public class RunAccessPoint {
 		logger.warn("Main lauched");
 		Counter counter = Counter.getCounter();
 		counter.start();
-		
+
 		try {
 			// 1/ récupération du tableau ordonné, depuis le fichier texte, contenant
 			// tous les noms de colonne
 			logger.warn("Initialization of 'files/in/export.xls'");
-			IFileType cvsManipulator = MergeableFileFactory.getMergeableFile("files/in/export.xls");
-			String[] newCSVColumnOrder = { "IDART", "IMAGE", "DEF", "", "", "BaseHT", "PRIX_TTC", "", "", "LOCATION" };
-			cvsManipulator.setMapping(newCSVColumnOrder);
+			IFileType manipulator1 = MergeableFileFactory.getMergeableFile("files/in/export.xls");
+			String[] columnCorrespondance1 = { "IDART", "IMAGE", "DEF", "", "", "BaseHT", "PRIX_TTC", "", "",
+					"LOCATION" };
+			manipulator1.setMapping(columnCorrespondance1);
 
 			logger.warn("Initialization of 'files/in/ETAT_DU_STOCK.xls'");
-			IFileType xlsManipulator = MergeableFileFactory.getMergeableFile("files/in/ETAT_DU_STOCK.xls");
-			String[] newXLSColumnOrder = { "", "", "", "", "", "", "", "Qté en Stock", "", "" };
-			xlsManipulator.setMapping(newXLSColumnOrder);
+			IFileType manipulator2 = MergeableFileFactory.getMergeableFile("files/in/ETAT_DU_STOCK.xls");
+			String[] columnCorrespondance2 = { "", "", "", "", "", "", "", "Qté en Stock", "", "" };
+			manipulator2.setMapping(columnCorrespondance2);
+
+//			logger.warn("Initialization of 'files/in/ipf_product (1).csv'");
+//			IFileType manipulator3 = MergeableFileFactory.getMergeableFile("files/in/ETAT_DU_STOCK.xls");
+//			String[] columnCorrespondance3 = { "", "", "", "", "", "", "", "Qté en Stock", "", "" };
+//			manipulator3.setMapping(columnCorrespondance3);
 
 			// 3/ Enregistrement du mapping entre les deux tables, ie table de
 			// correspondance clé valeur (clé: nom dans la table d'entrée; valeur: nom dans
@@ -62,7 +71,13 @@ public class RunAccessPoint {
 			IFileType desiredLayout = MergeableFileFactory.getMergeableFile("files/in/prestashop_product_export.csv");
 			desiredLayout.loadTitles();
 			logger.warn("Start merging");
-			merger.printPrestashopComptatibleCSV(desiredLayout, cvsManipulator, xlsManipulator);
+			// merger.printPrestashopComptatibleCSV(desiredLayout, manipulator1,
+			// manipulator3);
+			List<IFileType> fileList = new ArrayList<IFileType>();
+			fileList.add(manipulator1);
+			fileList.add(manipulator2);
+//			fileList.add(manipulator3);
+			merger.merge(desiredLayout, fileList);
 			counter.stop();
 			logger.warn("Time elapsed: {}", counter.getTime());
 		} catch (Exception e) {
